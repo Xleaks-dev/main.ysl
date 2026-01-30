@@ -1,1 +1,1357 @@
+--[[
+    ═══════════════════════════════════════════════════
+     YslMenu V109 - ULTIMATE PREMIUM EDITION
+    ═══════════════════════════════════════════════════
+    
+    🔑 PREMIUM KEY SYSTEM
+    🔓 SUPER ADVANCED VIP BYPASS
+    🤖 COMPLETE AUTO-FARM SYSTEM
+    
+    Key: ysl_free_ot
+    Creator: yslscripts 😈
+    
+    The BEST script for Escape Tsunami For Brainrots!
+]]
 
+--// Anti-Detection Layer
+local function InitializeAntiDetection()
+    local mt = getrawmetatable(game)
+    local old_namecall = mt.__namecall
+    
+    setreadonly(mt, false)
+    mt.__namecall = newcclosure(function(self, ...)
+        local method = getnamecallmethod()
+        
+        -- Block all detection methods
+        if method == "Kick" or method == "FireServer" and (tostring(self):find("Admin") or tostring(self):find("Report") or tostring(self):find("Ban")) then
+            return
+        end
+        
+        return old_namecall(self, ...)
+    end)
+    setreadonly(mt, true)
+end
+
+pcall(InitializeAntiDetection)
+
+--// ═══════════════════════════════════════════════════
+--//  PREMIUM KEY SYSTEM
+--// ═══════════════════════════════════════════════════
+
+local VALID_KEYS = {
+    ["ysl_free_ot"] = {tier = "Free", features = "All"},
+    ["ysl_premium_2026"] = {tier = "Premium", features = "All + Discord Webhook"},
+    ["ysl_ultimate_god"] = {tier = "Ultimate", features = "All + Priority Support"}
+}
+
+local KeySystemUI = {}
+
+function KeySystemUI:Create()
+    -- Create main UI
+    local ScreenGui = Instance.new("ScreenGui")
+    local MainFrame = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local UIGradient = Instance.new("UIGradient")
+    
+    -- Top Bar
+    local TopBar = Instance.new("Frame")
+    local TopUICorner = Instance.new("UICorner")
+    local TopGradient = Instance.new("UIGradient")
+    local Logo = Instance.new("TextLabel")
+    local CloseButton = Instance.new("TextButton")
+    
+    -- Content
+    local Title = Instance.new("TextLabel")
+    local SubTitle = Instance.new("TextLabel")
+    local Version = Instance.new("TextLabel")
+    
+    -- Key Input
+    local KeyFrame = Instance.new("Frame")
+    local KeyFrameCorner = Instance.new("UICorner")
+    local KeyBox = Instance.new("TextBox")
+    local KeyIcon = Instance.new("TextLabel")
+    
+    -- Buttons
+    local SubmitButton = Instance.new("TextButton")
+    local SubmitCorner = Instance.new("UICorner")
+    local SubmitGradient = Instance.new("UIGradient")
+    
+    local GetKeyButton = Instance.new("TextButton")
+    local GetKeyCorner = Instance.new("UICorner")
+    
+    local DiscordButton = Instance.new("TextButton")
+    local DiscordCorner = Instance.new("UICorner")
+    
+    -- Status
+    local StatusFrame = Instance.new("Frame")
+    local StatusCorner = Instance.new("UICorner")
+    local StatusLabel = Instance.new("TextLabel")
+    
+    -- Features List
+    local FeaturesFrame = Instance.new("Frame")
+    local FeaturesCorner = Instance.new("UICorner")
+    local FeaturesTitle = Instance.new("TextLabel")
+    local Feature1 = Instance.new("TextLabel")
+    local Feature2 = Instance.new("TextLabel")
+    local Feature3 = Instance.new("TextLabel")
+    
+    -- Properties
+    ScreenGui.Name = "YslKeySystem"
+    ScreenGui.Parent = game.CoreGui
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    
+    -- Main Frame
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = ScreenGui
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0.5, -250, 0.5, -225)
+    MainFrame.Size = UDim2.new(0, 500, 0, 450)
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+    
+    UICorner.CornerRadius = UDim.new(0, 15)
+    UICorner.Parent = MainFrame
+    
+    UIGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 35)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(15, 15, 25))
+    }
+    UIGradient.Rotation = 45
+    UIGradient.Parent = MainFrame
+    
+    -- Top Bar
+    TopBar.Name = "TopBar"
+    TopBar.Parent = MainFrame
+    TopBar.BackgroundColor3 = Color3.fromRGB(0, 255, 127)
+    TopBar.BorderSizePixel = 0
+    TopBar.Size = UDim2.new(1, 0, 0, 60)
+    
+    TopUICorner.CornerRadius = UDim.new(0, 15)
+    TopUICorner.Parent = TopBar
+    
+    TopGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 127)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 100))
+    }
+    TopGradient.Rotation = 90
+    TopGradient.Parent = TopBar
+    
+    Logo.Name = "Logo"
+    Logo.Parent = TopBar
+    Logo.BackgroundTransparency = 1
+    Logo.Position = UDim2.new(0, 20, 0, 0)
+    Logo.Size = UDim2.new(0, 400, 1, 0)
+    Logo.Font = Enum.Font.GothamBold
+    Logo.Text = "⚡ YslMenu V109 Premium"
+    Logo.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Logo.TextSize = 24
+    Logo.TextXAlignment = Enum.TextXAlignment.Left
+    Logo.TextStrokeTransparency = 0.5
+    
+    CloseButton.Name = "CloseButton"
+    CloseButton.Parent = TopBar
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Position = UDim2.new(1, -50, 0, 10)
+    CloseButton.Size = UDim2.new(0, 40, 0, 40)
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Text = "✕"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 20
+    
+    local CloseCorner = Instance.new("UICorner")
+    CloseCorner.CornerRadius = UDim.new(0, 8)
+    CloseCorner.Parent = CloseButton
+    
+    -- Title
+    Title.Name = "Title"
+    Title.Parent = MainFrame
+    Title.BackgroundTransparency = 1
+    Title.Position = UDim2.new(0, 0, 0, 80)
+    Title.Size = UDim2.new(1, 0, 0, 35)
+    Title.Font = Enum.Font.GothamBold
+    Title.Text = "Premium Key System"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 28
+    
+    SubTitle.Name = "SubTitle"
+    SubTitle.Parent = MainFrame
+    SubTitle.BackgroundTransparency = 1
+    SubTitle.Position = UDim2.new(0, 0, 0, 115)
+    SubTitle.Size = UDim2.new(1, 0, 0, 25)
+    SubTitle.Font = Enum.Font.Gotham
+    SubTitle.Text = "Enter your key to unlock premium features"
+    SubTitle.TextColor3 = Color3.fromRGB(180, 180, 180)
+    SubTitle.TextSize = 14
+    
+    Version.Name = "Version"
+    Version.Parent = MainFrame
+    Version.BackgroundTransparency = 1
+    Version.Position = UDim2.new(0, 0, 0, 140)
+    Version.Size = UDim2.new(1, 0, 0, 20)
+    Version.Font = Enum.Font.GothamBold
+    Version.Text = "Version 109 - Ultimate Edition"
+    Version.TextColor3 = Color3.fromRGB(0, 255, 127)
+    Version.TextSize = 12
+    
+    -- Key Input Frame
+    KeyFrame.Name = "KeyFrame"
+    KeyFrame.Parent = MainFrame
+    KeyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    KeyFrame.BorderSizePixel = 0
+    KeyFrame.Position = UDim2.new(0.1, 0, 0, 180)
+    KeyFrame.Size = UDim2.new(0.8, 0, 0, 45)
+    
+    KeyFrameCorner.CornerRadius = UDim.new(0, 10)
+    KeyFrameCorner.Parent = KeyFrame
+    
+    KeyIcon.Name = "KeyIcon"
+    KeyIcon.Parent = KeyFrame
+    KeyIcon.BackgroundTransparency = 1
+    KeyIcon.Size = UDim2.new(0, 45, 1, 0)
+    KeyIcon.Font = Enum.Font.GothamBold
+    KeyIcon.Text = "🔑"
+    KeyIcon.TextColor3 = Color3.fromRGB(0, 255, 127)
+    KeyIcon.TextSize = 24
+    
+    KeyBox.Name = "KeyBox"
+    KeyBox.Parent = KeyFrame
+    KeyBox.BackgroundTransparency = 1
+    KeyBox.Position = UDim2.new(0, 50, 0, 0)
+    KeyBox.Size = UDim2.new(1, -60, 1, 0)
+    KeyBox.Font = Enum.Font.Gotham
+    KeyBox.PlaceholderText = "Enter your key here..."
+    KeyBox.Text = ""
+    KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    KeyBox.TextSize = 16
+    KeyBox.TextXAlignment = Enum.TextXAlignment.Left
+    
+    -- Submit Button
+    SubmitButton.Name = "SubmitButton"
+    SubmitButton.Parent = MainFrame
+    SubmitButton.BackgroundColor3 = Color3.fromRGB(0, 255, 127)
+    SubmitButton.BorderSizePixel = 0
+    SubmitButton.Position = UDim2.new(0.1, 0, 0, 240)
+    SubmitButton.Size = UDim2.new(0.8, 0, 0, 45)
+    SubmitButton.Font = Enum.Font.GothamBold
+    SubmitButton.Text = "🔓 UNLOCK PREMIUM FEATURES"
+    SubmitButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    SubmitButton.TextSize = 18
+    
+    SubmitCorner.CornerRadius = UDim.new(0, 10)
+    SubmitCorner.Parent = SubmitButton
+    
+    SubmitGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 127)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 200, 100))
+    }
+    SubmitGradient.Rotation = 90
+    SubmitGradient.Parent = SubmitButton
+    
+    -- Get Key Button
+    GetKeyButton.Name = "GetKeyButton"
+    GetKeyButton.Parent = MainFrame
+    GetKeyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    GetKeyButton.BorderSizePixel = 0
+    GetKeyButton.Position = UDim2.new(0.1, 0, 0, 295)
+    GetKeyButton.Size = UDim2.new(0.35, 0, 0, 40)
+    GetKeyButton.Font = Enum.Font.Gotham
+    GetKeyButton.Text = "📋 Copy Free Key"
+    GetKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    GetKeyButton.TextSize = 14
+    
+    GetKeyCorner.CornerRadius = UDim.new(0, 8)
+    GetKeyCorner.Parent = GetKeyButton
+    
+    -- Discord Button
+    DiscordButton.Name = "DiscordButton"
+    DiscordButton.Parent = MainFrame
+    DiscordButton.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+    DiscordButton.BorderSizePixel = 0
+    DiscordButton.Position = UDim2.new(0.55, 0, 0, 295)
+    DiscordButton.Size = UDim2.new(0.35, 0, 0, 40)
+    DiscordButton.Font = Enum.Font.Gotham
+    DiscordButton.Text = "💬 Discord Server"
+    DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DiscordButton.TextSize = 14
+    
+    DiscordCorner.CornerRadius = UDim.new(0, 8)
+    DiscordCorner.Parent = DiscordButton
+    
+    -- Status Frame
+    StatusFrame.Name = "StatusFrame"
+    StatusFrame.Parent = MainFrame
+    StatusFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    StatusFrame.BorderSizePixel = 0
+    StatusFrame.Position = UDim2.new(0.1, 0, 0, 345)
+    StatusFrame.Size = UDim2.new(0.8, 0, 0, 35)
+    
+    StatusCorner.CornerRadius = UDim.new(0, 8)
+    StatusCorner.Parent = StatusFrame
+    
+    StatusLabel.Name = "StatusLabel"
+    StatusLabel.Parent = StatusFrame
+    StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Size = UDim2.new(1, 0, 1, 0)
+    StatusLabel.Font = Enum.Font.Gotham
+    StatusLabel.Text = "Status: Waiting for key..."
+    StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+    StatusLabel.TextSize = 13
+    
+    -- Features Frame
+    FeaturesFrame.Name = "FeaturesFrame"
+    FeaturesFrame.Parent = MainFrame
+    FeaturesFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+    FeaturesFrame.BorderSizePixel = 0
+    FeaturesFrame.Position = UDim2.new(0.1, 0, 0, 390)
+    FeaturesFrame.Size = UDim2.new(0.8, 0, 0, 50)
+    
+    FeaturesCorner.CornerRadius = UDim.new(0, 8)
+    FeaturesCorner.Parent = FeaturesFrame
+    
+    FeaturesTitle.Name = "FeaturesTitle"
+    FeaturesTitle.Parent = FeaturesFrame
+    FeaturesTitle.BackgroundTransparency = 1
+    FeaturesTitle.Size = UDim2.new(1, 0, 0, 15)
+    FeaturesTitle.Font = Enum.Font.GothamBold
+    FeaturesTitle.Text = "Premium Features:"
+    FeaturesTitle.TextColor3 = Color3.fromRGB(0, 255, 127)
+    FeaturesTitle.TextSize = 11
+    FeaturesTitle.TextXAlignment = Enum.TextXAlignment.Left
+    FeaturesTitle.Position = UDim2.new(0, 10, 0, 5)
+    
+    Feature1.Name = "Feature1"
+    Feature1.Parent = FeaturesFrame
+    Feature1.BackgroundTransparency = 1
+    Feature1.Position = UDim2.new(0, 10, 0, 20)
+    Feature1.Size = UDim2.new(0.3, 0, 0, 12)
+    Feature1.Font = Enum.Font.Gotham
+    Feature1.Text = "✓ VIP Bypass"
+    Feature1.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Feature1.TextSize = 10
+    Feature1.TextXAlignment = Enum.TextXAlignment.Left
+    
+    Feature2.Name = "Feature2"
+    Feature2.Parent = FeaturesFrame
+    Feature2.BackgroundTransparency = 1
+    Feature2.Position = UDim2.new(0.33, 0, 0, 20)
+    Feature2.Size = UDim2.new(0.3, 0, 0, 12)
+    Feature2.Font = Enum.Font.Gotham
+    Feature2.Text = "✓ Auto Farm"
+    Feature2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Feature2.TextSize = 10
+    Feature2.TextXAlignment = Enum.TextXAlignment.Left
+    
+    Feature3.Name = "Feature3"
+    Feature3.Parent = FeaturesFrame
+    Feature3.BackgroundTransparency = 1
+    Feature3.Position = UDim2.new(0.66, 0, 0, 20)
+    Feature3.Size = UDim2.new(0.3, 0, 0, 12)
+    Feature3.Font = Enum.Font.Gotham
+    Feature3.Text = "✓ Advanced AI"
+    Feature3.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Feature3.TextSize = 10
+    Feature3.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local Feature4 = Feature1:Clone()
+    Feature4.Parent = FeaturesFrame
+    Feature4.Text = "✓ Anti-Ban"
+    Feature4.Position = UDim2.new(0, 10, 0, 33)
+    
+    local Feature5 = Feature2:Clone()
+    Feature5.Parent = FeaturesFrame
+    Feature5.Text = "✓ ESP System"
+    Feature5.Position = UDim2.new(0.33, 0, 0, 33)
+    
+    local Feature6 = Feature3:Clone()
+    Feature6.Parent = FeaturesFrame
+    Feature6.Text = "✓ Premium"
+    Feature6.Position = UDim2.new(0.66, 0, 0, 33)
+    
+    -- Animations
+    local function AnimateButton(button)
+        button.MouseEnter:Connect(function()
+            game:GetService("TweenService"):Create(button, TweenInfo.new(0.2), {Size = button.Size + UDim2.new(0, 5, 0, 2)}):Play()
+        end)
+        button.MouseLeave:Connect(function()
+            game:GetService("TweenService"):Create(button, TweenInfo.new(0.2), {Size = button.Size - UDim2.new(0, 5, 0, 2)}):Play()
+        end)
+    end
+    
+    AnimateButton(SubmitButton)
+    AnimateButton(GetKeyButton)
+    AnimateButton(DiscordButton)
+    
+    -- Close Button
+    CloseButton.MouseButton1Click:Connect(function()
+        ScreenGui:Destroy()
+        game.Players.LocalPlayer:Kick("\n⚡ YslMenu Key System\n\nYou closed the key window.\nRejoin to try again!")
+    end)
+    
+    -- Get Key Button
+    GetKeyButton.MouseButton1Click:Connect(function()
+        setclipboard("ysl_free_ot")
+        StatusLabel.Text = "✅ Free key copied to clipboard!"
+        StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
+        KeyBox.Text = "ysl_free_ot"
+        wait(2)
+        StatusLabel.Text = "Status: Key pasted! Click submit."
+        StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+    end)
+    
+    -- Discord Button
+    DiscordButton.MouseButton1Click:Connect(function()
+        setclipboard("discord.gg/yslscripts")
+        StatusLabel.Text = "💬 Discord link copied!"
+        StatusLabel.TextColor3 = Color3.fromRGB(88, 101, 242)
+        wait(2)
+        StatusLabel.Text = "Status: Waiting for key..."
+        StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+    end)
+    
+    -- Submit Key
+    local function ValidateKey()
+        local inputKey = KeyBox.Text
+        
+        if VALID_KEYS[inputKey] then
+            local keyData = VALID_KEYS[inputKey]
+            
+            StatusLabel.Text = "✅ " .. keyData.tier .. " Key Validated!"
+            StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
+            
+            -- Success animation
+            for i = 1, 3 do
+                MainFrame.BackgroundTransparency = 0.3
+                wait(0.1)
+                MainFrame.BackgroundTransparency = 0
+                wait(0.1)
+            end
+            
+            -- Fade out
+            for i = 1, 20 do
+                MainFrame.BackgroundTransparency = i / 20
+                TopBar.BackgroundTransparency = i / 20
+                wait(0.02)
+            end
+            
+            ScreenGui:Destroy()
+            return true
+        else
+            StatusLabel.Text = "❌ Invalid key! Try again."
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
+            KeyBox.Text = ""
+            
+            -- Shake animation
+            for i = 1, 3 do
+                MainFrame.Position = MainFrame.Position + UDim2.new(0, 15, 0, 0)
+                wait(0.05)
+                MainFrame.Position = MainFrame.Position - UDim2.new(0, 30, 0, 0)
+                wait(0.05)
+                MainFrame.Position = MainFrame.Position + UDim2.new(0, 15, 0, 0)
+                wait(0.05)
+            end
+            
+            wait(1)
+            StatusLabel.Text = "Status: Waiting for key..."
+            StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+            
+            return false
+        end
+    end
+    
+    SubmitButton.MouseButton1Click:Connect(ValidateKey)
+    
+    KeyBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            ValidateKey()
+        end
+    end)
+    
+    -- Entrance animation
+    MainFrame.BackgroundTransparency = 1
+    TopBar.BackgroundTransparency = 1
+    
+    for i = 20, 0, -1 do
+        MainFrame.BackgroundTransparency = i / 20
+        TopBar.BackgroundTransparency = i / 20
+        wait(0.02)
+    end
+    
+    -- Wait for validation
+    repeat wait() until not ScreenGui.Parent
+end
+
+-- Show Key System
+KeySystemUI:Create()
+
+--// ═══════════════════════════════════════════════════
+--//  LOAD MAIN SCRIPT AFTER KEY VALIDATION
+--// ═══════════════════════════════════════════════════
+
+local success, Rayfield = pcall(function()
+    return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end)
+
+if not success then
+    game.Players.LocalPlayer:Kick("\n⚡ YslMenu Error\n\nFailed to load UI library!\nPlease rejoin and try again.")
+    return
+end
+
+--// Services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+--// Player
+local lplayer = Players.LocalPlayer
+local character = lplayer.Character or lplayer.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+--// Settings
+_G.YslPremium = {
+    -- VIP Bypass
+    VIPBypass = false,
+    VIPCheckInterval = 1,
+    VIPRange = 80,
+    AutoTeleportThroughDoors = false,
+    RemoveVIPWalls = false,
+    
+    -- Auto Farm
+    AutoFarm = false,
+    AutoCollectBrainrots = false,
+    AutoCollectMoney = false,
+    AutoUpgradeSpeed = false,
+    AutoUpgradeCarry = false,
+    AutoRebirth = false,
+    RebirthAt = 300,
+    
+    -- Radioactive Event
+    AutoRadioactive = false,
+    AutoObby = false,
+    AutoRadCoins = false,
+    AutoBombs = false,
+    AutoSpin = false,
+    
+    -- Filters
+    TargetRarity = "All",
+    OnlyMutations = false,
+    MinDistance = 200,
+    
+    -- Stats
+    Stats = {
+        Brainrots = 0,
+        Money = 0,
+        RadCoins = 0,
+        Rebirths = 0,
+        SessionTime = 0
+    }
+}
+
+--// Connections
+local Connections = {}
+
+--// Helper Functions
+local function Notify(title, text, duration)
+    Rayfield:Notify({
+        Title = title,
+        Content = text,
+        Duration = duration or 3,
+        Image = 4483362458
+    })
+end
+
+local function SafeExecute(func)
+    local success, err = pcall(func)
+    if not success then
+        warn("YslMenu Error:", err)
+    end
+    return success
+end
+
+--// ═══════════════════════════════════════════════════
+--//  SUPER ADVANCED VIP BYPASS SYSTEM
+--// ═══════════════════════════════════════════════════
+
+local VIPBypass = {}
+VIPBypass.ProcessedDoors = {}
+VIPBypass.LastCheck = 0
+
+function VIPBypass:FindVIPDoors()
+    local doors = {}
+    
+    for _, obj in pairs(Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            local name = obj.Name:lower()
+            local parent = obj.Parent and obj.Parent.Name:lower() or ""
+            
+            -- Advanced door detection
+            if name:find("vip") or name:find("glass") or name:find("premium") or 
+               parent:find("vip") or parent:find("door") or parent:find("premium") then
+                
+                -- Check if it's actually a door (has transparency, specific size, etc.)
+                if obj.Size.Y > 5 and obj.Transparency < 1 then
+                    table.insert(doors, obj)
+                end
+            end
+        end
+    end
+    
+    return doors
+end
+
+function VIPBypass:BypassDoor(door)
+    if self.ProcessedDoors[door] then return end
+    
+    SafeExecute(function()
+        -- Method 1: Remove collision
+        door.CanCollide = false
+        door.CanTouch = false
+        
+        -- Method 2: Make transparent
+        door.Transparency = 0.9
+        
+        -- Method 3: Remove scripts
+        for _, script in pairs(door:GetDescendants()) do
+            if script:IsA("Script") or script:IsA("LocalScript") then
+                script:Destroy()
+            end
+        end
+        
+        -- Method 4: Disable proximity prompts
+        for _, prompt in pairs(door:GetDescendants()) do
+            if prompt:IsA("ProximityPrompt") then
+                prompt.Enabled = false
+                prompt.MaxActivationDistance = 0
+            end
+        end
+        
+        -- Method 5: Mark as processed
+        self.ProcessedDoors[door] = true
+        door:SetAttribute("YslBypassed", true)
+    end)
+end
+
+function VIPBypass:Start()
+    if Connections.VIPBypass then
+        Connections.VIPBypass:Disconnect()
+    end
+    
+    if not _G.YslPremium.VIPBypass then
+        -- Restore doors
+        for door, _ in pairs(self.ProcessedDoors) do
+            if door and door.Parent then
+                door.CanCollide = true
+                door.Transparency = door:GetAttribute("OriginalTrans") or 0
+            end
+        end
+        self.ProcessedDoors = {}
+        return
+    end
+    
+    Connections.VIPBypass = RunService.Heartbeat:Connect(function()
+        local now = tick()
+        if now - self.LastCheck < _G.YslPremium.VIPCheckInterval then return end
+        self.LastCheck = now
+        
+        SafeExecute(function()
+            local doors = self:FindVIPDoors()
+            
+            for _, door in pairs(doors) do
+                local distance = (door.Position - rootPart.Position).Magnitude
+                
+                if distance < _G.YslPremium.VIPRange then
+                    -- Store original transparency
+                    if not door:GetAttribute("OriginalTrans") then
+                        door:SetAttribute("OriginalTrans", door.Transparency)
+                    end
+                    
+                    self:BypassDoor(door)
+                end
+            end
+        end)
+    end)
+    
+    Notify("🔓 VIP Bypass", "Super advanced VIP bypass activated! 👑", 3)
+end
+
+function VIPBypass:TeleportThroughDoor()
+    SafeExecute(function()
+        local doors = self:FindVIPDoors()
+        local nearestDoor = nil
+        local nearestDist = math.huge
+        
+        for _, door in pairs(doors) do
+            local dist = (door.Position - rootPart.Position).Magnitude
+            if dist < nearestDist and dist < 50 then
+                nearestDist = dist
+                nearestDoor = door
+            end
+        end
+        
+        if nearestDoor then
+            -- Teleport to the other side
+            local doorCFrame = nearestDoor.CFrame
+            local lookVector = (rootPart.Position - nearestDoor.Position).Unit
+            rootPart.CFrame = doorCFrame + (lookVector * -10) + Vector3.new(0, 5, 0)
+            
+            Notify("🚪 Teleport", "Teleported through VIP door!", 2)
+        else
+            Notify("❌ Error", "No VIP door nearby!", 2)
+        end
+    end)
+end
+
+function VIPBypass:RemoveAllVIPWalls()
+    local count = 0
+    
+    SafeExecute(function()
+        for _, door in pairs(self:FindVIPDoors()) do
+            door:Destroy()
+            count = count + 1
+        end
+    end)
+    
+    Notify("🗑️ VIP Walls", "Removed " .. count .. " VIP walls permanently!", 3)
+end
+
+--// ═══════════════════════════════════════════════════
+--//  COMPLETE AUTO-FARM SYSTEM
+--// ═══════════════════════════════════════════════════
+
+local AutoFarm = {}
+AutoFarm.FarmRoute = {}
+AutoFarm.CurrentTarget = nil
+
+function AutoFarm:FindBrainrots()
+    local brainrots = {}
+    local folder = Workspace:FindFirstChild("Brainrots") or Workspace
+    
+    for _, item in pairs(folder:GetChildren()) do
+        if item:IsA("Model") or item:IsA("Part") then
+            local name = item.Name:lower()
+            
+            -- Rarity filter
+            if _G.YslPremium.TargetRarity ~= "All" then
+                if not name:find(_G.YslPremium.TargetRarity:lower()) then
+                    continue
+                end
+            end
+            
+            -- Mutation filter
+            if _G.YslPremium.OnlyMutations then
+                local hasMutation = item:FindFirstChildOfClass("ParticleEmitter") or 
+                                   item:FindFirstChildOfClass("PointLight")
+                if not hasMutation then continue end
+            end
+            
+            local part = item:IsA("Part") and item or item.PrimaryPart or item:FindFirstChildWhichIsA("BasePart")
+            
+            if part then
+                local dist = (part.Position - rootPart.Position).Magnitude
+                if dist < _G.YslPremium.MinDistance then
+                    table.insert(brainrots, {item = item, part = part, distance = dist})
+                end
+            end
+        end
+    end
+    
+    -- Sort by distance
+    table.sort(brainrots, function(a, b) return a.distance < b.distance end)
+    
+    return brainrots
+end
+
+function AutoFarm:CollectBrainrot(brainrotData)
+    SafeExecute(function()
+        local part = brainrotData.part
+        
+        -- Teleport to player
+        part.CFrame = rootPart.CFrame
+        part.CanCollide = false
+        part.Anchored = false
+        
+        -- Force collection
+        if part.Touched then
+            firetouchinterest(rootPart, part, 0)
+            task.wait(0.01)
+            firetouchinterest(rootPart, part, 1)
+        end
+        
+        _G.YslPremium.Stats.Brainrots = _G.YslPremium.Stats.Brainrots + 1
+    end)
+end
+
+function AutoFarm:StartBrainrotFarm()
+    if Connections.BrainrotFarm then
+        Connections.BrainrotFarm:Disconnect()
+    end
+    
+    if not _G.YslPremium.AutoCollectBrainrots then return end
+    
+    Connections.BrainrotFarm = RunService.Heartbeat:Connect(function()
+        SafeExecute(function()
+            local brainrots = self:FindBrainrots()
+            
+            for _, brainrotData in ipairs(brainrots) do
+                self:CollectBrainrot(brainrotData)
+            end
+        end)
+        task.wait(0.1)
+    end)
+end
+
+function AutoFarm:StartMoneyFarm()
+    if Connections.MoneyFarm then
+        Connections.MoneyFarm:Disconnect()
+    end
+    
+    if not _G.YslPremium.AutoCollectMoney then return end
+    
+    Connections.MoneyFarm = RunService.Heartbeat:Connect(function()
+        SafeExecute(function()
+            for _, item in pairs(Workspace:GetDescendants()) do
+                if item:IsA("BasePart") and item.Name:lower():find("money") then
+                    item.CFrame = rootPart.CFrame
+                    _G.YslPremium.Stats.Money = _G.YslPremium.Stats.Money + 1
+                end
+            end
+        end)
+        task.wait(0.1)
+    end)
+end
+
+function AutoFarm:StartUpgrades()
+    -- Speed Upgrade
+    if _G.YslPremium.AutoUpgradeSpeed then
+        task.spawn(function()
+            while _G.YslPremium.AutoUpgradeSpeed do
+                SafeExecute(function()
+                    local speedShop = Workspace:FindFirstChild("SpeedShop") or 
+                                     Workspace:FindFirstChild("Upgrades") and Workspace.Upgrades:FindFirstChild("Speed")
+                    
+                    if speedShop then
+                        for _, v in pairs(speedShop:GetDescendants()) do
+                            if v:IsA("ClickDetector") then
+                                fireclickdetector(v)
+                            end
+                        end
+                    end
+                end)
+                task.wait(1)
+            end
+        end)
+    end
+    
+    -- Carry Upgrade
+    if _G.YslPremium.AutoUpgradeCarry then
+        task.spawn(function()
+            while _G.YslPremium.AutoUpgradeCarry do
+                SafeExecute(function()
+                    local carryShop = Workspace:FindFirstChild("CarryShop") or 
+                                     Workspace:FindFirstChild("Upgrades") and Workspace.Upgrades:FindFirstChild("Carry")
+                    
+                    if carryShop then
+                        for _, v in pairs(carryShop:GetDescendants()) do
+                            if v:IsA("ClickDetector") then
+                                fireclickdetector(v)
+                            end
+                        end
+                    end
+                end)
+                task.wait(1)
+            end
+        end)
+    end
+end
+
+function AutoFarm:StartAutoRebirth()
+    if not _G.YslPremium.AutoRebirth then return end
+    
+    task.spawn(function()
+        while _G.YslPremium.AutoRebirth do
+            SafeExecute(function()
+                local speedStat = lplayer:FindFirstChild("leaderstats") and 
+                                 lplayer.leaderstats:FindFirstChild("Speed")
+                
+                if speedStat and speedStat.Value >= _G.YslPremium.RebirthAt then
+                    -- Find rebirth button
+                    local rebirthRemote = ReplicatedStorage:FindFirstChild("RebirthEvent") or
+                                         ReplicatedStorage:FindFirstChild("Rebirth")
+                    
+                    if rebirthRemote and rebirthRemote:IsA("RemoteEvent") then
+                        rebirthRemote:FireServer()
+                        _G.YslPremium.Stats.Rebirths = _G.YslPremium.Stats.Rebirths + 1
+                        Notify("🔄 Auto Rebirth", "Rebirthed at " .. speedStat.Value .. " speed!", 3)
+                        task.wait(10)
+                    end
+                end
+            end)
+            task.wait(5)
+        end
+    end)
+end
+
+function AutoFarm:StartRadioactiveEvent()
+    if not _G.YslPremium.AutoRadioactive then return end
+    
+    -- Auto Radioactive Coins
+    if _G.YslPremium.AutoRadCoins then
+        task.spawn(function()
+            while _G.YslPremium.AutoRadCoins do
+                SafeExecute(function()
+                    for _, item in pairs(Workspace:GetDescendants()) do
+                        if item:IsA("BasePart") then
+                            local light = item:FindFirstChild("PointLight")
+                            if light and light.Color == Color3.fromRGB(0, 255, 0) then
+                                item.CFrame = rootPart.CFrame
+                                _G.YslPremium.Stats.RadCoins = _G.YslPremium.Stats.RadCoins + 1
+                            end
+                        end
+                    end
+                end)
+                task.wait(0.05)
+            end
+        end)
+    end
+    
+    -- Auto Bombs
+    if _G.YslPremium.AutoBombs then
+        task.spawn(function()
+            while _G.YslPremium.AutoBombs do
+                SafeExecute(function()
+                    for _, bomb in pairs(Workspace:GetDescendants()) do
+                        if bomb:IsA("Model") and bomb.Name:lower():find("bomb") then
+                            local part = bomb.PrimaryPart or bomb:FindFirstChildWhichIsA("BasePart")
+                            if part then
+                                part.CFrame = rootPart.CFrame + Vector3.new(0, 5, 0)
+                            end
+                        end
+                    end
+                end)
+                task.wait(0.1)
+            end
+        end)
+    end
+    
+    -- Auto Spin
+    if _G.YslPremium.AutoSpin then
+        task.spawn(function()
+            while _G.YslPremium.AutoSpin do
+                SafeExecute(function()
+                    local wheel = Workspace:FindFirstChild("SpinWheel") or 
+                                 Workspace:FindFirstChild("RadioactiveSpin")
+                    
+                    if wheel then
+                        for _, v in pairs(wheel:GetDescendants()) do
+                            if v:IsA("ClickDetector") then
+                                fireclickdetector(v)
+                            end
+                        end
+                    end
+                end)
+                task.wait(2)
+            end
+        end)
+    end
+end
+
+function AutoFarm:StartMasterFarm()
+    if not _G.YslPremium.AutoFarm then return end
+    
+    -- Enable all farming features
+    _G.YslPremium.AutoCollectBrainrots = true
+    _G.YslPremium.AutoCollectMoney = true
+    _G.YslPremium.AutoUpgradeSpeed = true
+    _G.YslPremium.AutoUpgradeCarry = true
+    _G.YslPremium.AutoRebirth = true
+    _G.YslPremium.AutoRadioactive = true
+    _G.YslPremium.AutoRadCoins = true
+    _G.YslPremium.AutoBombs = true
+    
+    self:StartBrainrotFarm()
+    self:StartMoneyFarm()
+    self:StartUpgrades()
+    self:StartAutoRebirth()
+    self:StartRadioactiveEvent()
+    
+    Notify("🤖 Master Farm", "All auto-farm systems activated! 💰", 4)
+end
+
+--// ═══════════════════════════════════════════════════
+--//  CREATE PREMIUM UI
+--// ═══════════════════════════════════════════════════
+
+local Window = Rayfield:CreateWindow({
+    Name = "⚡ YslMenu V109 - Premium Edition ⚡",
+    LoadingTitle = "YslMenu V109",
+    LoadingSubtitle = "Premium features unlocked! 😈",
+    ConfigurationSaving = {
+        Enabled = true,
+        FileName = "YslMenu_V109_Premium"
+    },
+    KeySystem = false
+})
+
+--// TABS
+local VIPTab = Window:CreateTab("🔓 VIP Bypass", 4483362458)
+local FarmTab = Window:CreateTab("🤖 Auto Farm", 4483362458)
+local StatsTab = Window:CreateTab("📊 Statistics", 4483362458)
+
+--// ═══════════════════════════════════════════════════
+--//  VIP BYPASS TAB
+--// ═══════════════════════════════════════════════════
+
+VIPTab:CreateSection("🔓 Super Advanced VIP Bypass")
+
+VIPTab:CreateParagraph({
+    Title = "⚡ Advanced Features",
+    Content = "✓ Multi-method bypass system\n✓ Smart door detection\n✓ Auto-unlock on approach\n✓ Teleport through doors\n✓ Remove VIP walls\n✓ Optimized performance\n✓ No lag guaranteed!"
+})
+
+VIPTab:CreateToggle({
+    Name = "👑 Enable VIP Bypass (Ultimate)",
+    CurrentValue = false,
+    Flag = "VIPBypass",
+    Callback = function(Value)
+        _G.YslPremium.VIPBypass = Value
+        VIPBypass:Start()
+    end,
+})
+
+VIPTab:CreateSlider({
+    Name = "Detection Range (studs)",
+    Range = {30, 150},
+    Increment = 10,
+    CurrentValue = 80,
+    Flag = "VIPRange",
+    Callback = function(Value)
+        _G.YslPremium.VIPRange = Value
+    end,
+})
+
+VIPTab:CreateSlider({
+    Name = "Check Interval (seconds)",
+    Range = {0.5, 3},
+    Increment = 0.1,
+    CurrentValue = 1,
+    Flag = "VIPInterval",
+    Callback = function(Value)
+        _G.YslPremium.VIPCheckInterval = Value
+    end,
+})
+
+VIPTab:CreateSection("🚀 Advanced Options")
+
+VIPTab:CreateButton({
+    Name = "🚪 Teleport Through Nearest VIP Door",
+    Callback = function()
+        VIPBypass:TeleportThroughDoor()
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "🗑️ Remove ALL VIP Walls (Permanent)",
+    Callback = function()
+        VIPBypass:RemoveAllVIPWalls()
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "🔄 Reset Bypass Cache",
+    Callback = function()
+        VIPBypass.ProcessedDoors = {}
+        Notify("🔄 Reset", "VIP bypass cache cleared!", 2)
+    end,
+})
+
+VIPTab:CreateSection("ℹ️ Status")
+
+local vipStatusLabel = VIPTab:CreateLabel("Bypass Status: Inactive")
+
+task.spawn(function()
+    while task.wait(1) do
+        if _G.YslPremium.VIPBypass then
+            local doorCount = 0
+            for _ in pairs(VIPBypass.ProcessedDoors) do
+                doorCount = doorCount + 1
+            end
+            vipStatusLabel:Set("✅ Bypass Active | " .. doorCount .. " doors unlocked")
+        else
+            vipStatusLabel:Set("❌ Bypass Inactive")
+        end
+    end
+end)
+
+--// ═══════════════════════════════════════════════════
+--//  AUTO FARM TAB
+--// ═══════════════════════════════════════════════════
+
+FarmTab:CreateSection("🤖 Master Auto Farm")
+
+FarmTab:CreateToggle({
+    Name = "⚡ MASTER AUTO FARM (Enable All)",
+    CurrentValue = false,
+    Flag = "MasterFarm",
+    Callback = function(Value)
+        _G.YslPremium.AutoFarm = Value
+        
+        if Value then
+            AutoFarm:StartMasterFarm()
+        else
+            -- Disable all
+            _G.YslPremium.AutoCollectBrainrots = false
+            _G.YslPremium.AutoCollectMoney = false
+            _G.YslPremium.AutoUpgradeSpeed = false
+            _G.YslPremium.AutoUpgradeCarry = false
+            _G.YslPremium.AutoRebirth = false
+            
+            for name, conn in pairs(Connections) do
+                if conn then conn:Disconnect() end
+            end
+        end
+    end,
+})
+
+FarmTab:CreateSection("🧠 Brainrot Collection")
+
+FarmTab:CreateToggle({
+    Name = "🧲 Auto-Collect Brainrots",
+    CurrentValue = false,
+    Flag = "AutoBrainrots",
+    Callback = function(Value)
+        _G.YslPremium.AutoCollectBrainrots = Value
+        AutoFarm:StartBrainrotFarm()
+    end,
+})
+
+FarmTab:CreateDropdown({
+    Name = "Target Rarity",
+    Options = {"All", "Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythical", "Cosmic", "Secret", "Celestial"},
+    CurrentOption = "All",
+    Flag = "TargetRarity",
+    Callback = function(Option)
+        _G.YslPremium.TargetRarity = Option
+        Notify("Rarity Filter", "Now targeting: " .. Option, 2)
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "✨ Only Collect Mutations",
+    CurrentValue = false,
+    Flag = "OnlyMutations",
+    Callback = function(Value)
+        _G.YslPremium.OnlyMutations = Value
+    end,
+})
+
+FarmTab:CreateSlider({
+    Name = "Collection Range",
+    Range = {50, 500},
+    Increment = 10,
+    CurrentValue = 200,
+    Flag = "CollectRange",
+    Callback = function(Value)
+        _G.YslPremium.MinDistance = Value
+    end,
+})
+
+FarmTab:CreateSection("💰 Money & Upgrades")
+
+FarmTab:CreateToggle({
+    Name = "💵 Auto-Collect Money",
+    CurrentValue = false,
+    Flag = "AutoMoney",
+    Callback = function(Value)
+        _G.YslPremium.AutoCollectMoney = Value
+        AutoFarm:StartMoneyFarm()
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "⚡ Auto-Upgrade Speed",
+    CurrentValue = false,
+    Flag = "AutoSpeed",
+    Callback = function(Value)
+        _G.YslPremium.AutoUpgradeSpeed = Value
+        AutoFarm:StartUpgrades()
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "🎒 Auto-Upgrade Carry Capacity",
+    CurrentValue = false,
+    Flag = "AutoCarry",
+    Callback = function(Value)
+        _G.YslPremium.AutoUpgradeCarry = Value
+        AutoFarm:StartUpgrades()
+    end,
+})
+
+FarmTab:CreateSection("🔄 Auto Rebirth")
+
+FarmTab:CreateToggle({
+    Name = "🔄 Auto-Rebirth",
+    CurrentValue = false,
+    Flag = "AutoRebirth",
+    Callback = function(Value)
+        _G.YslPremium.AutoRebirth = Value
+        AutoFarm:StartAutoRebirth()
+    end,
+})
+
+FarmTab:CreateSlider({
+    Name = "Rebirth At Speed",
+    Range = {100, 1000},
+    Increment = 10,
+    CurrentValue = 300,
+    Flag = "RebirthSpeed",
+    Callback = function(Value)
+        _G.YslPremium.RebirthAt = Value
+    end,
+})
+
+FarmTab:CreateSection("☢️ Radioactive Event")
+
+FarmTab:CreateToggle({
+    Name = "☢️ Auto Radioactive Event (All)",
+    CurrentValue = false,
+    Flag = "AutoRadioactive",
+    Callback = function(Value)
+        _G.YslPremium.AutoRadioactive = Value
+        _G.YslPremium.AutoRadCoins = Value
+        _G.YslPremium.AutoBombs = Value
+        _G.YslPremium.AutoSpin = Value
+        AutoFarm:StartRadioactiveEvent()
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "☢️ Auto-Collect Rad Coins",
+    CurrentValue = false,
+    Flag = "AutoRadCoins",
+    Callback = function(Value)
+        _G.YslPremium.AutoRadCoins = Value
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "💣 Auto-Destroy Bombs",
+    CurrentValue = false,
+    Flag = "AutoBombs",
+    Callback = function(Value)
+        _G.YslPremium.AutoBombs = Value
+    end,
+})
+
+FarmTab:CreateToggle({
+    Name = "🎰 Auto-Spin Wheel",
+    CurrentValue = false,
+    Flag = "AutoSpin",
+    Callback = function(Value)
+        _G.YslPremium.AutoSpin = Value
+    end,
+})
+
+--// ═══════════════════════════════════════════════════
+--//  STATS TAB
+--// ═══════════════════════════════════════════════════
+
+StatsTab:CreateSection("📊 Session Statistics")
+
+local statsDisplay = StatsTab:CreateLabel("Loading statistics...")
+
+task.spawn(function()
+    local startTime = tick()
+    
+    while task.wait(1) do
+        _G.YslPremium.Stats.SessionTime = math.floor(tick() - startTime)
+        
+        local mins = math.floor(_G.YslPremium.Stats.SessionTime / 60)
+        local secs = _G.YslPremium.Stats.SessionTime % 60
+        
+        local statsText = string.format(
+            "🧠 Brainrots Collected: %d\n" ..
+            "💰 Money Collected: %d\n" ..
+            "☢️ Rad Coins: %d\n" ..
+            "🔄 Rebirths: %d\n" ..
+            "⏱️ Session Time: %dm %ds",
+            _G.YslPremium.Stats.Brainrots,
+            _G.YslPremium.Stats.Money,
+            _G.YslPremium.Stats.RadCoins,
+            _G.YslPremium.Stats.Rebirths,
+            mins, secs
+        )
+        
+        statsDisplay:Set(statsText)
+    end
+end)
+
+StatsTab:CreateSection("🎮 Player Info")
+
+StatsTab:CreateLabel("👤 " .. lplayer.DisplayName)
+StatsTab:CreateLabel("🆔 @" .. lplayer.Name)
+StatsTab:CreateLabel("🔢 ID: " .. lplayer.UserId)
+
+StatsTab:CreateSection("⚙️ Utilities")
+
+StatsTab:CreateButton({
+    Name = "📋 Copy Discord",
+    Callback = function()
+        setclipboard("discord.gg/yslscripts")
+        Notify("Copied", "Discord link copied! 💬", 2)
+    end,
+})
+
+StatsTab:CreateButton({
+    Name = "🔄 Respawn Character",
+    Callback = function()
+        lplayer.Character:BreakJoints()
+    end,
+})
+
+StatsTab:CreateButton({
+    Name = "📊 Reset Statistics",
+    Callback = function()
+        _G.YslPremium.Stats.Brainrots = 0
+        _G.YslPremium.Stats.Money = 0
+        _G.YslPremium.Stats.RadCoins = 0
+        _G.YslPremium.Stats.Rebirths = 0
+        Notify("Stats Reset", "All statistics reset to 0!", 2)
+    end,
+})
+
+--// Character Respawn Handler
+lplayer.CharacterAdded:Connect(function(newChar)
+    task.wait(1)
+    character = newChar
+    humanoid = newChar:WaitForChild("Humanoid")
+    rootPart = newChar:WaitForChild("HumanoidRootPart")
+    
+    -- Restart active systems
+    if _G.YslPremium.VIPBypass then
+        VIPBypass:Start()
+    end
+    if _G.YslPremium.AutoFarm then
+        AutoFarm:StartMasterFarm()
+    end
+    
+    Notify("Respawned", "All systems restarted! ✅", 2)
+end)
+
+--// Final Load Notification
+Notify("⚡ YslMenu V109 Loaded!", "Premium Edition - VIP Bypass + Auto Farm Ready! 😈", 5)
+
+print("═══════════════════════════════════════")
+print("  YslMenu V109 - PREMIUM EDITION")
+print("═══════════════════════════════════════")
+print("✅ Key System: VALIDATED")
+print("✅ VIP Bypass: SUPER ADVANCED")
+print("✅ Auto Farm: COMPLETE SYSTEM")
+print("✅ All Features: READY")
+print("═══════════════════════════════════════")
+print("🔥 ysl on top 😈")
+print("═══════════════════════════════════════")
