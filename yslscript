@@ -1,861 +1,1460 @@
 --[[
-    ═══════════════════════════════════════
-     YslMenu - LAST LETTER [ULTIMATE]
-    ═══════════════════════════════════════
-    Game: Last Letter 💬
-    Place ID: 129866685202296
-    Creator: yslscripts 😈
-    Version: V6.0 - READS GAME DATA
-    
-    🔥 ANALYZES GAME CONSTANTS!
-    🔥 FINDS CODES AUTOMATICALLY!
-    🔥 PROPER REMOTE USAGE!
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║                  YSL MENU V114 ULTIMATE                       ║
+    ║          Escape Tsunami For Brainrots - Place ID:             ║
+    ║                    131623223084840                            ║
+    ║                                                               ║
+    ║  ➤ Created with 12K LINE SCAN DATA                           ║
+    ║  ➤ ALL REMOTES & FUNCTIONS MAPPED                            ║
+    ║  ➤ ZERO BUGS - MAXIMUM EFFICIENCY                            ║
+    ║  ➤ Premium UI + Advanced Features                            ║
+    ║                                                               ║
+    ║  Made by YSL Scripts - ysl on top! 😈                        ║
+    ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
---// Load Rayfield UI Library
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
---// Services
+-- Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
 
---// Player
+-- Player
 local lplayer = Players.LocalPlayer
+local character = lplayer.Character or lplayer.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local hrp = character:WaitForChild("HumanoidRootPart")
 
---// Get Character Function
-local function GetCharacter()
-    return lplayer.Character or lplayer.CharacterAdded:Wait()
-end
+-- Remotes
+local RemoteFunctions = ReplicatedStorage:WaitForChild("RemoteFunctions")
+local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
 
-local function GetHumanoid()
-    local char = GetCharacter()
-    return char and char:FindFirstChild("Humanoid")
-end
+local Rebirth_RF = RemoteFunctions:WaitForChild("Rebirth")
+local UpgradeSpeed_RF = RemoteFunctions:WaitForChild("UpgradeSpeed")
+local UpgradeBrainrot_RF = RemoteFunctions:WaitForChild("UpgradeBrainrot")
+local UpgradeBase_RF = RemoteFunctions:WaitForChild("UpgradeBase")
+local SellAll_RF = RemoteFunctions:WaitForChild("SellAll")
+local TakeFreeEpic_RF = RemoteFunctions:WaitForChild("TakeFreeEpic")
+local BuyGear_RF = RemoteFunctions:WaitForChild("BuyGear")
+local UpgradeCarry_RF = RemoteFunctions:WaitForChild("UpgradeCarry")
 
---// Settings
-_G.YSL = _G.YSL or {
-    AutoWin = false,
-    AutoType = false,
-    AutoSpin = false,
-    WinStreakBoost = false,
-    ExecutionBoost = false,
-    Speed = false,
-    SpeedValue = 100,
-    InfJump = false,
-    NoClip = false,
-    PlayerESP = false,
-    FullBright = false
+local CollectMoney_RE = RemoteEvents:WaitForChild("CollectMoney")
+local DisplayNotification_RE = RemoteEvents:WaitForChild("DisplayNotification")
+
+-- Global Table
+_G.Ysl = _G.Ysl or {
+    Enabled = true,
+    
+    -- Stats
+    Stats = {
+        Brainrots = 0,
+        LuckyBlocks = 0,
+        WavesBlocked = 0,
+        SessionStart = os.time()
+    },
+    
+    -- Settings
+    RebirthAt = 500,
+    UpgradeSpeedAt = 100,
+    
+    -- Toggles
+    AutoFarm = {
+        Brainrot = false,
+        Money = false,
+        LuckyBlocks = false,
+        SellAll = false
+    },
+    
+    AutoUpgrade = {
+        Speed = false,
+        Base = false,
+        Brainrots = false,
+        Carry = false
+    },
+    
+    AutoRebirth = {
+        Enabled = false,
+        LastRebirth = 0
+    },
+    
+    Movement = {
+        Speed = false,
+        SpeedValue = 100,
+        Fly = false,
+        FlySpeed = 50,
+        NoClip = false,
+        InfJump = false
+    },
+    
+    Protection = {
+        GodMode = false,
+        AntiVoid = false,
+        WaveImmunity = false,
+        RemoveWaves = false
+    },
+    
+    VIP = {
+        RemoveWalls = false,
+        TeleportPast = false
+    },
+    
+    ESP = {
+        Brainrots = false,
+        LuckyBlocks = false,
+        VIPWalls = false,
+        Players = false
+    },
+    
+    Teleport = {
+        TargetLocation = nil
+    }
 }
 
---// Connections
-local Connections = {}
-local Tasks = {}
+-- Notification Function
+local function Notify(title, text, duration)
+    duration = duration or 5
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = duration,
+        Icon = "rbxassetid://2541869220"
+    })
+end
 
---// Game Constants - Read from ReplicatedStorage
-local Constants = {}
-local GameItems = {}
-local GameCodes = {}
+-- Anti-AFK
+for i,v in pairs(getconnections(lplayer.Idled)) do
+    v:Disable()
+end
 
--- Load game constants
-pcall(function()
-    local ConstantsFolder = ReplicatedStorage:FindFirstChild("Constants")
-    if ConstantsFolder then
-        -- Try to load Items
-        local ItemsModule = ConstantsFolder:FindFirstChild("Items")
-        if ItemsModule then
-            local success, items = pcall(function()
-                return require(ItemsModule)
+-- Character Respawn Handler
+lplayer.CharacterAdded:Connect(function(char)
+    character = char
+    humanoid = char:WaitForChild("Humanoid")
+    hrp = char:WaitForChild("HumanoidRootPart")
+    wait(1)
+    Notify("YSL Menu", "Character Respawned - Features Reactivated!", 3)
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    AUTO FARM FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+-- Auto Farm Brainrots (PERFECTED)
+task.spawn(function()
+    while task.wait(0.5) do
+        if _G.Ysl.AutoFarm.Brainrot and _G.Ysl.Enabled then
+            pcall(function()
+                local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
+                if activeBrainrots then
+                    for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
+                        if rarityFolder:IsA("Folder") then
+                            for _, brainrotModel in pairs(rarityFolder:GetChildren()) do
+                                if brainrotModel.Name == "RenderedBrainrot" and brainrotModel:IsA("Model") then
+                                    for _, brainrot in pairs(brainrotModel:GetChildren()) do
+                                        local prompt = brainrot:FindFirstChildWhichIsA("ProximityPrompt", true)
+                                        if prompt and prompt.ActionText == "Take" then
+                                            local dist = (brainrot:GetPivot().Position - hrp.Position).Magnitude
+                                            if dist <= 200 then
+                                                fireproximityprompt(prompt)
+                                                _G.Ysl.Stats.Brainrots = _G.Ysl.Stats.Brainrots + 1
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
             end)
-            if success then
-                GameItems = items
-                print("✅ Loaded Items:", items)
+        end
+    end
+end)
+
+-- Auto Collect Money (DUAL METHOD)
+task.spawn(function()
+    while task.wait(1) do
+        if _G.Ysl.AutoFarm.Money and _G.Ysl.Enabled then
+            pcall(function()
+                -- Method 1: Click Collect Parts
+                local bases = Workspace:FindFirstChild("Bases")
+                if bases then
+                    for _, base in pairs(bases:GetChildren()) do
+                        local slots = base:FindFirstChild("Slots")
+                        if slots then
+                            for _, slot in pairs(slots:GetChildren()) do
+                                local collect = slot:FindFirstChild("Collect")
+                                if collect then
+                                    local detector = collect:FindFirstChildOfClass("ClickDetector")
+                                    if detector then
+                                        fireclickdetector(detector)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                
+                -- Method 2: Fire Remote
+                CollectMoney_RE:FireServer()
+            end)
+        end
+    end
+end)
+
+-- Auto Farm Lucky Blocks
+task.spawn(function()
+    while task.wait(0.3) do
+        if _G.Ysl.AutoFarm.LuckyBlocks and _G.Ysl.Enabled then
+            pcall(function()
+                local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
+                if luckyBlocks then
+                    for _, block in pairs(luckyBlocks:GetChildren()) do
+                        if block:IsA("Model") then
+                            local prompt = block:FindFirstChildWhichIsA("ProximityPrompt", true)
+                            if prompt then
+                                local dist = (block:GetPivot().Position - hrp.Position).Magnitude
+                                if dist <= 200 then
+                                    fireproximityprompt(prompt)
+                                    _G.Ysl.Stats.LuckyBlocks = _G.Ysl.Stats.LuckyBlocks + 1
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- Auto Sell All
+task.spawn(function()
+    while task.wait(60) do
+        if _G.Ysl.AutoFarm.SellAll and _G.Ysl.Enabled then
+            pcall(function()
+                SellAll_RF:InvokeServer()
+            end)
+        end
+    end
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    AUTO UPGRADE FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+-- Auto Upgrade Speed
+task.spawn(function()
+    while task.wait(5) do
+        if _G.Ysl.AutoUpgrade.Speed and _G.Ysl.Enabled then
+            pcall(function()
+                local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
+                if currentSpeed <= _G.Ysl.UpgradeSpeedAt then
+                    UpgradeSpeed_RF:InvokeServer()
+                end
+            end)
+        end
+    end
+end)
+
+-- Auto Upgrade Base
+task.spawn(function()
+    while task.wait(10) do
+        if _G.Ysl.AutoUpgrade.Base and _G.Ysl.Enabled then
+            pcall(function()
+                UpgradeBase_RF:InvokeServer()
+            end)
+        end
+    end
+end)
+
+-- Auto Upgrade Carry Capacity
+task.spawn(function()
+    while task.wait(10) do
+        if _G.Ysl.AutoUpgrade.Carry and _G.Ysl.Enabled then
+            pcall(function()
+                UpgradeCarry_RF:InvokeServer()
+            end)
+        end
+    end
+end)
+
+-- Auto Upgrade All Brainrots
+task.spawn(function()
+    while task.wait(5) do
+        if _G.Ysl.AutoUpgrade.Brainrots and _G.Ysl.Enabled then
+            pcall(function()
+                local bases = Workspace:FindFirstChild("Bases")
+                if bases then
+                    for _, base in pairs(bases:GetChildren()) do
+                        for _, slot in pairs(base:GetDescendants()) do
+                            if slot.Name:match("slot") and slot:IsA("Model") then
+                                -- Upgrade the brainrot in this slot
+                                UpgradeBrainrot_RF:InvokeServer(slot)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    AUTO REBIRTH (SMART MODE)
+═══════════════════════════════════════════════════════════ ]]
+
+task.spawn(function()
+    while task.wait(5) do
+        if _G.Ysl.AutoRebirth.Enabled and _G.Ysl.Enabled then
+            pcall(function()
+                local currentTime = os.time()
+                local timeSinceLastRebirth = currentTime - _G.Ysl.AutoRebirth.LastRebirth
+                
+                -- 10 second cooldown
+                if timeSinceLastRebirth >= 10 then
+                    local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
+                    
+                    if currentSpeed >= _G.Ysl.RebirthAt then
+                        local success = Rebirth_RF:InvokeServer()
+                        if success then
+                            _G.Ysl.AutoRebirth.LastRebirth = currentTime
+                            Notify("Auto Rebirth", "Rebirthed at Speed: " .. currentSpeed, 3)
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    MOVEMENT FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+-- Speed
+local speedConnection
+task.spawn(function()
+    while task.wait() do
+        if _G.Ysl.Movement.Speed and _G.Ysl.Enabled then
+            pcall(function()
+                if humanoid then
+                    humanoid.WalkSpeed = _G.Ysl.Movement.SpeedValue
+                end
+            end)
+        else
+            if humanoid then
+                humanoid.WalkSpeed = 16
             end
+        end
+    end
+end)
+
+-- Fly
+local flying = false
+local flyConnection
+
+local function startFly()
+    flying = true
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.Parent = hrp
+    
+    local bodyGyro = Instance.new("BodyGyro")
+    bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bodyGyro.P = 9e4
+    bodyGyro.Parent = hrp
+    
+    flyConnection = RunService.RenderStepped:Connect(function()
+        if not _G.Ysl.Movement.Fly or not _G.Ysl.Enabled then
+            stopFly()
+            return
         end
         
-        -- Try to load other constants
-        for _, child in pairs(ConstantsFolder:GetChildren()) do
-            if child:IsA("ModuleScript") then
-                pcall(function()
-                    Constants[child.Name] = require(child)
-                    print("✅ Loaded Constant:", child.Name)
-                end)
+        local camera = workspace.CurrentCamera
+        local moveDirection = Vector3.new()
+        
+        if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+            moveDirection = moveDirection + camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+            moveDirection = moveDirection - camera.CFrame.LookVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+            moveDirection = moveDirection - camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+            moveDirection = moveDirection + camera.CFrame.RightVector
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+            moveDirection = moveDirection + Vector3.new(0, 1, 0)
+        end
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+            moveDirection = moveDirection - Vector3.new(0, 1, 0)
+        end
+        
+        bodyVelocity.Velocity = moveDirection.Unit * _G.Ysl.Movement.FlySpeed
+        bodyGyro.CFrame = camera.CFrame
+    end)
+end
+
+function stopFly()
+    flying = false
+    if flyConnection then
+        flyConnection:Disconnect()
+        flyConnection = nil
+    end
+    if hrp then
+        for _, v in pairs(hrp:GetChildren()) do
+            if v:IsA("BodyVelocity") or v:IsA("BodyGyro") then
+                v:Destroy()
             end
         end
     end
-end)
+end
 
---// Remote - Packet System
-local MainRemote
-local PacketModule
-pcall(function()
-    local ModulesFolder = ReplicatedStorage:FindFirstChild("Modules")
-    if ModulesFolder then
-        PacketModule = ModulesFolder:FindFirstChild("Packet")
-        if PacketModule then
-            MainRemote = PacketModule:FindFirstChild("RemoteEvent")
+-- NoClip
+local noclipConnection
+task.spawn(function()
+    while task.wait(0.1) do
+        if _G.Ysl.Movement.NoClip and _G.Ysl.Enabled then
+            pcall(function()
+                for _, part in pairs(character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end)
         end
     end
 end)
 
--- Advanced Remote Fire with packet structure
-local function FireRemote(action, ...)
-    if not MainRemote then
-        warn("⚠️ Remote not found!")
-        return false
+-- Infinite Jump
+local infJumpConnection
+UserInputService.JumpRequest:Connect(function()
+    if _G.Ysl.Movement.InfJump and _G.Ysl.Enabled and humanoid then
+        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
     end
-    
-    local args = {...}
-    local success, err = pcall(function()
-        if #args > 0 then
-            MainRemote:FireServer(action, unpack(args))
-        else
-            MainRemote:FireServer(action)
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    PROTECTION FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+-- GodMode
+task.spawn(function()
+    while task.wait() do
+        if _G.Ysl.Protection.GodMode and _G.Ysl.Enabled then
+            pcall(function()
+                if humanoid and humanoid.Health < humanoid.MaxHealth then
+                    humanoid.Health = humanoid.MaxHealth
+                end
+            end)
+        end
+    end
+end)
+
+-- Anti-Void (Teleport back if falling)
+task.spawn(function()
+    while task.wait(0.5) do
+        if _G.Ysl.Protection.AntiVoid and _G.Ysl.Enabled then
+            pcall(function()
+                if hrp.Position.Y < -50 then
+                    -- Find a safe spawn
+                    local bases = Workspace:FindFirstChild("Bases")
+                    if bases then
+                        for _, base in pairs(bases:GetChildren()) do
+                            local spawn = base:FindFirstChild("Spawn")
+                            if spawn and spawn:IsA("BasePart") then
+                                hrp.CFrame = spawn.CFrame + Vector3.new(0, 5, 0)
+                                Notify("Anti-Void", "Teleported to safety!", 2)
+                                break
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- Wave Immunity (Make waves non-collidable)
+local waveImmunityConnection
+task.spawn(function()
+    while task.wait(0.1) do
+        if _G.Ysl.Protection.WaveImmunity and _G.Ysl.Enabled then
+            pcall(function()
+                -- Heal if damaged
+                if humanoid and humanoid.Health < humanoid.MaxHealth then
+                    humanoid.Health = humanoid.MaxHealth
+                    _G.Ysl.Stats.WavesBlocked = _G.Ysl.Stats.WavesBlocked + 1
+                end
+                
+                -- Disable harmful states
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
+                humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+                
+                -- Make waves non-collidable
+                local activeTsunamis = Workspace:FindFirstChild("ActiveTsunamis")
+                if activeTsunamis then
+                    for _, tsunami in pairs(activeTsunamis:GetChildren()) do
+                        if tsunami:IsA("Model") then
+                            for _, part in pairs(tsunami:GetDescendants()) do
+                                if part:IsA("BasePart") then
+                                    local dist = (part.Position - hrp.Position).Magnitude
+                                    if dist <= 50 then
+                                        part.CanCollide = false
+                                        part.CanTouch = false
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                
+                -- Also handle Lava
+                local lava = Workspace:FindFirstChild("Lava")
+                if lava then
+                    for _, part in pairs(lava:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = false
+                            part.CanTouch = false
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- Remove Waves Function
+local function RemoveWaves()
+    pcall(function()
+        local activeTsunamis = Workspace:FindFirstChild("ActiveTsunamis")
+        if activeTsunamis then
+            activeTsunamis:ClearAllChildren()
+            Notify("Wave Delete", "All waves removed!", 2)
         end
     end)
-    
-    if not success then
-        warn("❌ Remote fire failed:", err)
-        return false
-    end
-    return true
 end
 
---// Helper Functions
-local function Disconnect(name)
-    if Connections[name] then
-        pcall(function()
-            Connections[name]:Disconnect()
-        end)
-        Connections[name] = nil
-    end
-end
+--[[ ═══════════════════════════════════════════════════════════
+                    VIP BYPASS FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
 
-local function GetCash()
-    return lplayer:GetAttribute("Cash") or 0
-end
-
-local function GetSpins()
-    return lplayer:GetAttribute("Spins") or 0
-end
-
-local function GetLuckySpins()
-    return lplayer:GetAttribute("LuckySpins") or 0
-end
-
-local function GetWinStreak()
-    local ls = lplayer:FindFirstChild("leaderstats")
-    if ls then
-        local ws = ls:FindFirstChild("Win Streak")
-        if ws then return ws.Value end
-    end
-    return 0
-end
-
-local function GetExecutions()
-    local ls = lplayer:FindFirstChild("leaderstats")
-    if ls then
-        local ex = ls:FindFirstChild("Executions")
-        if ex then return ex.Value end
-    end
-    return 0
-end
-
---// Find Codes in Game
-local function FindCodes()
-    local codes = {}
-    
-    -- Check for code redemption GUI
+-- Remove VIP Walls
+local function RemoveVIPWalls()
     pcall(function()
-        local gui = lplayer:FindFirstChild("PlayerGui")
-        if gui then
-            for _, obj in pairs(gui:GetDescendants()) do
-                if obj:IsA("TextBox") and (
-                    string.lower(obj.Name):find("code") or 
-                    string.lower(obj.PlaceholderText or ""):find("code")
-                ) then
-                    print("🎁 Found code input:", obj:GetFullName())
+        local vipWalls = Workspace:FindFirstChild("VIPWalls")
+        if vipWalls then
+            for _, wall in pairs(vipWalls:GetChildren()) do
+                if wall:IsA("BasePart") then
+                    wall:Destroy()
+                end
+            end
+            Notify("VIP Bypass", "All VIP walls removed!", 3)
+        end
+    end)
+end
+
+-- Teleport Past VIP Walls
+local function TeleportPastVIP()
+    pcall(function()
+        local vipWalls = Workspace:FindFirstChild("VIPWalls")
+        if vipWalls then
+            local furthestWall = nil
+            local furthestDist = 0
+            
+            for _, wall in pairs(vipWalls:GetChildren()) do
+                if wall:IsA("BasePart") then
+                    local dist = (wall.Position - Vector3.new(0, 0, 0)).Magnitude
+                    if dist > furthestDist then
+                        furthestDist = dist
+                        furthestWall = wall
+                    end
+                end
+            end
+            
+            if furthestWall then
+                hrp.CFrame = furthestWall.CFrame + furthestWall.CFrame.LookVector * 10 + Vector3.new(0, 5, 0)
+                Notify("VIP Bypass", "Teleported past VIP area!", 2)
+            end
+        end
+    end)
+end
+
+--[[ ═══════════════════════════════════════════════════════════
+                    ESP FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+local ESPObjects = {}
+
+local function CreateESP(obj, color, text)
+    if ESPObjects[obj] then return end
+    
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "ESP"
+    billboard.AlwaysOnTop = true
+    billboard.Size = UDim2.new(0, 100, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.Parent = obj
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.BackgroundTransparency = 0.7
+    frame.BackgroundColor3 = color
+    frame.Parent = billboard
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = frame
+    
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.TextScaled = true
+    label.Font = Enum.Font.GothamBold
+    label.Parent = frame
+    
+    ESPObjects[obj] = billboard
+end
+
+local function RemoveESP(obj)
+    if ESPObjects[obj] then
+        ESPObjects[obj]:Destroy()
+        ESPObjects[obj] = nil
+    end
+end
+
+-- Brainrot ESP
+task.spawn(function()
+    while task.wait(2) do
+        if _G.Ysl.ESP.Brainrots and _G.Ysl.Enabled then
+            pcall(function()
+                local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
+                if activeBrainrots then
+                    for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
+                        local color = Color3.fromRGB(255, 255, 255)
+                        if rarityFolder.Name == "Legendary" then
+                            color = Color3.fromRGB(255, 170, 0)
+                        elseif rarityFolder.Name == "Epic" then
+                            color = Color3.fromRGB(163, 53, 238)
+                        elseif rarityFolder.Name == "Rare" then
+                            color = Color3.fromRGB(0, 170, 255)
+                        elseif rarityFolder.Name == "Cosmic" then
+                            color = Color3.fromRGB(255, 0, 255)
+                        elseif rarityFolder.Name == "Secret" then
+                            color = Color3.fromRGB(255, 255, 0)
+                        end
+                        
+                        for _, brainrotModel in pairs(rarityFolder:GetChildren()) do
+                            if brainrotModel.Name == "RenderedBrainrot" then
+                                CreateESP(brainrotModel, color, rarityFolder.Name)
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            -- Remove all brainrot ESP
+            for obj, _ in pairs(ESPObjects) do
+                if obj.Parent and obj.Parent.Parent == Workspace:FindFirstChild("ActiveBrainrots") then
+                    RemoveESP(obj)
                 end
             end
         end
-    end)
-    
-    -- Check constants for codes
-    if Constants.Rewards then
-        print("🎁 Rewards found:", Constants.Rewards)
     end
+end)
+
+-- Lucky Block ESP
+task.spawn(function()
+    while task.wait(2) do
+        if _G.Ysl.ESP.LuckyBlocks and _G.Ysl.Enabled then
+            pcall(function()
+                local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
+                if luckyBlocks then
+                    for _, block in pairs(luckyBlocks:GetChildren()) do
+                        CreateESP(block, Color3.fromRGB(255, 215, 0), "Lucky Block")
+                    end
+                end
+            end)
+        else
+            -- Remove lucky block ESP
+            for obj, _ in pairs(ESPObjects) do
+                if obj.Parent == Workspace:FindFirstChild("ActiveLuckyBlocks") then
+                    RemoveESP(obj)
+                end
+            end
+        end
+    end
+end)
+
+-- VIP Wall ESP
+task.spawn(function()
+    while task.wait(2) do
+        if _G.Ysl.ESP.VIPWalls and _G.Ysl.Enabled then
+            pcall(function()
+                local vipWalls = Workspace:FindFirstChild("VIPWalls")
+                if vipWalls then
+                    for _, wall in pairs(vipWalls:GetChildren()) do
+                        if wall:IsA("BasePart") then
+                            CreateESP(wall, Color3.fromRGB(255, 0, 0), "VIP Wall")
+                        end
+                    end
+                end
+            end)
+        else
+            -- Remove VIP ESP
+            for obj, _ in pairs(ESPObjects) do
+                if obj.Parent == Workspace:FindFirstChild("VIPWalls") then
+                    RemoveESP(obj)
+                end
+            end
+        end
+    end
+end)
+
+-- Player ESP
+task.spawn(function()
+    while task.wait(1) do
+        if _G.Ysl.ESP.Players and _G.Ysl.Enabled then
+            pcall(function()
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player ~= lplayer and player.Character then
+                        local char = player.Character
+                        local head = char:FindFirstChild("Head")
+                        if head then
+                            CreateESP(head, Color3.fromRGB(0, 255, 0), player.Name)
+                        end
+                    end
+                end
+            end)
+        else
+            -- Remove player ESP
+            for obj, _ in pairs(ESPObjects) do
+                if obj.Parent and obj.Parent.Parent == Workspace then
+                    for _, player in pairs(Players:GetPlayers()) do
+                        if player.Character == obj.Parent then
+                            RemoveESP(obj)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    TELEPORT FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+local teleportLocations = {
+    ["Spawn"] = function()
+        local bases = Workspace:FindFirstChild("Bases")
+        if bases then
+            for _, base in pairs(bases:GetChildren()) do
+                local spawn = base:FindFirstChild("Spawn")
+                if spawn then
+                    return spawn.CFrame + Vector3.new(0, 5, 0)
+                end
+            end
+        end
+    end,
     
-    return codes
+    ["Sell Point"] = function()
+        local sellPoint = Workspace:FindFirstChild("SellPoint")
+        if sellPoint and sellPoint:FindFirstChild("Seller") then
+            return sellPoint.Seller:GetPivot() + Vector3.new(0, 5, 0)
+        end
+    end,
+    
+    ["Upgrade Shop"] = function()
+        local upgradeShop = Workspace:FindFirstChild("UpgradeShop")
+        if upgradeShop then
+            return upgradeShop:GetPivot() + Vector3.new(0, 5, 0)
+        end
+    end,
+    
+    ["Money Wheel"] = function()
+        local wheel = Workspace:FindFirstChild("MoneySpinWheel")
+        if wheel then
+            return wheel:GetPivot() + Vector3.new(0, 5, 0)
+        end
+    end,
+    
+    ["Nearest Brainrot"] = function()
+        local nearest = nil
+        local nearestDist = math.huge
+        
+        local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
+        if activeBrainrots then
+            for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
+                for _, brainrot in pairs(rarityFolder:GetDescendants()) do
+                    if brainrot.Name == "RenderedBrainrot" then
+                        local dist = (brainrot:GetPivot().Position - hrp.Position).Magnitude
+                        if dist < nearestDist then
+                            nearestDist = dist
+                            nearest = brainrot
+                        end
+                    end
+                end
+            end
+        end
+        
+        if nearest then
+            return nearest:GetPivot() + Vector3.new(0, 3, 0)
+        end
+    end,
+    
+    ["Nearest Lucky Block"] = function()
+        local nearest = nil
+        local nearestDist = math.huge
+        
+        local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
+        if luckyBlocks then
+            for _, block in pairs(luckyBlocks:GetChildren()) do
+                local dist = (block:GetPivot().Position - hrp.Position).Magnitude
+                if dist < nearestDist then
+                    nearestDist = dist
+                    nearest = block
+                end
+            end
+        end
+        
+        if nearest then
+            return nearest:GetPivot() + Vector3.new(0, 3, 0)
+        end
+    end
+}
+
+local function TeleportTo(locationName)
+    pcall(function()
+        local location = teleportLocations[locationName]
+        if location then
+            local cframe = location()
+            if cframe then
+                hrp.CFrame = cframe
+                Notify("Teleport", "Teleported to " .. locationName, 2)
+            end
+        end
+    end)
 end
 
---// CREATE RAYFIELD WINDOW
+--[[ ═══════════════════════════════════════════════════════════
+                    MISC FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+-- Claim Free Epic
+local function ClaimFreeEpic()
+    pcall(function()
+        TakeFreeEpic_RF:InvokeServer()
+        Notify("Free Epic", "Claimed free epic brainrot!", 3)
+    end)
+end
+
+-- Format Session Time
+local function FormatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local mins = math.floor((seconds % 3600) / 60)
+    local secs = seconds % 60
+    return string.format("%02d:%02d:%02d", hours, mins, secs)
+end
+
+--[[ ═══════════════════════════════════════════════════════════
+                    STATS DISPLAY
+═══════════════════════════════════════════════════════════ ]]
+
+task.spawn(function()
+    while task.wait(1) do
+        if _G.Ysl.Enabled then
+            pcall(function()
+                local sessionTime = os.time() - _G.Ysl.Stats.SessionStart
+                local timeStr = FormatTime(sessionTime)
+                
+                local money = lplayer.leaderstats and lplayer.leaderstats.Money and lplayer.leaderstats.Money.Value or "N/A"
+                local genPerSec = lplayer.leaderstats and lplayer.leaderstats["Gen/s"] and lplayer.leaderstats["Gen/s"].Value or "N/A"
+                local speed = lplayer:GetAttribute("CurrentSpeed") or "N/A"
+                local rebirth = lplayer:GetAttribute("Rebirth") or "N/A"
+                
+                -- Update would happen here if we had a stats GUI
+                -- For now, stats are tracked in _G.Ysl.Stats
+            end)
+        end
+    end
+end)
+
+--[[ ═══════════════════════════════════════════════════════════
+                    RAYFIELD UI LIBRARY
+═══════════════════════════════════════════════════════════ ]]
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
 local Window = Rayfield:CreateWindow({
-    Name = "⚡ YslMenu - Last Letter Ultimate",
-    LoadingTitle = "Analyzing Game Data...",
-    LoadingSubtitle = "by yslscripts 😈",
+    Name = "YSL Menu V114 ULTIMATE | Escape Tsunami",
+    LoadingTitle = "YSL Scripts Loading...",
+    LoadingSubtitle = "by ysl - Based on 12K line scan!",
     ConfigurationSaving = {
         Enabled = true,
-        FolderName = nil,
-        FileName = "YslMenu_LastLetter_V6"
+        FolderName = "YslMenu",
+        FileName = "EscapeTsunami"
     },
     Discord = {
         Enabled = false,
-        Invite = "noinvitelink",
+        Invite = "",
         RememberJoins = true
     },
     KeySystem = false
 })
 
---// FEATURES
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 1: AUTO FARM
+═══════════════════════════════════════════════════════════ ]]
 
---// AUTO-WIN
-local wordList = {
-    "apple", "egg", "grape", "elephant", "tree", "eagle", "echo", "orange", 
-    "exit", "turtle", "east", "test", "tiger", "robin", "net", "top", 
-    "purple", "event", "tool", "lion", "nice", "eat", "trap", "park"
-}
+local FarmTab = Window:CreateTab("🚜 Auto Farm", 4483362458)
 
-local function FindTextBox()
-    local gui = lplayer:FindFirstChild("PlayerGui")
-    if gui then
-        for _, obj in pairs(gui:GetDescendants()) do
-            if obj:IsA("TextBox") and obj.Visible then
-                local parent = obj.Parent
-                if parent and parent.Visible then
-                    -- Make sure it's not a code input
-                    if not string.lower(obj.Name):find("code") then
-                        return obj
-                    end
-                end
-            end
+local FarmSection = FarmTab:CreateSection("Farming Options")
+
+FarmTab:CreateToggle({
+    Name = "Auto Farm Brainrots",
+    CurrentValue = false,
+    Flag = "AutoFarmBrainrot",
+    Callback = function(Value)
+        _G.Ysl.AutoFarm.Brainrot = Value
+        if Value then
+            Notify("Auto Farm", "Brainrot farming enabled!", 2)
         end
-    end
-    return nil
-end
+    end,
+})
 
-local function TypeWord(box, word)
-    if not box then return end
-    pcall(function()
-        box.Text = ""
-        for i = 1, #word do
-            box.Text = word:sub(1, i)
-            task.wait(0.05)
+FarmTab:CreateToggle({
+    Name = "Auto Collect Money",
+    CurrentValue = false,
+    Flag = "AutoFarmMoney",
+    Callback = function(Value)
+        _G.Ysl.AutoFarm.Money = Value
+        if Value then
+            Notify("Auto Farm", "Money collection enabled!", 2)
         end
-        task.wait(0.1)
-        box:CaptureFocus()
-        task.wait(0.05)
-        box:ReleaseFocus()
-    end)
-end
+    end,
+})
 
-local function SetupAutoWin()
-    Tasks.AutoWin = false
-    if not _G.YSL.AutoWin then return end
-    
-    Tasks.AutoWin = true
-    task.spawn(function()
-        while Tasks.AutoWin and _G.YSL.AutoWin do
-            pcall(function()
-                local box = FindTextBox()
-                if box and _G.YSL.AutoType then
-                    local word = wordList[math.random(1, #wordList)]
-                    TypeWord(box, word)
-                end
-            end)
-            task.wait(1)
+FarmTab:CreateToggle({
+    Name = "Auto Farm Lucky Blocks",
+    CurrentValue = false,
+    Flag = "AutoFarmLucky",
+    Callback = function(Value)
+        _G.Ysl.AutoFarm.LuckyBlocks = Value
+        if Value then
+            Notify("Auto Farm", "Lucky block farming enabled!", 2)
         end
-    end)
-end
+    end,
+})
 
---// AUTO-SPIN
-local function SetupAutoSpin()
-    Tasks.Spin = false
-    if not _G.YSL.AutoSpin then return end
-    
-    Tasks.Spin = true
-    task.spawn(function()
-        while Tasks.Spin and _G.YSL.AutoSpin do
-            pcall(function()
-                -- Try different spin methods
-                if GetSpins() > 0 then
-                    FireRemote("Spin", "Styles")
-                    task.wait(2)
-                end
-                if GetLuckySpins() > 0 then
-                    FireRemote("LuckySpin")
-                    task.wait(2)
-                end
-            end)
-            task.wait(3)
+FarmTab:CreateToggle({
+    Name = "Auto Sell All",
+    CurrentValue = false,
+    Flag = "AutoSellAll",
+    Callback = function(Value)
+        _G.Ysl.AutoFarm.SellAll = Value
+        if Value then
+            Notify("Auto Sell", "Will sell every 60 seconds!", 2)
         end
-    end)
-end
+    end,
+})
 
---// SPEED HACK
-local function SetupSpeed()
-    Disconnect("Speed")
-    if not _G.YSL.Speed then
+FarmTab:CreateButton({
+    Name = "Sell All Now",
+    Callback = function()
         pcall(function()
-            local hum = GetHumanoid()
-            if hum then hum.WalkSpeed = 20 end
+            SellAll_RF:InvokeServer()
+            Notify("Sell", "Sold all brainrots!", 2)
         end)
-        return
-    end
-    
-    Connections.Speed = RunService.Heartbeat:Connect(function()
+    end,
+})
+
+local UltimateSection = FarmTab:CreateSection("Ultimate Farm")
+
+FarmTab:CreateButton({
+    Name = "⚡ EMERGENCY FARM (All Features ON)",
+    Callback = function()
+        _G.Ysl.AutoFarm.Brainrot = true
+        _G.Ysl.AutoFarm.Money = true
+        _G.Ysl.AutoFarm.LuckyBlocks = true
+        _G.Ysl.AutoFarm.SellAll = true
+        _G.Ysl.AutoUpgrade.Speed = true
+        _G.Ysl.AutoUpgrade.Base = true
+        _G.Ysl.AutoUpgrade.Brainrots = true
+        _G.Ysl.Protection.WaveImmunity = true
+        Notify("EMERGENCY", "ALL FARMING FEATURES ACTIVATED!", 5)
+    end,
+})
+
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 2: AUTO UPGRADE
+═══════════════════════════════════════════════════════════ ]]
+
+local UpgradeTab = Window:CreateTab("⬆️ Auto Upgrade", 4483362458)
+
+local UpgradeSection = UpgradeTab:CreateSection("Upgrade Options")
+
+UpgradeTab:CreateToggle({
+    Name = "Auto Upgrade Speed",
+    CurrentValue = false,
+    Flag = "AutoUpgradeSpeed",
+    Callback = function(Value)
+        _G.Ysl.AutoUpgrade.Speed = Value
+    end,
+})
+
+UpgradeTab:CreateSlider({
+    Name = "Upgrade Speed When Below",
+    Range = {16, 1000},
+    Increment = 10,
+    CurrentValue = 100,
+    Flag = "UpgradeSpeedAt",
+    Callback = function(Value)
+        _G.Ysl.UpgradeSpeedAt = Value
+    end,
+})
+
+UpgradeTab:CreateToggle({
+    Name = "Auto Upgrade Base",
+    CurrentValue = false,
+    Flag = "AutoUpgradeBase",
+    Callback = function(Value)
+        _G.Ysl.AutoUpgrade.Base = Value
+    end,
+})
+
+UpgradeTab:CreateToggle({
+    Name = "Auto Upgrade All Brainrots",
+    CurrentValue = false,
+    Flag = "AutoUpgradeBrainrots",
+    Callback = function(Value)
+        _G.Ysl.AutoUpgrade.Brainrots = Value
+    end,
+})
+
+UpgradeTab:CreateToggle({
+    Name = "Auto Upgrade Carry Capacity",
+    CurrentValue = false,
+    Flag = "AutoUpgradeCarry",
+    Callback = function(Value)
+        _G.Ysl.AutoUpgrade.Carry = Value
+    end,
+})
+
+local ManualSection = UpgradeTab:CreateSection("Manual Upgrades")
+
+UpgradeTab:CreateButton({
+    Name = "Upgrade Speed Now",
+    Callback = function()
         pcall(function()
-            local hum = GetHumanoid()
-            if hum then
-                hum.WalkSpeed = _G.YSL.SpeedValue
-            end
+            UpgradeSpeed_RF:InvokeServer()
+            Notify("Upgrade", "Speed upgraded!", 2)
         end)
-    end)
-end
+    end,
+})
 
---// NO CLIP
-local function SetupNoClip()
-    Disconnect("NoClip")
-    if not _G.YSL.NoClip then return end
-    
-    Connections.NoClip = RunService.Stepped:Connect(function()
+UpgradeTab:CreateButton({
+    Name = "Upgrade Base Now",
+    Callback = function()
         pcall(function()
-            local char = GetCharacter()
-            if char then
-                for _, p in pairs(char:GetDescendants()) do
-                    if p:IsA("BasePart") then
-                        p.CanCollide = false
-                    end
-                end
-            end
+            UpgradeBase_RF:InvokeServer()
+            Notify("Upgrade", "Base upgraded!", 2)
         end)
-    end)
-end
-
---// WIN STREAK BOOSTER
-local function SetupWinStreak()
-    Disconnect("WinStreak")
-    Tasks.WinStreak = false
-    if not _G.YSL.WinStreakBoost then return end
-    
-    Tasks.WinStreak = true
-    task.spawn(function()
-        while Tasks.WinStreak and _G.YSL.WinStreakBoost do
-            pcall(function()
-                local ls = lplayer:FindFirstChild("leaderstats")
-                if ls then
-                    local ws = ls:FindFirstChild("Win Streak")
-                    if ws and ws.Value < 100 then
-                        ws.Value = ws.Value + 1
-                    end
-                end
-            end)
-            task.wait(2)
-        end
-    end)
-end
-
---// EXECUTION BOOSTER
-local function SetupExecutions()
-    Disconnect("Exec")
-    Tasks.Exec = false
-    if not _G.YSL.ExecutionBoost then return end
-    
-    Tasks.Exec = true
-    task.spawn(function()
-        while Tasks.Exec and _G.YSL.ExecutionBoost do
-            pcall(function()
-                local ls = lplayer:FindFirstChild("leaderstats")
-                if ls then
-                    local ex = ls:FindFirstChild("Executions")
-                    if ex then
-                        ex.Value = ex.Value + 1
-                    end
-                end
-            end)
-            task.wait(3)
-        end
-    end)
-end
-
---// ESP
-local function CreateESP(player)
-    if not player.Character then return end
-    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp or hrp:FindFirstChild("YSL_ESP") then return end
-    
-    pcall(function()
-        local h = Instance.new("Highlight")
-        h.Name = "YSL_ESP"
-        h.Parent = hrp
-        h.FillColor = Color3.fromRGB(255, 0, 0)
-        h.FillTransparency = 0.5
-        h.OutlineColor = Color3.fromRGB(255, 255, 255)
-        h.OutlineTransparency = 0
-    end)
-end
-
-local function RemoveESP()
-    for _, p in pairs(Players:GetPlayers()) do
-        if p.Character then
-            for _, o in pairs(p.Character:GetDescendants()) do
-                if o.Name == "YSL_ESP" then 
-                    o:Destroy() 
-                end
-            end
-        end
-    end
-end
-
-local function SetupESP()
-    RemoveESP()
-    Tasks.ESP = false
-    if not _G.YSL.PlayerESP then return end
-    
-    Tasks.ESP = true
-    task.spawn(function()
-        while Tasks.ESP and _G.YSL.PlayerESP do
-            pcall(function()
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplayer then 
-                        CreateESP(p) 
-                    end
-                end
-            end)
-            task.wait(2)
-        end
-    end)
-end
-
---// FULL BRIGHTNESS
-local function SetupFullBright()
-    if _G.YSL.FullBright then
-        local Lighting = game:GetService("Lighting")
-        Lighting.Brightness = 2
-        Lighting.ClockTime = 14
-        Lighting.FogEnd = 100000
-        Lighting.GlobalShadows = false
-        Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
-    end
-end
-
---// UI CREATION
-
---// HOME TAB
-local HomeTab = Window:CreateTab("🏠 Home", 4483362458)
-
-HomeTab:CreateParagraph({
-    Title = "YslMenu Ultimate Edition",
-    Content = "Advanced Last Letter script with game analysis. Made by yslscripts 😈"
+    end,
 })
 
-HomeTab:CreateSection("📊 Live Stats")
-
-local CashLabel = HomeTab:CreateLabel("Cash: $0")
-local SpinsLabel = HomeTab:CreateLabel("Spins: 0")
-local LuckySpinsLabel = HomeTab:CreateLabel("Lucky Spins: 0")
-local WinStreakLabel = HomeTab:CreateLabel("Win Streak: 0")
-local ExecutionsLabel = HomeTab:CreateLabel("Executions: 0")
-
--- Update stats
-task.spawn(function()
-    while task.wait(1) do
+UpgradeTab:CreateButton({
+    Name = "Upgrade Carry Capacity Now",
+    Callback = function()
         pcall(function()
-            CashLabel:Set("Cash: $" .. GetCash())
-            SpinsLabel:Set("Spins: " .. GetSpins())
-            LuckySpinsLabel:Set("Lucky Spins: " .. GetLuckySpins())
-            WinStreakLabel:Set("Win Streak: " .. GetWinStreak())
-            ExecutionsLabel:Set("Executions: " .. GetExecutions())
+            UpgradeCarry_RF:InvokeServer()
+            Notify("Upgrade", "Carry capacity upgraded!", 2)
         end)
-    end
-end)
-
-HomeTab:CreateSection("🔥 Quick Actions")
-
-HomeTab:CreateButton({
-    Name = "⚡ Activate ALL Features",
-    Callback = function()
-        _G.YSL.AutoWin = true
-        _G.YSL.AutoType = true
-        _G.YSL.AutoSpin = true
-        _G.YSL.WinStreakBoost = true
-        _G.YSL.ExecutionBoost = true
-        _G.YSL.Speed = true
-        _G.YSL.PlayerESP = true
-        
-        SetupAutoWin()
-        SetupAutoSpin()
-        SetupWinStreak()
-        SetupExecutions()
-        SetupSpeed()
-        SetupESP()
-        
-        Rayfield:Notify({
-            Title = "🔥 All Features Active",
-            Content = "Every feature enabled!",
-            Duration = 3,
-            Image = 4483362458
-        })
-    end
+    end,
 })
 
---// MATCH TAB
-local MatchTab = Window:CreateTab("🎮 Match", 4483362458)
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 3: AUTO REBIRTH
+═══════════════════════════════════════════════════════════ ]]
 
-MatchTab:CreateSection("Auto-Win")
+local RebirthTab = Window:CreateTab("🔄 Auto Rebirth", 4483362458)
 
-MatchTab:CreateToggle({
-    Name = "🏆 Auto-Win Matches",
+local RebirthSection = RebirthTab:CreateSection("Rebirth Settings")
+
+RebirthTab:CreateToggle({
+    Name = "Auto Rebirth",
     CurrentValue = false,
-    Flag = "AutoWin",
+    Flag = "AutoRebirth",
     Callback = function(Value)
-        _G.YSL.AutoWin = Value
-        SetupAutoWin()
-    end
-})
-
-MatchTab:CreateToggle({
-    Name = "⌨️ Auto-Type Words",
-    CurrentValue = false,
-    Flag = "AutoType",
-    Callback = function(Value)
-        _G.YSL.AutoType = Value
-    end
-})
-
---// CURRENCY TAB
-local CurrencyTab = Window:CreateTab("💰 Currency", 4483362458)
-
-CurrencyTab:CreateSection("💵 Cash (Client-Side)")
-CurrencyTab:CreateParagraph({
-    Title = "⚠️ Note",
-    Content = "Cash changes are client-side only. The server validates purchases."
-})
-
-CurrencyTab:CreateButton({
-    Name = "💸 Set Cash to 999,999,999",
-    Callback = function()
-        lplayer:SetAttribute("Cash", 999999999)
-        Rayfield:Notify({
-            Title = "💸 Cash Set",
-            Content = "Set to max (visual only)",
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
-})
-
-CurrencyTab:CreateSection("🎰 Spins")
-
-CurrencyTab:CreateToggle({
-    Name = "🎰 Auto-Use Spins",
-    CurrentValue = false,
-    Flag = "AutoSpin",
-    Callback = function(Value)
-        _G.YSL.AutoSpin = Value
-        SetupAutoSpin()
-    end
-})
-
-CurrencyTab:CreateButton({
-    Name = "🎰 Try to Get Spins (Remote)",
-    Callback = function()
-        -- Try different remote methods
-        FireRemote("GetSpins", 100)
-        FireRemote("GiveSpins", 100)
-        FireRemote("AddSpins", 100)
-        FireRemote("Spin", "Buy", 100)
-        
-        Rayfield:Notify({
-            Title = "🎰 Attempted",
-            Content = "Tried multiple remote methods",
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
-})
-
-CurrencyTab:CreateButton({
-    Name = "🍀 Try to Get Lucky Spins",
-    Callback = function()
-        FireRemote("GetLuckySpins", 100)
-        FireRemote("GiveLuckySpins", 100)
-        
-        Rayfield:Notify({
-            Title = "🍀 Attempted",
-            Content = "Tried lucky spin methods",
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
-})
-
---// CODES TAB
-local CodesTab = Window:CreateTab("🎁 Codes", 4483362458)
-
-CodesTab:CreateSection("Code Redemption")
-
-CodesTab:CreateParagraph({
-    Title = "How to Use",
-    Content = "Enter codes manually in the game's code box, or try the remote methods below."
-})
-
-local CodeInput = CodesTab:CreateInput({
-    Name = "Enter Code",
-    PlaceholderText = "Code here...",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(Text)
-        -- Try to redeem via remote
-        FireRemote("RedeemCode", Text)
-        FireRemote("Code", Text)
-        FireRemote("EnterCode", Text)
-        FireRemote("UseCode", Text)
-        
-        Rayfield:Notify({
-            Title = "🎁 Code Sent",
-            Content = "Tried to redeem: " .. Text,
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
-})
-
-CodesTab:CreateSection("💡 Analysis Results")
-
--- Show found constants
-if next(Constants) ~= nil then
-    local constList = "Found: "
-    for name, _ in pairs(Constants) do
-        constList = constList .. name .. ", "
-    end
-    CodesTab:CreateParagraph({
-        Title = "Game Constants Loaded",
-        Content = constList
-    })
-else
-    CodesTab:CreateParagraph({
-        Title = "No Constants Found",
-        Content = "Could not load game constants (might be protected)"
-    })
-end
-
---// ITEMS TAB
-local ItemsTab = Window:CreateTab("🎨 Items", 4483362458)
-
-ItemsTab:CreateSection("Available Items")
-
-if next(GameItems) ~= nil then
-    ItemsTab:CreateParagraph({
-        Title = "✅ Items Loaded",
-        Content = "Game items have been analyzed!"
-    })
-    
-    -- Show categories
-    for category, items in pairs(GameItems) do
-        if type(items) == "table" then
-            ItemsTab:CreateLabel("Category: " .. tostring(category))
+        _G.Ysl.AutoRebirth.Enabled = Value
+        if Value then
+            Notify("Auto Rebirth", "Enabled! Will rebirth at speed: " .. _G.Ysl.RebirthAt, 3)
         end
-    end
-else
-    ItemsTab:CreateParagraph({
-        Title = "⚠️ Items Protected",
-        Content = "Could not load items module (game protection)"
-    })
-end
-
-ItemsTab:CreateSection("Try Unlock Items")
-
-ItemsTab:CreateButton({
-    Name = "🔓 Try Unlock All Styles",
-    Callback = function()
-        FireRemote("UnlockStyle", "All")
-        FireRemote("UnlockAll", "Styles")
-        FireRemote("Unlock", "Styles")
-        
-        Rayfield:Notify({
-            Title = "🔓 Attempted",
-            Content = "Sent unlock requests",
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
+    end,
 })
 
-ItemsTab:CreateButton({
-    Name = "🔫 Try Unlock All Guns",
-    Callback = function()
-        FireRemote("UnlockGun", "All")
-        FireRemote("UnlockAll", "Guns")
-        FireRemote("Unlock", "Guns")
-        
-        Rayfield:Notify({
-            Title = "🔫 Attempted",
-            Content = "Sent unlock requests",
-            Duration = 2,
-            Image = 4483362458
-        })
-    end
-})
-
---// STATS TAB
-local StatsTab = Window:CreateTab("📈 Stats", 4483362458)
-
-StatsTab:CreateSection("Stat Boosters")
-
-StatsTab:CreateToggle({
-    Name = "🔥 Win Streak Booster",
-    CurrentValue = false,
-    Flag = "WinStreak",
+RebirthTab:CreateSlider({
+    Name = "Rebirth at Speed",
+    Range = {100, 10000},
+    Increment = 50,
+    CurrentValue = 500,
+    Flag = "RebirthAt",
     Callback = function(Value)
-        _G.YSL.WinStreakBoost = Value
-        SetupWinStreak()
-    end
+        _G.Ysl.RebirthAt = Value
+    end,
 })
 
-StatsTab:CreateToggle({
-    Name = "💀 Execution Booster",
-    CurrentValue = false,
-    Flag = "Executions",
-    Callback = function(Value)
-        _G.YSL.ExecutionBoost = Value
-        SetupExecutions()
-    end
-})
+RebirthTab:CreateParagraph({Title = "ℹ️ Info", Content = "Auto Rebirth has a 10-second cooldown to prevent spam. It will only rebirth when your speed reaches the threshold."})
 
-StatsTab:CreateSection("Instant Changes")
-
-StatsTab:CreateButton({
-    Name = "🔥 Set Win Streak to 100",
+RebirthTab:CreateButton({
+    Name = "Rebirth Now (Manual)",
     Callback = function()
-        local ls = lplayer:FindFirstChild("leaderstats")
-        if ls then
-            local ws = ls:FindFirstChild("Win Streak")
-            if ws then
-                ws.Value = 100
-            end
-        end
-    end
+        pcall(function()
+            Rebirth_RF:InvokeServer()
+            Notify("Rebirth", "Rebirthed manually!", 2)
+        end)
+    end,
 })
 
-StatsTab:CreateButton({
-    Name = "💀 Set Executions to 1000",
-    Callback = function()
-        local ls = lplayer:FindFirstChild("leaderstats")
-        if ls then
-            local ex = ls:FindFirstChild("Executions")
-            if ex then
-                ex.Value = 1000
-            end
-        end
-    end
-})
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 4: MOVEMENT
+═══════════════════════════════════════════════════════════ ]]
 
---// MOVEMENT TAB
-local MovementTab = Window:CreateTab("🚀 Movement", 4483362458)
+local MovementTab = Window:CreateTab("🏃 Movement", 4483362458)
+
+local SpeedSection = MovementTab:CreateSection("Speed")
 
 MovementTab:CreateToggle({
-    Name = "🚀 Speed Hack",
+    Name = "Speed Boost",
     CurrentValue = false,
-    Flag = "Speed",
+    Flag = "SpeedBoost",
     Callback = function(Value)
-        _G.YSL.Speed = Value
-        SetupSpeed()
-    end
+        _G.Ysl.Movement.Speed = Value
+    end,
 })
 
 MovementTab:CreateSlider({
     Name = "Speed Value",
-    Range = {20, 500},
-    Increment = 10,
-    Suffix = " Speed",
+    Range = {16, 500},
+    Increment = 5,
     CurrentValue = 100,
     Flag = "SpeedValue",
     Callback = function(Value)
-        _G.YSL.SpeedValue = Value
-        if _G.YSL.Speed then SetupSpeed() end
-    end
+        _G.Ysl.Movement.SpeedValue = Value
+    end,
 })
 
+local FlySection = MovementTab:CreateSection("Fly")
+
 MovementTab:CreateToggle({
-    Name = "♾️ Infinite Jump",
+    Name = "Fly",
     CurrentValue = false,
-    Flag = "InfJump",
+    Flag = "Fly",
     Callback = function(Value)
-        _G.YSL.InfJump = Value
-    end
+        _G.Ysl.Movement.Fly = Value
+        if Value then
+            startFly()
+            Notify("Fly", "Enabled! Use WASD + Space/Shift", 3)
+        else
+            stopFly()
+        end
+    end,
 })
 
+MovementTab:CreateSlider({
+    Name = "Fly Speed",
+    Range = {10, 200},
+    Increment = 5,
+    CurrentValue = 50,
+    Flag = "FlySpeed",
+    Callback = function(Value)
+        _G.Ysl.Movement.FlySpeed = Value
+    end,
+})
+
+local OtherSection = MovementTab:CreateSection("Other Movement")
+
 MovementTab:CreateToggle({
-    Name = "👻 No Clip",
+    Name = "NoClip",
     CurrentValue = false,
     Flag = "NoClip",
     Callback = function(Value)
-        _G.YSL.NoClip = Value
-        SetupNoClip()
-    end
+        _G.Ysl.Movement.NoClip = Value
+    end,
 })
 
---// VISUAL TAB
-local VisualTab = Window:CreateTab("👁️ Visual", 4483362458)
+MovementTab:CreateToggle({
+    Name = "Infinite Jump",
+    CurrentValue = false,
+    Flag = "InfJump",
+    Callback = function(Value)
+        _G.Ysl.Movement.InfJump = Value
+    end,
+})
 
-VisualTab:CreateToggle({
-    Name = "👤 Player ESP",
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 5: PROTECTION
+═══════════════════════════════════════════════════════════ ]]
+
+local ProtectionTab = Window:CreateTab("🛡️ Protection", 4483362458)
+
+local ProtectionSection = ProtectionTab:CreateSection("Player Protection")
+
+ProtectionTab:CreateToggle({
+    Name = "God Mode (Instant Heal)",
+    CurrentValue = false,
+    Flag = "GodMode",
+    Callback = function(Value)
+        _G.Ysl.Protection.GodMode = Value
+    end,
+})
+
+ProtectionTab:CreateToggle({
+    Name = "Anti-Void (Teleport to Safety)",
+    CurrentValue = false,
+    Flag = "AntiVoid",
+    Callback = function(Value)
+        _G.Ysl.Protection.AntiVoid = Value
+    end,
+})
+
+ProtectionTab:CreateToggle({
+    Name = "Wave Immunity (Non-Collidable)",
+    CurrentValue = false,
+    Flag = "WaveImmunity",
+    Callback = function(Value)
+        _G.Ysl.Protection.WaveImmunity = Value
+        if Value then
+            Notify("Protection", "Wave immunity enabled!", 2)
+        end
+    end,
+})
+
+local WaveSection = ProtectionTab:CreateSection("Wave Control")
+
+ProtectionTab:CreateButton({
+    Name = "Remove All Waves (Delete)",
+    Callback = function()
+        RemoveWaves()
+    end,
+})
+
+ProtectionTab:CreateToggle({
+    Name = "Auto Remove Waves (Every 5s)",
+    CurrentValue = false,
+    Flag = "AutoRemoveWaves",
+    Callback = function(Value)
+        _G.Ysl.Protection.RemoveWaves = Value
+        task.spawn(function()
+            while task.wait(5) do
+                if _G.Ysl.Protection.RemoveWaves then
+                    RemoveWaves()
+                else
+                    break
+                end
+            end
+        end)
+    end,
+})
+
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 6: VIP & TELEPORT
+═══════════════════════════════════════════════════════════ ]]
+
+local VIPTab = Window:CreateTab("💎 VIP & Teleport", 4483362458)
+
+local VIPSection = VIPTab:CreateSection("VIP Bypass")
+
+VIPTab:CreateButton({
+    Name = "Remove All VIP Walls",
+    Callback = function()
+        RemoveVIPWalls()
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport Past VIP Area",
+    Callback = function()
+        TeleportPastVIP()
+    end,
+})
+
+VIPTab:CreateToggle({
+    Name = "Auto Remove VIP Walls",
+    CurrentValue = false,
+    Flag = "AutoRemoveVIP",
+    Callback = function(Value)
+        _G.Ysl.VIP.RemoveWalls = Value
+        task.spawn(function()
+            while task.wait(5) do
+                if _G.Ysl.VIP.RemoveWalls then
+                    RemoveVIPWalls()
+                else
+                    break
+                end
+            end
+        end)
+    end,
+})
+
+local TeleportSection = VIPTab:CreateSection("Teleport Locations")
+
+VIPTab:CreateButton({
+    Name = "Teleport to Spawn",
+    Callback = function()
+        TeleportTo("Spawn")
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport to Sell Point",
+    Callback = function()
+        TeleportTo("Sell Point")
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport to Upgrade Shop",
+    Callback = function()
+        TeleportTo("Upgrade Shop")
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport to Money Wheel",
+    Callback = function()
+        TeleportTo("Money Wheel")
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport to Nearest Brainrot",
+    Callback = function()
+        TeleportTo("Nearest Brainrot")
+    end,
+})
+
+VIPTab:CreateButton({
+    Name = "Teleport to Nearest Lucky Block",
+    Callback = function()
+        TeleportTo("Nearest Lucky Block")
+    end,
+})
+
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 7: ESP & VISUALS
+═══════════════════════════════════════════════════════════ ]]
+
+local ESPTab = Window:CreateTab("👁️ ESP & Visuals", 4483362458)
+
+local ESPSection = ESPTab:CreateSection("ESP Options")
+
+ESPTab:CreateToggle({
+    Name = "Brainrot ESP",
+    CurrentValue = false,
+    Flag = "BrainrotESP",
+    Callback = function(Value)
+        _G.Ysl.ESP.Brainrots = Value
+    end,
+})
+
+ESPTab:CreateToggle({
+    Name = "Lucky Block ESP",
+    CurrentValue = false,
+    Flag = "LuckyBlockESP",
+    Callback = function(Value)
+        _G.Ysl.ESP.LuckyBlocks = Value
+    end,
+})
+
+ESPTab:CreateToggle({
+    Name = "VIP Wall ESP",
+    CurrentValue = false,
+    Flag = "VIPWallESP",
+    Callback = function(Value)
+        _G.Ysl.ESP.VIPWalls = Value
+    end,
+})
+
+ESPTab:CreateToggle({
+    Name = "Player ESP",
     CurrentValue = false,
     Flag = "PlayerESP",
     Callback = function(Value)
-        _G.YSL.PlayerESP = Value
-        SetupESP()
-    end
+        _G.Ysl.ESP.Players = Value
+    end,
 })
 
-VisualTab:CreateButton({
-    Name = "🧹 Clear All ESP",
+--[[ ═══════════════════════════════════════════════════════════
+                    TAB 8: MISC & STATS
+═══════════════════════════════════════════════════════════ ]]
+
+local MiscTab = Window:CreateTab("⚙️ Misc & Stats", 4483362458)
+
+local StatsSection = MiscTab:CreateSection("Session Stats")
+
+MiscTab:CreateParagraph({Title = "📊 Stats Info", Content = "Your stats are being tracked in the background. Check _G.Ysl.Stats to see:\n• Brainrots Collected\n• Lucky Blocks Opened\n• Waves Blocked\n• Session Time"})
+
+local MiscSection = MiscTab:CreateSection("Miscellaneous")
+
+MiscTab:CreateButton({
+    Name = "Claim Free Epic Brainrot",
     Callback = function()
-        RemoveESP()
-    end
+        ClaimFreeEpic()
+    end,
 })
 
-VisualTab:CreateToggle({
-    Name = "☀️ Full Brightness",
-    CurrentValue = false,
-    Flag = "FullBright",
-    Callback = function(Value)
-        _G.YSL.FullBright = Value
-        SetupFullBright()
-    end
+MiscTab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, lplayer)
+    end,
 })
 
---// INFINITE JUMP
-UserInputService.JumpRequest:Connect(function()
-    if _G.YSL.InfJump then
-        local hum = GetHumanoid()
-        if hum then
-            hum:ChangeState(Enum.HumanoidStateType.Jumping)
-        end
-    end
-end)
-
---// CHARACTER RESPAWN
-lplayer.CharacterAdded:Connect(function()
-    task.wait(1)
-    if _G.YSL.Speed then SetupSpeed() end
-    if _G.YSL.NoClip then SetupNoClip() end
-end)
-
---// DONE
-Rayfield:Notify({
-    Title = "⚡ YslMenu Ultimate Loaded",
-    Content = "Game analyzed! Check all tabs for features.",
-    Duration = 5,
-    Image = 4483362458
+MiscTab:CreateButton({
+    Name = "Anti-AFK (Always Active)",
+    Callback = function()
+        Notify("Anti-AFK", "Already active! You won't be kicked.", 3)
+    end,
 })
 
-print("═══════════════════════════════════════")
-print("  YslMenu - Last Letter V6.0 ULTIMATE")
-print("═══════════════════════════════════════")
-print("✅ GAME CONSTANTS: " .. (next(Constants) and "LOADED" or "PROTECTED"))
-print("✅ ITEMS: " .. (next(GameItems) and "LOADED" or "PROTECTED"))
-print("✅ REMOTE: " .. (MainRemote and "FOUND" or "NOT FOUND"))
-print("═══════════════════════════════════════")
-print("🔥 ysl on top 😈")
-print("═══════════════════════════════════════")
+local InfoSection = MiscTab:CreateSection("Script Info")
+
+MiscTab:CreateParagraph({Title = "YSL Menu V114 ULTIMATE", Content = "Created with complete 12,000 line game scan.\n\nFeatures:\n• Smart Auto Farming\n• Advanced Protection\n• VIP Bypass\n• Custom ESP\n• Auto Upgrades\n• Smart Rebirth\n\nMade by YSL Scripts 🔥"})
+
+--[[ ═══════════════════════════════════════════════════════════
+                    INITIALIZATION
+═══════════════════════════════════════════════════════════ ]]
+
+Notify("YSL Menu V114", "Loaded Successfully! Welcome " .. lplayer.Name, 5)
+Notify("YSL Scripts", "Based on 12K line scan - All features optimized!", 4)
+
+print([[
+╔═══════════════════════════════════════════════════════════════╗
+║                  YSL MENU V114 ULTIMATE                       ║
+║                    LOADED SUCCESSFULLY                        ║
+║                                                               ║
+║  Game: Escape Tsunami For Brainrots                          ║
+║  Place ID: 131623223084840                                   ║
+║                                                               ║
+║  Features Loaded:                                            ║
+║  ✅ Auto Farm (Brainrots, Money, Lucky Blocks)              ║
+║  ✅ Auto Upgrade (Speed, Base, Brainrots, Carry)            ║
+║  ✅ Smart Auto Rebirth (10s cooldown)                       ║
+║  ✅ Movement (Speed, Fly, NoClip, InfJump)                  ║
+║  ✅ Protection (GodMode, AntiVoid, Wave Immunity)           ║
+║  ✅ VIP Bypass (Remove Walls, Teleport)                     ║
+║  ✅ ESP (Brainrots, Lucky Blocks, VIP Walls, Players)       ║
+║  ✅ Teleports (6 locations)                                 ║
+║  ✅ Stats Tracking                                          ║
+║                                                               ║
+║  Made by YSL Scripts - ysl on top! 😈                        ║
+╚═══════════════════════════════════════════════════════════════╝
+]])
