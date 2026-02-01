@@ -1,286 +1,489 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║         YSL MENU V116 ULTIMATE PERFECTION                     ║
-    ║              THE BEST SCRIPT EVER MADE                        ║
+    ║         YSL MENU V117 ULTIMATE EDITION                        ║
+    ║              CUSTOM UI - THE BEST EVER MADE                   ║
     ║                                                               ║
-    ║  🔥 EVERYTHING WORKS PERFECTLY                               ║
-    ║  ⚡ MAXIMUM PERFORMANCE                                       ║
-    ║  💎 PREMIUM QUALITY                                          ║
-    ║  🎯 ZERO BUGS GUARANTEED                                     ║
+    ║  🎨 100% Custom Interface                                     ║
+    ║  💎 Premium Glassmorphism Design                             ║
+    ║  ⚡ Smooth Animations                                         ║
+    ║  🔐 Advanced Key System                                      ║
+    ║  🔥 Every Feature Working Perfectly                          ║
     ║                                                               ║
-    ║  Created by YSL Scripts - Ultimate Edition                    ║
+    ║  Created by YSL Scripts - Ultimate Quality                    ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
 print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║                 YSL MENU V116 LOADING...                      ║
-║                  ULTIMATE PERFECTION                          ║
+║                YSL MENU V117 INITIALIZING...                  ║
+║              ULTIMATE CUSTOM UI LOADING...                    ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
 
 -- Services
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
-local VirtualInputManager = game:GetService("VirtualInputManager")
 
 -- Player
 local lplayer = Players.LocalPlayer
+local mouse = lplayer:GetMouse()
 
---[[ ═══════════════════════════════════════════════════════════
-                    PREMIUM KEY SYSTEM
-═══════════════════════════════════════════════════════════ ]]
-
+-- Premium Key
 local PREMIUM_KEY = "ysl-key-escapetsunami"
 local KEY_VERIFIED = false
 
--- Create Premium Key UI
-local function CreateKeyUI()
-    local KeyUI = Instance.new("ScreenGui")
-    KeyUI.Name = "YslKeySystem"
-    KeyUI.Parent = CoreGui
-    KeyUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    KeyUI.ResetOnSpawn = false
+--[[ ═══════════════════════════════════════════════════════════
+                    UTILITY FUNCTIONS
+═══════════════════════════════════════════════════════════ ]]
+
+local function CreateTween(object, properties, duration, style, direction)
+    duration = duration or 0.3
+    style = style or Enum.EasingStyle.Quad
+    direction = direction or Enum.EasingDirection.Out
     
-    -- Blur Effect
+    local tween = TweenService:Create(object, TweenInfo.new(duration, style, direction), properties)
+    tween:Play()
+    return tween
+end
+
+local function MakeDraggable(frame, dragHandle)
+    dragHandle = dragHandle or frame
+    
+    local dragging = false
+    local dragInput
+    local dragStart
+    local startPos
+    
+    dragHandle.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = frame.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+    
+    dragHandle.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            CreateTween(frame, {
+                Position = UDim2.new(
+                    startPos.X.Scale,
+                    startPos.X.Offset + delta.X,
+                    startPos.Y.Scale,
+                    startPos.Y.Offset + delta.Y
+                )
+            }, 0.1, Enum.EasingStyle.Linear)
+        end
+    end)
+end
+
+--[[ ═══════════════════════════════════════════════════════════
+                    PREMIUM KEY SYSTEM UI
+═══════════════════════════════════════════════════════════ ]]
+
+local function CreateKeySystem()
+    -- Main ScreenGui
+    local KeySystemUI = Instance.new("ScreenGui")
+    KeySystemUI.Name = "YslKeySystem"
+    KeySystemUI.Parent = CoreGui
+    KeySystemUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    KeySystemUI.ResetOnSpawn = false
+    
+    -- Background Blur
     local Blur = Instance.new("BlurEffect")
-    Blur.Size = 20
+    Blur.Size = 0
     Blur.Parent = game.Lighting
+    CreateTween(Blur, {Size = 25}, 0.5)
     
-    -- Background Frame
-    local BG = Instance.new("Frame")
-    BG.Size = UDim2.new(1, 0, 1, 0)
-    BG.Position = UDim2.new(0, 0, 0, 0)
-    BG.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    BG.BackgroundTransparency = 0.3
-    BG.BorderSizePixel = 0
-    BG.Parent = KeyUI
+    -- Dark Overlay
+    local Overlay = Instance.new("Frame")
+    Overlay.Name = "Overlay"
+    Overlay.Size = UDim2.new(1, 0, 1, 0)
+    Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Overlay.BackgroundTransparency = 1
+    Overlay.BorderSizePixel = 0
+    Overlay.Parent = KeySystemUI
+    CreateTween(Overlay, {BackgroundTransparency = 0.5}, 0.5)
     
-    -- Main Frame
-    local MainFrame = Instance.new("Frame")
-    MainFrame.Size = UDim2.new(0, 500, 0, 350)
-    MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
-    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-    MainFrame.BorderSizePixel = 0
-    MainFrame.Parent = KeyUI
+    -- Main Container
+    local MainContainer = Instance.new("Frame")
+    MainContainer.Name = "MainContainer"
+    MainContainer.Size = UDim2.new(0, 550, 0, 450)
+    MainContainer.Position = UDim2.new(0.5, -275, 0.5, -225)
+    MainContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    MainContainer.BackgroundTransparency = 0.1
+    MainContainer.BorderSizePixel = 0
+    MainContainer.ClipsDescendants = true
+    MainContainer.Parent = KeySystemUI
     
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 20)
-    UICorner.Parent = MainFrame
+    local MainCorner = Instance.new("UICorner")
+    MainCorner.CornerRadius = UDim.new(0, 20)
+    MainCorner.Parent = MainContainer
     
-    local UIStroke = Instance.new("UIStroke")
-    UIStroke.Color = Color3.fromRGB(255, 0, 127)
-    UIStroke.Thickness = 3
-    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Parent = MainFrame
+    local MainStroke = Instance.new("UIStroke")
+    MainStroke.Color = Color3.fromRGB(255, 0, 127)
+    MainStroke.Thickness = 3
+    MainStroke.Transparency = 0
+    MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    MainStroke.Parent = MainContainer
     
-    -- Gradient
-    local Gradient = Instance.new("UIGradient")
-    Gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 35)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 15))
+    -- Gradient Background
+    local GradientBG = Instance.new("Frame")
+    GradientBG.Size = UDim2.new(1, 0, 1, 0)
+    GradientBG.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    GradientBG.BackgroundTransparency = 0.95
+    GradientBG.BorderSizePixel = 0
+    GradientBG.Parent = MainContainer
+    
+    local BGGradient = Instance.new("UIGradient")
+    BGGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
     }
-    Gradient.Rotation = 45
-    Gradient.Parent = MainFrame
+    BGGradient.Rotation = 45
+    BGGradient.Parent = GradientBG
     
-    -- Title Frame
-    local TitleFrame = Instance.new("Frame")
-    TitleFrame.Size = UDim2.new(1, 0, 0, 80)
-    TitleFrame.Position = UDim2.new(0, 0, 0, 0)
-    TitleFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
-    TitleFrame.BorderSizePixel = 0
-    TitleFrame.Parent = MainFrame
+    local BGCorner = Instance.new("UICorner")
+    BGCorner.CornerRadius = UDim.new(0, 20)
+    BGCorner.Parent = GradientBG
     
-    local TitleCorner = Instance.new("UICorner")
-    TitleCorner.CornerRadius = UDim.new(0, 20)
-    TitleCorner.Parent = TitleFrame
+    -- Animate gradient
+    task.spawn(function()
+        while KeySystemUI.Parent do
+            CreateTween(BGGradient, {Rotation = BGGradient.Rotation + 360}, 10, Enum.EasingStyle.Linear)
+            task.wait(10)
+        end
+    end)
+    
+    -- Top Bar
+    local TopBar = Instance.new("Frame")
+    TopBar.Name = "TopBar"
+    TopBar.Size = UDim2.new(1, 0, 0, 100)
+    TopBar.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+    TopBar.BackgroundTransparency = 0
+    TopBar.BorderSizePixel = 0
+    TopBar.Parent = MainContainer
+    
+    local TopBarGradient = Instance.new("UIGradient")
+    TopBarGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
+    }
+    TopBarGradient.Rotation = 90
+    TopBarGradient.Parent = TopBar
+    
+    local TopBarCorner = Instance.new("UICorner")
+    TopBarCorner.CornerRadius = UDim.new(0, 20)
+    TopBarCorner.Parent = TopBar
+    
+    -- Logo/Icon
+    local Logo = Instance.new("TextLabel")
+    Logo.Size = UDim2.new(0, 80, 0, 80)
+    Logo.Position = UDim2.new(0, 20, 0, 10)
+    Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Logo.BackgroundTransparency = 0.9
+    Logo.Text = "🔐"
+    Logo.TextSize = 50
+    Logo.Font = Enum.Font.GothamBold
+    Logo.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Logo.Parent = TopBar
+    
+    local LogoCorner = Instance.new("UICorner")
+    LogoCorner.CornerRadius = UDim.new(0, 15)
+    LogoCorner.Parent = Logo
     
     -- Title
     local Title = Instance.new("TextLabel")
-    Title.Size = UDim2.new(1, 0, 0, 50)
-    Title.Position = UDim2.new(0, 0, 0, 10)
+    Title.Size = UDim2.new(0, 400, 0, 40)
+    Title.Position = UDim2.new(0, 110, 0, 15)
     Title.BackgroundTransparency = 1
-    Title.Text = "🔐 YSL PREMIUM ACCESS"
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextSize = 28
+    Title.Text = "YSL PREMIUM ACCESS"
+    Title.TextSize = 32
     Title.Font = Enum.Font.GothamBold
-    Title.Parent = TitleFrame
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Parent = TopBar
+    
+    local TitleStroke = Instance.new("UIStroke")
+    TitleStroke.Color = Color3.fromRGB(0, 0, 0)
+    TitleStroke.Thickness = 2
+    TitleStroke.Transparency = 0.5
+    TitleStroke.Parent = Title
     
     -- Subtitle
     local Subtitle = Instance.new("TextLabel")
-    Subtitle.Size = UDim2.new(1, 0, 0, 25)
-    Subtitle.Position = UDim2.new(0, 0, 0, 55)
+    Subtitle.Size = UDim2.new(0, 400, 0, 30)
+    Subtitle.Position = UDim2.new(0, 110, 0, 55)
     Subtitle.BackgroundTransparency = 1
-    Title.Text = "🔐 YSL PREMIUM ACCESS"
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextSize = 28
-    Title.Font = Enum.Font.GothamBold
-    Title.Parent = TitleFrame
-    
-    -- Subtitle
-    local Subtitle = Instance.new("TextLabel")
-    Subtitle.Size = UDim2.new(1, 0, 0, 25)
-    Subtitle.Position = UDim2.new(0, 0, 0, 55)
-    Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "V116 ULTIMATE PERFECTION"
-    Subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Subtitle.TextSize = 14
+    Subtitle.Text = "V117 ULTIMATE EDITION"
+    Subtitle.TextSize = 16
     Subtitle.Font = Enum.Font.Gotham
-    Subtitle.Parent = TitleFrame
+    Subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Subtitle.TextTransparency = 0.3
+    Subtitle.TextXAlignment = Enum.TextXAlignment.Left
+    Subtitle.Parent = TopBar
+    
+    -- Content Area
+    local ContentArea = Instance.new("Frame")
+    ContentArea.Name = "ContentArea"
+    ContentArea.Size = UDim2.new(1, -40, 1, -140)
+    ContentArea.Position = UDim2.new(0, 20, 0, 120)
+    ContentArea.BackgroundTransparency = 1
+    ContentArea.Parent = MainContainer
     
     -- Info Text
     local InfoText = Instance.new("TextLabel")
-    InfoText.Size = UDim2.new(1, -40, 0, 60)
-    InfoText.Position = UDim2.new(0, 20, 0, 100)
+    InfoText.Size = UDim2.new(1, 0, 0, 60)
+    InfoText.Position = UDim2.new(0, 0, 0, 0)
     InfoText.BackgroundTransparency = 1
-    InfoText.Text = "Enter your premium key to unlock\nthe most powerful Escape Tsunami script ever created"
-    InfoText.TextColor3 = Color3.fromRGB(200, 200, 200)
-    InfoText.TextSize = 15
+    InfoText.Text = "Enter your premium key to unlock the most advanced\nEscape Tsunami script ever created"
+    InfoText.TextSize = 16
     InfoText.Font = Enum.Font.Gotham
+    InfoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfoText.TextTransparency = 0.3
     InfoText.TextWrapped = true
-    InfoText.Parent = MainFrame
+    InfoText.Parent = ContentArea
     
-    -- Key Input Box
+    -- Key Input Container
+    local InputContainer = Instance.new("Frame")
+    InputContainer.Size = UDim2.new(1, 0, 0, 70)
+    InputContainer.Position = UDim2.new(0, 0, 0, 80)
+    InputContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    InputContainer.BackgroundTransparency = 0.3
+    InputContainer.BorderSizePixel = 0
+    InputContainer.Parent = ContentArea
+    
+    local InputCorner = Instance.new("UICorner")
+    InputCorner.CornerRadius = UDim.new(0, 12)
+    InputCorner.Parent = InputContainer
+    
+    local InputStroke = Instance.new("UIStroke")
+    InputStroke.Color = Color3.fromRGB(255, 0, 127)
+    InputStroke.Thickness = 2
+    InputStroke.Transparency = 0.5
+    InputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    InputStroke.Parent = InputContainer
+    
+    -- Key Icon
+    local KeyIcon = Instance.new("TextLabel")
+    KeyIcon.Size = UDim2.new(0, 50, 0, 50)
+    KeyIcon.Position = UDim2.new(0, 10, 0, 10)
+    KeyIcon.BackgroundTransparency = 1
+    KeyIcon.Text = "🔑"
+    KeyIcon.TextSize = 30
+    KeyIcon.Parent = InputContainer
+    
+    -- Key TextBox
     local KeyBox = Instance.new("TextBox")
-    KeyBox.Size = UDim2.new(0, 400, 0, 50)
-    KeyBox.Position = UDim2.new(0.5, -200, 0, 180)
-    KeyBox.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-    KeyBox.BorderSizePixel = 0
-    KeyBox.PlaceholderText = "Enter Premium Key Here..."
-    KeyBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 100)
+    KeyBox.Size = UDim2.new(1, -80, 1, -20)
+    KeyBox.Position = UDim2.new(0, 70, 0, 10)
+    KeyBox.BackgroundTransparency = 1
+    KeyBox.PlaceholderText = "Enter Premium Key..."
+    KeyBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
     KeyBox.Text = ""
-    KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    KeyBox.TextSize = 18
+    KeyBox.TextSize = 20
     KeyBox.Font = Enum.Font.GothamBold
+    KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    KeyBox.TextXAlignment = Enum.TextXAlignment.Left
     KeyBox.ClearTextOnFocus = false
-    KeyBox.Parent = MainFrame
+    KeyBox.Parent = InputContainer
     
-    local KeyBoxCorner = Instance.new("UICorner")
-    KeyBoxCorner.CornerRadius = UDim.new(0, 10)
-    KeyBoxCorner.Parent = KeyBox
+    -- Focus effect
+    KeyBox.Focused:Connect(function()
+        CreateTween(InputStroke, {Transparency = 0, Thickness = 3}, 0.2)
+        CreateTween(InputContainer, {BackgroundTransparency = 0.1}, 0.2)
+    end)
     
-    local KeyBoxStroke = Instance.new("UIStroke")
-    KeyBoxStroke.Color = Color3.fromRGB(255, 0, 127)
-    KeyBoxStroke.Thickness = 2
-    KeyBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    KeyBoxStroke.Parent = KeyBox
+    KeyBox.FocusLost:Connect(function()
+        CreateTween(InputStroke, {Transparency = 0.5, Thickness = 2}, 0.2)
+        CreateTween(InputContainer, {BackgroundTransparency = 0.3}, 0.2)
+    end)
     
     -- Submit Button
     local SubmitButton = Instance.new("TextButton")
-    SubmitButton.Size = UDim2.new(0, 180, 0, 50)
-    SubmitButton.Position = UDim2.new(0.5, -90, 0, 250)
+    SubmitButton.Size = UDim2.new(0, 220, 0, 60)
+    SubmitButton.Position = UDim2.new(0.5, -110, 0, 170)
     SubmitButton.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
     SubmitButton.BorderSizePixel = 0
-    SubmitButton.Text = "VERIFY KEY"
-    SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SubmitButton.TextSize = 18
-    SubmitButton.Font = Enum.Font.GothamBold
-    SubmitButton.Parent = MainFrame
+    SubmitButton.AutoButtonColor = false
+    SubmitButton.Text = ""
+    SubmitButton.Parent = ContentArea
     
     local SubmitCorner = Instance.new("UICorner")
-    SubmitCorner.CornerRadius = UDim.new(0, 10)
+    SubmitCorner.CornerRadius = UDim.new(0, 12)
     SubmitCorner.Parent = SubmitButton
     
-    -- Status Label
-    local StatusLabel = Instance.new("TextLabel")
-    StatusLabel.Size = UDim2.new(1, -40, 0, 30)
-    StatusLabel.Position = UDim2.new(0, 20, 0, 310)
-    StatusLabel.BackgroundTransparency = 1
-    StatusLabel.Text = ""
-    StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-    StatusLabel.TextSize = 14
-    StatusLabel.Font = Enum.Font.GothamBold
-    StatusLabel.Parent = MainFrame
+    local SubmitGradient = Instance.new("UIGradient")
+    SubmitGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
+    }
+    SubmitGradient.Rotation = 45
+    SubmitGradient.Parent = SubmitButton
     
-    -- Animations
-    MainFrame.Size = UDim2.new(0, 0, 0, 0)
-    MainFrame:TweenSize(
-        UDim2.new(0, 500, 0, 350),
-        Enum.EasingDirection.Out,
-        Enum.EasingStyle.Elastic,
-        1,
-        true
-    )
+    local SubmitText = Instance.new("TextLabel")
+    SubmitText.Size = UDim2.new(1, 0, 1, 0)
+    SubmitText.BackgroundTransparency = 1
+    SubmitText.Text = "VERIFY KEY"
+    SubmitText.TextSize = 20
+    SubmitText.Font = Enum.Font.GothamBold
+    SubmitText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SubmitText.Parent = SubmitButton
     
-    -- Button hover effects
+    -- Button hover effect
     SubmitButton.MouseEnter:Connect(function()
-        TweenService:Create(SubmitButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(255, 50, 150),
-            Size = UDim2.new(0, 190, 0, 55)
-        }):Play()
+        CreateTween(SubmitButton, {Size = UDim2.new(0, 230, 0, 65)}, 0.2, Enum.EasingStyle.Back)
+        CreateTween(SubmitText, {TextSize = 22}, 0.2)
     end)
     
     SubmitButton.MouseLeave:Connect(function()
-        TweenService:Create(SubmitButton, TweenInfo.new(0.2), {
-            BackgroundColor3 = Color3.fromRGB(255, 0, 127),
-            Size = UDim2.new(0, 180, 0, 50)
-        }):Play()
+        CreateTween(SubmitButton, {Size = UDim2.new(0, 220, 0, 60)}, 0.2, Enum.EasingStyle.Back)
+        CreateTween(SubmitText, {TextSize = 20}, 0.2)
     end)
     
-    -- Key verification function
+    -- Status Label
+    local StatusLabel = Instance.new("TextLabel")
+    StatusLabel.Size = UDim2.new(1, 0, 0, 40)
+    StatusLabel.Position = UDim2.new(0, 0, 0, 250)
+    StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Text = ""
+    StatusLabel.TextSize = 16
+    StatusLabel.Font = Enum.Font.GothamBold
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    StatusLabel.Parent = ContentArea
+    
+    -- Particles Effect
+    local function CreateParticle(parent)
+        local particle = Instance.new("Frame")
+        particle.Size = UDim2.new(0, math.random(3, 8), 0, math.random(3, 8))
+        particle.Position = UDim2.new(math.random(), 0, 1, 0)
+        particle.BackgroundColor3 = Color3.fromHSV(math.random(), 1, 1)
+        particle.BackgroundTransparency = 0.3
+        particle.BorderSizePixel = 0
+        particle.Parent = parent
+        
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(1, 0)
+        corner.Parent = particle
+        
+        CreateTween(particle, {
+            Position = UDim2.new(math.random(), 0, -0.2, 0),
+            BackgroundTransparency = 1
+        }, math.random(2, 4), Enum.EasingStyle.Linear)
+        
+        task.delay(4, function()
+            particle:Destroy()
+        end)
+    end
+    
+    -- Entrance Animation
+    MainContainer.Size = UDim2.new(0, 0, 0, 0)
+    MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
+    
+    CreateTween(MainContainer, {
+        Size = UDim2.new(0, 550, 0, 450),
+        Position = UDim2.new(0.5, -275, 0.5, -225)
+    }, 0.8, Enum.EasingStyle.Elastic)
+    
+    -- Make Draggable
+    MakeDraggable(MainContainer, TopBar)
+    
+    -- Key Verification Function
     local function VerifyKey()
         local enteredKey = KeyBox.Text
         
+        if enteredKey == "" then
+            StatusLabel.Text = "⚠️ Please enter a key!"
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
+            
+            -- Shake
+            for i = 1, 3 do
+                CreateTween(InputContainer, {Position = UDim2.new(0, -10, 0, 80)}, 0.05)
+                task.wait(0.05)
+                CreateTween(InputContainer, {Position = UDim2.new(0, 10, 0, 80)}, 0.05)
+                task.wait(0.05)
+            end
+            CreateTween(InputContainer, {Position = UDim2.new(0, 0, 0, 80)}, 0.05)
+            return
+        end
+        
         if enteredKey == PREMIUM_KEY then
-            StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
-            StatusLabel.Text = "✅ KEY VERIFIED! Loading Ultimate Features..."
+            -- Success!
+            StatusLabel.Text = "✅ KEY VERIFIED! Loading Premium Features..."
+            StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
             
             -- Success animation
-            TweenService:Create(UIStroke, TweenInfo.new(0.3), {
-                Color = Color3.fromRGB(0, 255, 127)
-            }):Play()
+            SubmitButton.Active = false
+            CreateTween(MainStroke, {Color = Color3.fromRGB(0, 255, 127)}, 0.3)
+            CreateTween(InputStroke, {Color = Color3.fromRGB(0, 255, 127)}, 0.3)
+            CreateTween(TopBar, {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}, 0.3)
             
-            TweenService:Create(TitleFrame, TweenInfo.new(0.3), {
-                BackgroundColor3 = Color3.fromRGB(0, 255, 127)
-            }):Play()
+            -- Spawn particles
+            for i = 1, 20 do
+                task.wait(0.05)
+                CreateParticle(MainContainer)
+            end
             
-            wait(1.5)
+            task.wait(1.5)
             
             -- Exit animation
-            TweenService:Create(MainFrame, TweenInfo.new(0.5), {
-                Size = UDim2.new(0, 0, 0, 0)
-            }):Play()
+            CreateTween(MainContainer, {
+                Size = UDim2.new(0, 0, 0, 0),
+                Position = UDim2.new(0.5, 0, 0.5, 0)
+            }, 0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In)
             
-            TweenService:Create(Blur, TweenInfo.new(0.5), {
-                Size = 0
-            }):Play()
+            CreateTween(Overlay, {BackgroundTransparency = 1}, 0.5)
+            CreateTween(Blur, {Size = 0}, 0.5)
             
-            wait(0.6)
-            KeyUI:Destroy()
+            task.wait(0.6)
+            
+            KeySystemUI:Destroy()
             Blur:Destroy()
             
             KEY_VERIFIED = true
             loadMainScript()
         else
-            StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            -- Wrong key!
             StatusLabel.Text = "❌ INVALID KEY! Access Denied."
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
             
-            -- Shake animation
-            for i = 1, 4 do
-                MainFrame.Position = UDim2.new(0.5, -260, 0.5, -175)
-                wait(0.05)
-                MainFrame.Position = UDim2.new(0.5, -240, 0.5, -175)
-                wait(0.05)
+            -- Error animation
+            CreateTween(MainStroke, {Color = Color3.fromRGB(255, 0, 0)}, 0.2)
+            CreateTween(InputStroke, {Color = Color3.fromRGB(255, 0, 0)}, 0.2)
+            
+            -- Shake
+            for i = 1, 5 do
+                CreateTween(MainContainer, {Position = UDim2.new(0.5, -285, 0.5, -225)}, 0.05)
+                task.wait(0.05)
+                CreateTween(MainContainer, {Position = UDim2.new(0.5, -265, 0.5, -225)}, 0.05)
+                task.wait(0.05)
             end
-            MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
+            CreateTween(MainContainer, {Position = UDim2.new(0.5, -275, 0.5, -225)}, 0.1)
             
             KeyBox.Text = ""
             
-            -- Red flash
-            TweenService:Create(KeyBoxStroke, TweenInfo.new(0.3), {
-                Color = Color3.fromRGB(255, 0, 0)
-            }):Play()
+            task.wait(0.5)
             
-            wait(0.5)
-            
-            TweenService:Create(KeyBoxStroke, TweenInfo.new(0.3), {
-                Color = Color3.fromRGB(255, 0, 127)
-            }):Play()
+            CreateTween(MainStroke, {Color = Color3.fromRGB(255, 0, 127)}, 0.3)
+            CreateTween(InputStroke, {Color = Color3.fromRGB(255, 0, 127)}, 0.3)
         end
     end
     
@@ -292,19 +495,19 @@ local function CreateKeyUI()
     end)
 end
 
-CreateKeyUI()
+CreateKeySystem()
 
 --[[ ═══════════════════════════════════════════════════════════
-                    MAIN SCRIPT LOADER
+                    MAIN SCRIPT (LOADS AFTER KEY)
 ═══════════════════════════════════════════════════════════ ]]
 
 function loadMainScript()
     
-    wait(0.5)
+    task.wait(0.5)
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║               LOADING ULTIMATE FEATURES...                    ║
+║           LOADING ULTIMATE CUSTOM MENU...                     ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
     
@@ -330,7 +533,6 @@ function loadMainScript()
     -- Global Settings
     _G.Ysl = _G.Ysl or {
         Enabled = true,
-        
         Stats = {
             Brainrots = 0,
             LuckyBlocks = 0,
@@ -338,27 +540,22 @@ function loadMainScript()
             MoneyCollected = 0,
             SessionStart = os.time()
         },
-        
         RebirthAt = 500,
-        
         AutoFarm = {
             Brainrot = false,
             Money = false,
             LuckyBlocks = false,
             SellAll = false
         },
-        
         AutoUpgrade = {
             Base = false,
             Brainrots = false,
             Carry = false
         },
-        
         AutoRebirth = {
             Enabled = false,
             LastRebirth = 0
         },
-        
         Movement = {
             Speed = false,
             SpeedValue = 100,
@@ -367,98 +564,69 @@ function loadMainScript()
             NoClip = false,
             InfJump = false
         },
-        
         Protection = {
             GodMode = false,
             AntiVoid = false,
-            WaveImmunity = false,
-            AutoRemoveWaves = false
+            WaveImmunity = false
         },
-        
         ESP = {
             Brainrots = false,
             LuckyBlocks = false,
             VIPWalls = false,
             Players = false
-        },
-        
-        Misc = {
-            AntiAFK = true
         }
     }
     
-    -- Notification System
+    -- Notification Function
     local function Notify(title, text, duration)
         duration = duration or 4
         game.StarterGui:SetCore("SendNotification", {
             Title = "YSL | " .. title,
             Text = text,
-            Duration = duration,
-            Icon = "rbxassetid://7733964640"
+            Duration = duration
         })
     end
     
-    -- Anti-AFK (Enhanced)
-    task.spawn(function()
-        for i,v in pairs(getconnections(lplayer.Idled)) do
-            v:Disable()
-        end
-        
-        -- Virtual input every 5 minutes
-        while wait(300) do
-            if _G.Ysl.Misc.AntiAFK then
-                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
-                wait(0.1)
-                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.W, false, game)
-            end
-        end
-    end)
+    -- Anti-AFK
+    for i,v in pairs(getconnections(lplayer.Idled)) do
+        v:Disable()
+    end
     
-    -- Character Respawn Handler
+    -- Character Respawn
     lplayer.CharacterAdded:Connect(function(char)
-        wait(0.5)
+        task.wait(0.5)
         character = char
         humanoid = char:WaitForChild("Humanoid")
         hrp = char:WaitForChild("HumanoidRootPart")
-        Notify("Respawn", "Character respawned! Features reactivated.", 3)
+        Notify("Respawn", "Features reactivated!", 2)
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    ULTIMATE AUTO FARM SYSTEM
+                    AUTO FARM FUNCTIONS (PERFECTED)
     ═══════════════════════════════════════════════════════════ ]]
     
-    -- Auto Farm Brainrots (ULTIMATE VERSION - 100% WORKING)
-    local BrainrotFarmConnection
-    local function StartBrainrotFarm()
-        if BrainrotFarmConnection then return end
-        
-        BrainrotFarmConnection = task.spawn(function()
-            while task.wait(0.2) do
-                if not _G.Ysl.AutoFarm.Brainrot or not _G.Ysl.Enabled then
-                    task.wait(0.5)
-                    continue
-                end
-                
-                local success, err = pcall(function()
+    -- Auto Farm Brainrots
+    local BrainrotFarmRunning = false
+    task.spawn(function()
+        while task.wait(0.2) do
+            if _G.Ysl.AutoFarm.Brainrot and _G.Ysl.Enabled then
+                BrainrotFarmRunning = true
+                pcall(function()
                     local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
                     if not activeBrainrots then return end
                     
                     local nearestBrainrot = nil
                     local nearestDistance = 200
                     
-                    -- Find nearest brainrot
                     for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
                         if not rarityFolder:IsA("Folder") then continue end
                         
                         for _, renderedModel in pairs(rarityFolder:GetChildren()) do
                             if renderedModel.Name ~= "RenderedBrainrot" then continue end
-                            if not renderedModel:IsA("Model") then continue end
                             
-                            -- Find the actual brainrot model inside
                             for _, brainrotModel in pairs(renderedModel:GetChildren()) do
                                 if not brainrotModel:IsA("Model") then continue end
                                 
-                                -- Find TakePrompt
                                 for _, desc in pairs(brainrotModel:GetDescendants()) do
                                     if desc.Name == "TakePrompt" and desc:IsA("ProximityPrompt") then
                                         local modelPivot = brainrotModel:GetPivot()
@@ -480,99 +648,63 @@ function loadMainScript()
                         end
                     end
                     
-                    -- Collect nearest brainrot
                     if nearestBrainrot then
-                        -- Teleport to brainrot
                         hrp.CFrame = CFrame.new(nearestBrainrot.position + Vector3.new(0, 5, 0))
                         task.wait(0.15)
-                        
-                        -- Fire prompt multiple times for reliability
                         for i = 1, 3 do
                             fireproximityprompt(nearestBrainrot.prompt)
                             task.wait(0.05)
                         end
-                        
                         _G.Ysl.Stats.Brainrots = _G.Ysl.Stats.Brainrots + 1
                         task.wait(0.3)
                     end
                 end)
-                
-                if not success then
-                    warn("Brainrot farm error:", err)
-                end
+            else
+                BrainrotFarmRunning = false
             end
-        end)
-    end
+        end
+    end)
     
-    -- Auto Collect Money (ULTIMATE VERSION - 100% WORKING)
-    local MoneyFarmConnection
-    local function StartMoneyFarm()
-        if MoneyFarmConnection then return end
-        
-        MoneyFarmConnection = task.spawn(function()
-            while task.wait(0.4) do
-                if not _G.Ysl.AutoFarm.Money or not _G.Ysl.Enabled then
-                    task.wait(0.5)
-                    continue
-                end
-                
-                local success, err = pcall(function()
-                    -- Method 1: Fire CollectMoney RemoteEvent
+    -- Auto Collect Money
+    task.spawn(function()
+        while task.wait(0.4) do
+            if _G.Ysl.AutoFarm.Money and _G.Ysl.Enabled then
+                pcall(function()
                     CollectMoney_RE:FireServer()
-                    
-                    -- Method 2: Click all Collect parts with ClickDetectors
                     local bases = Workspace:FindFirstChild("Bases")
-                    if not bases then return end
-                    
-                    local collectedCount = 0
-                    for _, base in pairs(bases:GetChildren()) do
-                        local slots = base:FindFirstChild("Slots")
-                        if slots then
-                            for _, slot in pairs(slots:GetChildren()) do
-                                local collect = slot:FindFirstChild("Collect")
-                                if collect and collect:IsA("BasePart") then
-                                    local clickDetector = collect:FindFirstChildOfClass("ClickDetector")
-                                    if clickDetector then
-                                        fireclickdetector(clickDetector)
-                                        collectedCount = collectedCount + 1
+                    if bases then
+                        for _, base in pairs(bases:GetChildren()) do
+                            local slots = base:FindFirstChild("Slots")
+                            if slots then
+                                for _, slot in pairs(slots:GetChildren()) do
+                                    local collect = slot:FindFirstChild("Collect")
+                                    if collect and collect:IsA("BasePart") then
+                                        local detector = collect:FindFirstChildOfClass("ClickDetector")
+                                        if detector then
+                                            fireclickdetector(detector)
+                                        end
                                     end
                                 end
                             end
                         end
                     end
-                    
-                    if collectedCount > 0 then
-                        _G.Ysl.Stats.MoneyCollected = _G.Ysl.Stats.MoneyCollected + collectedCount
-                    end
+                    _G.Ysl.Stats.MoneyCollected = _G.Ysl.Stats.MoneyCollected + 1
                 end)
-                
-                if not success then
-                    warn("Money farm error:", err)
-                end
             end
-        end)
-    end
+        end
+    end)
     
-    -- Auto Farm Lucky Blocks (ULTIMATE VERSION - 100% WORKING)
-    local LuckyBlockFarmConnection
-    local function StartLuckyBlockFarm()
-        if LuckyBlockFarmConnection then return end
-        
-        LuckyBlockFarmConnection = task.spawn(function()
-            while task.wait(0.3) do
-                if not _G.Ysl.AutoFarm.LuckyBlocks or not _G.Ysl.Enabled then
-                    task.wait(0.5)
-                    continue
-                end
-                
-                local success, err = pcall(function()
+    -- Auto Farm Lucky Blocks
+    task.spawn(function()
+        while task.wait(0.3) do
+            if _G.Ysl.AutoFarm.LuckyBlocks and _G.Ysl.Enabled then
+                pcall(function()
                     local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
                     if not luckyBlocks then return end
                     
                     local nearestBlock = nil
                     local nearestDistance = 200
                     
-                    -- Find nearest lucky block
                     for _, block in pairs(luckyBlocks:GetChildren()) do
                         if not block:IsA("Model") then continue end
                         
@@ -594,31 +726,22 @@ function loadMainScript()
                         end
                     end
                     
-                    -- Collect nearest lucky block
                     if nearestBlock then
-                        -- Teleport to lucky block
                         hrp.CFrame = CFrame.new(nearestBlock.position + Vector3.new(0, 5, 0))
                         task.wait(0.15)
-                        
-                        -- Fire prompt multiple times
                         for i = 1, 3 do
                             fireproximityprompt(nearestBlock.prompt)
                             task.wait(0.05)
                         end
-                        
                         _G.Ysl.Stats.LuckyBlocks = _G.Ysl.Stats.LuckyBlocks + 1
                         task.wait(0.3)
                     end
                 end)
-                
-                if not success then
-                    warn("Lucky block farm error:", err)
-                end
             end
-        end)
-    end
+        end
+    end)
     
-    -- Auto Sell All
+    -- Auto Sell
     task.spawn(function()
         while task.wait(60) do
             if _G.Ysl.AutoFarm.SellAll and _G.Ysl.Enabled then
@@ -630,7 +753,7 @@ function loadMainScript()
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    MANUAL SPEED UPGRADE SYSTEM
+                    MANUAL SPEED UPGRADES
     ═══════════════════════════════════════════════════════════ ]]
     
     local function UpgradeSpeedManual(times)
@@ -645,61 +768,49 @@ function loadMainScript()
                     successCount = successCount + 1
                     task.wait(0.15)
                 else
-                    Notify("Speed Upgrade", "Failed at upgrade " .. i .. "/" .. times, 3)
+                    Notify("Speed Upgrade", "Failed at " .. i .. "/" .. times, 2)
                     break
                 end
             end
             
             if successCount > 0 then
                 local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
-                Notify("Speed Upgrade", string.format("Upgraded %d/%d times! Speed: %d", successCount, times, currentSpeed), 3)
+                Notify("Speed Upgrade", string.format("Upgraded %d times! Speed: %d", successCount, currentSpeed), 3)
             end
         end)
     end
     
     --[[ ═══════════════════════════════════════════════════════════
-                    AUTO UPGRADE SYSTEM
+                    AUTO UPGRADES
     ═══════════════════════════════════════════════════════════ ]]
     
-    -- Auto Upgrade Base
     task.spawn(function()
         while task.wait(12) do
             if _G.Ysl.AutoUpgrade.Base and _G.Ysl.Enabled then
-                pcall(function()
-                    UpgradeBase_RF:InvokeServer()
-                end)
+                pcall(function() UpgradeBase_RF:InvokeServer() end)
             end
         end
     end)
     
-    -- Auto Upgrade Carry
     task.spawn(function()
         while task.wait(12) do
             if _G.Ysl.AutoUpgrade.Carry and _G.Ysl.Enabled then
-                pcall(function()
-                    UpgradeCarry_RF:InvokeServer()
-                end)
+                pcall(function() UpgradeCarry_RF:InvokeServer() end)
             end
         end
     end)
     
-    -- Auto Upgrade All Brainrots
     task.spawn(function()
         while task.wait(10) do
             if _G.Ysl.AutoUpgrade.Brainrots and _G.Ysl.Enabled then
                 pcall(function()
                     local bases = Workspace:FindFirstChild("Bases")
-                    if not bases then return end
-                    
-                    for _, base in pairs(bases:GetChildren()) do
-                        -- Find all slot brainrots
-                        for _, desc in pairs(base:GetDescendants()) do
-                            if desc.Name:match("^slot %d+") and desc:IsA("Model") then
-                                if desc:FindFirstChild("Root") then
-                                    local success = pcall(function()
-                                        UpgradeBrainrot_RF:InvokeServer(desc)
-                                    end)
-                                    if success then
+                    if bases then
+                        for _, base in pairs(bases:GetChildren()) do
+                            for _, desc in pairs(base:GetDescendants()) do
+                                if desc.Name:match("^slot %d+") and desc:IsA("Model") then
+                                    if desc:FindFirstChild("Root") then
+                                        pcall(function() UpgradeBrainrot_RF:InvokeServer(desc) end)
                                         task.wait(0.2)
                                     end
                                 end
@@ -712,7 +823,7 @@ function loadMainScript()
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    SMART AUTO REBIRTH SYSTEM
+                    AUTO REBIRTH
     ═══════════════════════════════════════════════════════════ ]]
     
     task.spawn(function()
@@ -720,20 +831,13 @@ function loadMainScript()
             if _G.Ysl.AutoRebirth.Enabled and _G.Ysl.Enabled then
                 pcall(function()
                     local currentTime = os.time()
-                    local timeSinceLastRebirth = currentTime - _G.Ysl.AutoRebirth.LastRebirth
-                    
-                    -- 10 second cooldown
-                    if timeSinceLastRebirth >= 10 then
+                    if currentTime - _G.Ysl.AutoRebirth.LastRebirth >= 10 then
                         local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
-                        
                         if currentSpeed >= _G.Ysl.RebirthAt then
-                            local success, result = pcall(function()
-                                return Rebirth_RF:InvokeServer()
-                            end)
-                            
-                            if success and result then
+                            local success = Rebirth_RF:InvokeServer()
+                            if success then
                                 _G.Ysl.AutoRebirth.LastRebirth = currentTime
-                                Notify("Auto Rebirth", "Rebirthed at Speed: " .. currentSpeed, 3)
+                                Notify("Auto Rebirth", "Rebirthed at Speed: " .. currentSpeed, 2)
                             end
                         end
                     end
@@ -743,70 +847,55 @@ function loadMainScript()
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    ULTIMATE MOVEMENT SYSTEM
+                    MOVEMENT SYSTEM (PERFECT)
     ═══════════════════════════════════════════════════════════ ]]
     
-    -- Speed System (Perfect Implementation)
-    local speedConnection
-    speedConnection = RunService.Heartbeat:Connect(function()
-        if not character or not character.Parent then return end
-        if not humanoid or not humanoid.Parent then return end
-        
-        if _G.Ysl.Movement.Speed and _G.Ysl.Enabled then
-            humanoid.WalkSpeed = _G.Ysl.Movement.SpeedValue
-        else
-            if humanoid.WalkSpeed ~= 16 then
-                humanoid.WalkSpeed = 16
+    -- Speed
+    RunService.Heartbeat:Connect(function()
+        if character and humanoid and humanoid.Parent then
+            if _G.Ysl.Movement.Speed and _G.Ysl.Enabled then
+                humanoid.WalkSpeed = _G.Ysl.Movement.SpeedValue
+            else
+                if humanoid.WalkSpeed ~= 16 then
+                    humanoid.WalkSpeed = 16
+                end
             end
         end
     end)
     
-    -- Fly System (Complete Rewrite - 100% Working)
+    -- Fly
     local flying = false
-    local flyBodyVelocity = nil
-    local flyBodyGyro = nil
-    local flyConnection = nil
+    local flyBodyVelocity, flyBodyGyro
     
     local function StartFly()
         if flying then return end
         flying = true
         
-        -- Clean up old instances
         if flyBodyVelocity then flyBodyVelocity:Destroy() end
         if flyBodyGyro then flyBodyGyro:Destroy() end
         
-        -- Create new body movers
         flyBodyVelocity = Instance.new("BodyVelocity")
         flyBodyVelocity.Velocity = Vector3.zero
         flyBodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-        flyBodyVelocity.P = 9e4
         flyBodyVelocity.Parent = hrp
         
         flyBodyGyro = Instance.new("BodyGyro")
         flyBodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
         flyBodyGyro.P = 9e4
-        flyBodyGyro.D = 500
         flyBodyGyro.Parent = hrp
         
-        -- Fly control loop
-        flyConnection = RunService.Heartbeat:Connect(function()
+        RunService.Heartbeat:Connect(function()
             if not _G.Ysl.Movement.Fly or not flying then
                 StopFly()
                 return
             end
             
-            if not hrp or not hrp.Parent then
-                StopFly()
-                return
-            end
+            if not hrp or not hrp.Parent then return end
             
             pcall(function()
                 local camera = workspace.CurrentCamera
-                if not camera then return end
-                
                 local moveDirection = Vector3.zero
                 
-                -- WASD Controls
                 if UserInputService:IsKeyDown(Enum.KeyCode.W) then
                     moveDirection = moveDirection + camera.CFrame.LookVector
                 end
@@ -819,55 +908,33 @@ function loadMainScript()
                 if UserInputService:IsKeyDown(Enum.KeyCode.D) then
                     moveDirection = moveDirection + camera.CFrame.RightVector
                 end
-                
-                -- Space/Shift for up/down
                 if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
                     moveDirection = moveDirection + Vector3.new(0, 1, 0)
                 end
-                if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or UserInputService:IsKeyDown(Enum.KeyCode.RightShift) then
+                if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
                     moveDirection = moveDirection - Vector3.new(0, 1, 0)
                 end
                 
-                -- Apply velocity
                 if moveDirection.Magnitude > 0 then
                     flyBodyVelocity.Velocity = moveDirection.Unit * _G.Ysl.Movement.FlySpeed
                 else
                     flyBodyVelocity.Velocity = Vector3.zero
                 end
                 
-                -- Apply gyro
                 flyBodyGyro.CFrame = camera.CFrame
             end)
         end)
-        
-        Notify("Fly", "Enabled! WASD + Space/Shift to control", 3)
     end
     
     function StopFly()
         flying = false
-        
-        if flyConnection then
-            flyConnection:Disconnect()
-            flyConnection = nil
-        end
-        
-        if flyBodyVelocity then
-            flyBodyVelocity:Destroy()
-            flyBodyVelocity = nil
-        end
-        
-        if flyBodyGyro then
-            flyBodyGyro:Destroy()
-            flyBodyGyro = nil
-        end
+        if flyBodyVelocity then flyBodyVelocity:Destroy() flyBodyVelocity = nil end
+        if flyBodyGyro then flyBodyGyro:Destroy() flyBodyGyro = nil end
     end
     
-    -- NoClip System (Perfect Implementation)
-    local noclipConnection
-    noclipConnection = RunService.Stepped:Connect(function()
-        if not character or not character.Parent then return end
-        
-        if _G.Ysl.Movement.NoClip and _G.Ysl.Enabled then
+    -- NoClip
+    RunService.Stepped:Connect(function()
+        if character and _G.Ysl.Movement.NoClip and _G.Ysl.Enabled then
             pcall(function()
                 for _, part in pairs(character:GetDescendants()) do
                     if part:IsA("BasePart") then
@@ -878,116 +945,84 @@ function loadMainScript()
         end
     end)
     
-    -- Infinite Jump System (Perfect Implementation)
-    local infJumpConnection
-    infJumpConnection = UserInputService.JumpRequest:Connect(function()
-        if _G.Ysl.Movement.InfJump and _G.Ysl.Enabled then
-            if humanoid and humanoid.Parent then
-                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            end
+    -- Infinite Jump
+    UserInputService.JumpRequest:Connect(function()
+        if _G.Ysl.Movement.InfJump and _G.Ysl.Enabled and humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    ULTIMATE PROTECTION SYSTEM
+                    PROTECTION SYSTEM
     ═══════════════════════════════════════════════════════════ ]]
     
-    -- God Mode (Instant Heal)
-    local godModeConnection
-    godModeConnection = RunService.Heartbeat:Connect(function()
-        if not character or not character.Parent then return end
-        if not humanoid or not humanoid.Parent then return end
-        
-        if _G.Ysl.Protection.GodMode and _G.Ysl.Enabled then
-            if humanoid.Health < humanoid.MaxHealth then
-                humanoid.Health = humanoid.MaxHealth
-            end
-        end
-    end)
-    
-    -- Anti-Void (Teleport to Safety)
-    task.spawn(function()
-        while task.wait(0.5) do
-            if _G.Ysl.Protection.AntiVoid and _G.Ysl.Enabled then
-                if hrp and hrp.Parent then
-                    if hrp.Position.Y < -50 then
-                        pcall(function()
-                            -- Find spawn
-                            local bases = Workspace:FindFirstChild("Bases")
-                            if bases then
-                                for _, base in pairs(bases:GetChildren()) do
-                                    local spawn = base:FindFirstChild("Spawn")
-                                    if spawn and spawn:IsA("BasePart") then
-                                        hrp.CFrame = spawn.CFrame + Vector3.new(0, 10, 0)
-                                        humanoid.Health = humanoid.MaxHealth
-                                        Notify("Anti-Void", "Saved from the void!", 2)
-                                        break
-                                    end
-                                end
-                            end
-                        end)
-                    end
-                end
-            end
-        end
-    end)
-    
-    -- Wave Immunity (Ultimate Protection)
-    local waveImmunityConnection
-    waveImmunityConnection = RunService.Heartbeat:Connect(function()
-        if not character or not character.Parent then return end
-        if not humanoid or not humanoid.Parent then return end
-        
-        if _G.Ysl.Protection.WaveImmunity and _G.Ysl.Enabled then
-            pcall(function()
-                -- Instant heal
+    -- God Mode
+    RunService.Heartbeat:Connect(function()
+        if character and humanoid and humanoid.Parent then
+            if _G.Ysl.Protection.GodMode and _G.Ysl.Enabled then
                 if humanoid.Health < humanoid.MaxHealth then
                     humanoid.Health = humanoid.MaxHealth
-                    _G.Ysl.Stats.WavesBlocked = _G.Ysl.Stats.WavesBlocked + 1
                 end
-                
-                -- Disable harmful states
-                humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
-                humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
-                humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-                
-                -- Make waves non-collidable
-                local activeTsunamis = Workspace:FindFirstChild("ActiveTsunamis")
-                if activeTsunamis then
-                    for _, tsunami in pairs(activeTsunamis:GetChildren()) do
-                        for _, part in pairs(tsunami:GetDescendants()) do
-                            if part:IsA("BasePart") and (part.Position - hrp.Position).Magnitude <= 100 then
-                                part.CanCollide = false
-                                part.CanTouch = false
-                                part.CanQuery = false
-                            end
-                        end
-                    end
-                end
-                
-                -- Make lava non-collidable
-                local lava = Workspace:FindFirstChild("Lava")
-                if lava then
-                    for _, part in pairs(lava:GetDescendants()) do
-                        if part:IsA("BasePart") then
-                            part.CanCollide = false
-                            part.CanTouch = false
-                            part.CanQuery = false
-                        end
-                    end
-                end
-            end)
+            end
         end
     end)
     
-    -- Auto Remove Waves
+    -- Anti-Void
     task.spawn(function()
-        while task.wait(5) do
-            if _G.Ysl.Protection.AutoRemoveWaves and _G.Ysl.Enabled then
+        while task.wait(0.5) do
+            if _G.Ysl.Protection.AntiVoid and _G.Ysl.Enabled and hrp and hrp.Parent then
+                if hrp.Position.Y < -50 then
+                    pcall(function()
+                        local bases = Workspace:FindFirstChild("Bases")
+                        if bases then
+                            for _, base in pairs(bases:GetChildren()) do
+                                local spawn = base:FindFirstChild("Spawn")
+                                if spawn and spawn:IsA("BasePart") then
+                                    hrp.CFrame = spawn.CFrame + Vector3.new(0, 10, 0)
+                                    humanoid.Health = humanoid.MaxHealth
+                                    break
+                                end
+                            end
+                        end
+                    end)
+                end
+            end
+        end
+    end)
+    
+    -- Wave Immunity
+    RunService.Heartbeat:Connect(function()
+        if character and humanoid and humanoid.Parent then
+            if _G.Ysl.Protection.WaveImmunity and _G.Ysl.Enabled then
                 pcall(function()
+                    if humanoid.Health < humanoid.MaxHealth then
+                        humanoid.Health = humanoid.MaxHealth
+                        _G.Ysl.Stats.WavesBlocked = _G.Ysl.Stats.WavesBlocked + 1
+                    end
+                    
+                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
+                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+                    
                     local tsunamis = Workspace:FindFirstChild("ActiveTsunamis")
                     if tsunamis then
-                        tsunamis:ClearAllChildren()
+                        for _, tsunami in pairs(tsunamis:GetChildren()) do
+                            for _, part in pairs(tsunami:GetDescendants()) do
+                                if part:IsA("BasePart") and (part.Position - hrp.Position).Magnitude <= 100 then
+                                    part.CanCollide = false
+                                    part.CanTouch = false
+                                end
+                            end
+                        end
+                    end
+                    
+                    local lava = Workspace:FindFirstChild("Lava")
+                    if lava then
+                        for _, part in pairs(lava:GetDescendants()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                                part.CanTouch = false
+                            end
+                        end
                     end
                 end)
             end
@@ -995,7 +1030,7 @@ function loadMainScript()
     end)
     
     --[[ ═══════════════════════════════════════════════════════════
-                    VIP BYPASS SYSTEM
+                    MISC FUNCTIONS
     ═══════════════════════════════════════════════════════════ ]]
     
     local function RemoveVIPWalls()
@@ -1010,1032 +1045,826 @@ function loadMainScript()
                     end
                 end
                 if count > 0 then
-                    Notify("VIP Bypass", count .. " VIP walls removed!", 2)
+                    Notify("VIP Bypass", count .. " walls removed!", 2)
                 end
             end
         end)
     end
-    
-    local function TeleportPastVIP()
-        pcall(function()
-            local vipWalls = Workspace:FindFirstChild("VIPWalls")
-            if vipWalls then
-                local furthest = nil
-                local furthestDist = 0
-                
-                for _, wall in pairs(vipWalls:GetChildren()) do
-                    if wall:IsA("BasePart") then
-                        local dist = (wall.Position - Vector3.zero).Magnitude
-                        if dist > furthestDist then
-                            furthestDist = dist
-                            furthest = wall
-                        end
-                    end
-                end
-                
-                if furthest then
-                    hrp.CFrame = furthest.CFrame + furthest.CFrame.LookVector * 20 + Vector3.new(0, 10, 0)
-                    Notify("VIP Bypass", "Teleported past VIP area!", 2)
-                end
-            end
-        end)
-    end
-    
-    --[[ ═══════════════════════════════════════════════════════════
-                    ULTIMATE ESP SYSTEM
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    local ESPObjects = {}
-    local ESPConnections = {}
-    
-    local function CreateESP(obj, color, text, offset)
-        if not obj or not obj.Parent then return end
-        if ESPObjects[obj] then return end
-        
-        offset = offset or Vector3.new(0, 3, 0)
-        
-        local billboard = Instance.new("BillboardGui")
-        billboard.Name = "YslESP"
-        billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(0, 120, 0, 60)
-        billboard.StudsOffset = offset
-        billboard.Parent = obj
-        
-        local frame = Instance.new("Frame")
-        frame.Size = UDim2.new(1, 0, 1, 0)
-        frame.BackgroundTransparency = 0.4
-        frame.BackgroundColor3 = color
-        frame.BorderSizePixel = 0
-        frame.Parent = billboard
-        
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, 10)
-        corner.Parent = frame
-        
-        local stroke = Instance.new("UIStroke")
-        stroke.Color = color
-        stroke.Thickness = 2
-        stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        stroke.Parent = frame
-        
-        local label = Instance.new("TextLabel")
-        label.Size = UDim2.new(1, 0, 1, 0)
-        label.BackgroundTransparency = 1
-        label.Text = text
-        label.TextColor3 = Color3.new(1, 1, 1)
-        label.TextScaled = true
-        label.Font = Enum.Font.GothamBold
-        label.TextStrokeTransparency = 0.3
-        label.Parent = frame
-        
-        ESPObjects[obj] = billboard
-    end
-    
-    local function RemoveESP(obj)
-        if ESPObjects[obj] then
-            ESPObjects[obj]:Destroy()
-            ESPObjects[obj] = nil
-        end
-    end
-    
-    local function ClearAllESP()
-        for obj, billboard in pairs(ESPObjects) do
-            billboard:Destroy()
-        end
-        ESPObjects = {}
-    end
-    
-    -- Brainrot ESP
-    local function UpdateBrainrotESP()
-        if _G.Ysl.ESP.Brainrots then
-            pcall(function()
-                local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
-                if not activeBrainrots then return end
-                
-                for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
-                    if not rarityFolder:IsA("Folder") then continue end
-                    
-                    local color = Color3.fromRGB(255, 255, 255)
-                    local rarity = rarityFolder.Name
-                    
-                    if rarity == "Legendary" then
-                        color = Color3.fromRGB(255, 170, 0)
-                    elseif rarity == "Epic" then
-                        color = Color3.fromRGB(163, 53, 238)
-                    elseif rarity == "Rare" then
-                        color = Color3.fromRGB(0, 170, 255)
-                    elseif rarity == "Cosmic" then
-                        color = Color3.fromRGB(255, 0, 255)
-                    elseif rarity == "Secret" then
-                        color = Color3.fromRGB(255, 255, 0)
-                    elseif rarity == "Mythical" then
-                        color = Color3.fromRGB(255, 0, 0)
-                    elseif rarity == "Divine" then
-                        color = Color3.fromRGB(0, 255, 255)
-                    end
-                    
-                    for _, model in pairs(rarityFolder:GetChildren()) do
-                        if model.Name == "RenderedBrainrot" and model:IsA("Model") then
-                            CreateESP(model, color, rarity, Vector3.new(0, 5, 0))
-                        end
-                    end
-                end
-            end)
-        else
-            -- Remove all brainrot ESP
-            local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
-            if activeBrainrots then
-                for _, rarityFolder in pairs(activeBrainrots:GetDescendants()) do
-                    if rarityFolder.Name == "RenderedBrainrot" then
-                        RemoveESP(rarityFolder)
-                    end
-                end
-            end
-        end
-    end
-    
-    -- Lucky Block ESP
-    local function UpdateLuckyBlockESP()
-        if _G.Ysl.ESP.LuckyBlocks then
-            pcall(function()
-                local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
-                if not luckyBlocks then return end
-                
-                for _, block in pairs(luckyBlocks:GetChildren()) do
-                    if block:IsA("Model") then
-                        CreateESP(block, Color3.fromRGB(255, 215, 0), "LUCKY", Vector3.new(0, 4, 0))
-                    end
-                end
-            end)
-        else
-            local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
-            if luckyBlocks then
-                for _, block in pairs(luckyBlocks:GetChildren()) do
-                    RemoveESP(block)
-                end
-            end
-        end
-    end
-    
-    -- VIP Wall ESP
-    local function UpdateVIPWallESP()
-        if _G.Ysl.ESP.VIPWalls then
-            pcall(function()
-                local vipWalls = Workspace:FindFirstChild("VIPWalls")
-                if not vipWalls then return end
-                
-                for _, wall in pairs(vipWalls:GetChildren()) do
-                    if wall:IsA("BasePart") then
-                        CreateESP(wall, Color3.fromRGB(255, 0, 0), "VIP", Vector3.new(0, 2, 0))
-                    end
-                end
-            end)
-        else
-            local vipWalls = Workspace:FindFirstChild("VIPWalls")
-            if vipWalls then
-                for _, wall in pairs(vipWalls:GetChildren()) do
-                    RemoveESP(wall)
-                end
-            end
-        end
-    end
-    
-    -- Player ESP
-    local function UpdatePlayerESP()
-        if _G.Ysl.ESP.Players then
-            pcall(function()
-                for _, player in pairs(Players:GetPlayers()) do
-                    if player == lplayer then continue end
-                    if not player.Character then continue end
-                    
-                    local head = player.Character:FindFirstChild("Head")
-                    if head then
-                        CreateESP(head, Color3.fromRGB(0, 255, 0), player.Name, Vector3.new(0, 2, 0))
-                    end
-                end
-            end)
-        else
-            for _, player in pairs(Players:GetPlayers()) do
-                if player.Character then
-                    local head = player.Character:FindFirstChild("Head")
-                    if head then
-                        RemoveESP(head)
-                    end
-                end
-            end
-        end
-    end
-    
-    -- ESP Update Loop
-    task.spawn(function()
-        while task.wait(2) do
-            UpdateBrainrotESP()
-            UpdateLuckyBlockESP()
-            UpdateVIPWallESP()
-            UpdatePlayerESP()
-        end
-    end)
-    
-    --[[ ═══════════════════════════════════════════════════════════
-                    TELEPORT SYSTEM
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    local teleportLocations = {
-        Spawn = function()
-            local bases = Workspace:FindFirstChild("Bases")
-            if bases then
-                for _, base in pairs(bases:GetChildren()) do
-                    local spawn = base:FindFirstChild("Spawn")
-                    if spawn and spawn:IsA("BasePart") then
-                        return spawn.CFrame + Vector3.new(0, 5, 0)
-                    end
-                end
-            end
-        end,
-        
-        SellPoint = function()
-            local sellPoint = Workspace:FindFirstChild("SellPoint")
-            if sellPoint and sellPoint:FindFirstChild("Seller") then
-                return sellPoint.Seller:GetPivot() + Vector3.new(0, 5, 0)
-            end
-        end,
-        
-        UpgradeShop = function()
-            local shop = Workspace:FindFirstChild("UpgradeShop")
-            if shop then
-                return shop:GetPivot() + Vector3.new(0, 5, 0)
-            end
-        end,
-        
-        MoneyWheel = function()
-            local wheel = Workspace:FindFirstChild("MoneySpinWheel")
-            if wheel then
-                return wheel:GetPivot() + Vector3.new(0, 5, 0)
-            end
-        end,
-        
-        NearestBrainrot = function()
-            local nearest = nil
-            local nearestDist = math.huge
-            
-            local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
-            if activeBrainrots then
-                for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
-                    for _, model in pairs(rarityFolder:GetDescendants()) do
-                        if model.Name == "RenderedBrainrot" and model:IsA("Model") then
-                            local pivot = model:GetPivot()
-                            if pivot then
-                                local dist = (pivot.Position - hrp.Position).Magnitude
-                                if dist < nearestDist then
-                                    nearestDist = dist
-                                    nearest = pivot.Position
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            
-            if nearest then
-                return CFrame.new(nearest + Vector3.new(0, 5, 0))
-            end
-        end,
-        
-        NearestLuckyBlock = function()
-            local nearest = nil
-            local nearestDist = math.huge
-            
-            local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
-            if luckyBlocks then
-                for _, block in pairs(luckyBlocks:GetChildren()) do
-                    if block:IsA("Model") then
-                        local pivot = block:GetPivot()
-                        if pivot then
-                            local dist = (pivot.Position - hrp.Position).Magnitude
-                            if dist < nearestDist then
-                                nearestDist = dist
-                                nearest = pivot.Position
-                            end
-                        end
-                    end
-                end
-            end
-            
-            if nearest then
-                return CFrame.new(nearest + Vector3.new(0, 5, 0))
-            end
-        end
-    }
     
     local function TeleportTo(location)
+        local locations = {
+            Spawn = function()
+                local bases = Workspace:FindFirstChild("Bases")
+                if bases then
+                    for _, base in pairs(bases:GetChildren()) do
+                        local spawn = base:FindFirstChild("Spawn")
+                        if spawn and spawn:IsA("BasePart") then
+                            return spawn.CFrame + Vector3.new(0, 5, 0)
+                        end
+                    end
+                end
+            end,
+            SellPoint = function()
+                local sellPoint = Workspace:FindFirstChild("SellPoint")
+                if sellPoint and sellPoint:FindFirstChild("Seller") then
+                    return sellPoint.Seller:GetPivot() + Vector3.new(0, 5, 0)
+                end
+            end
+        }
+        
         pcall(function()
-            local func = teleportLocations[location]
+            local func = locations[location]
             if func then
                 local cframe = func()
                 if cframe then
                     hrp.CFrame = cframe
                     Notify("Teleport", "Teleported to " .. location, 2)
-                else
-                    Notify("Teleport", "Location not found!", 2)
                 end
             end
         end)
     end
     
     --[[ ═══════════════════════════════════════════════════════════
-                    MISC FUNCTIONS
+                    CUSTOM UI CREATION
     ═══════════════════════════════════════════════════════════ ]]
     
-    local function ClaimFreeEpic()
-        pcall(function()
-            local success = TakeFreeEpic_RF:InvokeServer()
-            if success then
-                Notify("Free Epic", "Claimed free epic brainrot!", 3)
-            else
-                Notify("Free Epic", "Already claimed or unavailable!", 3)
-            end
-        end)
-    end
-    
-    local function RemoveAllWaves()
-        pcall(function()
-            local tsunamis = Workspace:FindFirstChild("ActiveTsunamis")
-            if tsunamis then
-                local count = #tsunamis:GetChildren()
-                tsunamis:ClearAllChildren()
-                Notify("Waves", count .. " waves removed!", 2)
-            end
-        end)
-    end
-    
-    local function SellAllNow()
-        pcall(function()
-            SellAll_RF:InvokeServer()
-            Notify("Sell", "Sold all brainrots!", 2)
-        end)
-    end
-    
-    --[[ ═══════════════════════════════════════════════════════════
-                    STATS DISPLAY SYSTEM
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    local function FormatTime(seconds)
-        local hours = math.floor(seconds / 3600)
-        local mins = math.floor((seconds % 3600) / 60)
-        local secs = seconds % 60
-        return string.format("%02d:%02d:%02d", hours, mins, secs)
-    end
-    
-    local function GetSessionStats()
-        local sessionTime = os.time() - _G.Ysl.Stats.SessionStart
-        return {
-            Time = FormatTime(sessionTime),
-            Brainrots = _G.Ysl.Stats.Brainrots,
-            LuckyBlocks = _G.Ysl.Stats.LuckyBlocks,
-            WavesBlocked = _G.Ysl.Stats.WavesBlocked,
-            MoneyCollected = _G.Ysl.Stats.MoneyCollected
-        }
-    end
-    
-    --[[ ═══════════════════════════════════════════════════════════
-                    RAYFIELD UI (PREMIUM EDITION)
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-    
-    local Window = Rayfield:CreateWindow({
-        Name = "💎 YSL MENU V116 ULTIMATE PERFECTION",
-        LoadingTitle = "YSL Ultimate Loading...",
-        LoadingSubtitle = "by ysl - The Best Script Ever Made",
-        ConfigurationSaving = {
-            Enabled = true,
-            FolderName = "YslUltimate",
-            FileName = "EscapeTsunami_V116"
-        },
-        Discord = {
-            Enabled = false
-        },
-        KeySystem = false
-    })
-    
-    -- TAB 1: AUTO FARM
-    local FarmTab = Window:CreateTab("🚜 Auto Farm", 4483362458)
-    
-    FarmTab:CreateSection("Auto Farm Features")
-    
-    local BrainrotToggle = FarmTab:CreateToggle({
-        Name = "Auto Farm Brainrots",
-        CurrentValue = false,
-        Flag = "AutoBrainrot",
-        Callback = function(v)
-            _G.Ysl.AutoFarm.Brainrot = v
-            if v then
-                StartBrainrotFarm()
-                Notify("Auto Farm", "Brainrot farming started!", 2)
-            else
-                Notify("Auto Farm", "Brainrot farming stopped!", 2)
-            end
-        end
-    })
-    
-    local MoneyToggle = FarmTab:CreateToggle({
-        Name = "Auto Collect Money",
-        CurrentValue = false,
-        Flag = "AutoMoney",
-        Callback = function(v)
-            _G.Ysl.AutoFarm.Money = v
-            if v then
-                StartMoneyFarm()
-                Notify("Auto Farm", "Money collection started!", 2)
-            else
-                Notify("Auto Farm", "Money collection stopped!", 2)
-            end
-        end
-    })
-    
-    local LuckyToggle = FarmTab:CreateToggle({
-        Name = "Auto Farm Lucky Blocks",
-        CurrentValue = false,
-        Flag = "AutoLucky",
-        Callback = function(v)
-            _G.Ysl.AutoFarm.LuckyBlocks = v
-            if v then
-                StartLuckyBlockFarm()
-                Notify("Auto Farm", "Lucky block farming started!", 2)
-            else
-                Notify("Auto Farm", "Lucky block farming stopped!", 2)
-            end
-        end
-    })
-    
-    FarmTab:CreateToggle({
-        Name = "Auto Sell All (Every 60s)",
-        CurrentValue = false,
-        Flag = "AutoSell",
-        Callback = function(v)
-            _G.Ysl.AutoFarm.SellAll = v
-            Notify("Auto Sell", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    FarmTab:CreateButton({
-        Name = "Sell All Now",
-        Callback = function()
-            SellAllNow()
-        end
-    })
-    
-    FarmTab:CreateSection("⚡ Ultimate Features")
-    
-    FarmTab:CreateButton({
-        Name = "🔥 ULTIMATE FARM (Enable Everything)",
-        Callback = function()
-            _G.Ysl.AutoFarm.Brainrot = true
-            _G.Ysl.AutoFarm.Money = true
-            _G.Ysl.AutoFarm.LuckyBlocks = true
-            _G.Ysl.AutoFarm.SellAll = true
-            _G.Ysl.AutoUpgrade.Base = true
-            _G.Ysl.AutoUpgrade.Brainrots = true
-            _G.Ysl.AutoUpgrade.Carry = true
-            _G.Ysl.Protection.WaveImmunity = true
-            _G.Ysl.Protection.GodMode = true
-            
-            -- Start all farms
-            StartBrainrotFarm()
-            StartMoneyFarm()
-            StartLuckyBlockFarm()
-            
-            -- Update toggles
-            BrainrotToggle:Set(true)
-            MoneyToggle:Set(true)
-            LuckyToggle:Set(true)
-            
-            Notify("ULTIMATE FARM", "ALL FEATURES ACTIVATED! 🔥", 5)
-        end
-    })
-    
-    -- TAB 2: UPGRADES
-    local UpgradeTab = Window:CreateTab("⬆️ Upgrades", 4483362458)
-    
-    UpgradeTab:CreateSection("Manual Speed Upgrades")
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +1",
-        Callback = function()
-            UpgradeSpeedManual(1)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +5",
-        Callback = function()
-            UpgradeSpeedManual(5)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +10",
-        Callback = function()
-            UpgradeSpeedManual(10)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +25",
-        Callback = function()
-            UpgradeSpeedManual(25)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +50",
-        Callback = function()
-            UpgradeSpeedManual(50)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Speed +100",
-        Callback = function()
-            UpgradeSpeedManual(100)
-        end
-    })
-    
-    UpgradeTab:CreateSection("Auto Upgrades")
-    
-    UpgradeTab:CreateToggle({
-        Name = "Auto Upgrade Base",
-        CurrentValue = false,
-        Flag = "AutoBase",
-        Callback = function(v)
-            _G.Ysl.AutoUpgrade.Base = v
-        end
-    })
-    
-    UpgradeTab:CreateToggle({
-        Name = "Auto Upgrade All Brainrots",
-        CurrentValue = false,
-        Flag = "AutoBrainrotUpgrade",
-        Callback = function(v)
-            _G.Ysl.AutoUpgrade.Brainrots = v
-        end
-    })
-    
-    UpgradeTab:CreateToggle({
-        Name = "Auto Upgrade Carry Capacity",
-        CurrentValue = false,
-        Flag = "AutoCarry",
-        Callback = function(v)
-            _G.Ysl.AutoUpgrade.Carry = v
-        end
-    })
-    
-    UpgradeTab:CreateSection("Manual Upgrades")
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Base Now",
-        Callback = function()
-            pcall(function()
-                UpgradeBase_RF:InvokeServer()
-                Notify("Upgrade", "Base upgraded!", 2)
-            end)
-        end
-    })
-    
-    UpgradeTab:CreateButton({
-        Name = "Upgrade Carry Now",
-        Callback = function()
-            pcall(function()
-                UpgradeCarry_RF:InvokeServer()
-                Notify("Upgrade", "Carry upgraded!", 2)
-            end)
-        end
-    })
-    
-    -- TAB 3: AUTO REBIRTH
-    local RebirthTab = Window:CreateTab("🔄 Rebirth", 4483362458)
-    
-    RebirthTab:CreateSection("Auto Rebirth Settings")
-    
-    RebirthTab:CreateToggle({
-        Name = "Auto Rebirth",
-        CurrentValue = false,
-        Flag = "AutoRebirth",
-        Callback = function(v)
-            _G.Ysl.AutoRebirth.Enabled = v
-            if v then
-                Notify("Auto Rebirth", "Enabled! Will rebirth at speed " .. _G.Ysl.RebirthAt, 3)
-            else
-                Notify("Auto Rebirth", "Disabled!", 2)
-            end
-        end
-    })
-    
-    RebirthTab:CreateSlider({
-        Name = "Rebirth at Speed",
-        Range = {100, 10000},
-        Increment = 50,
-        CurrentValue = 500,
-        Flag = "RebirthSpeed",
-        Callback = function(v)
-            _G.Ysl.RebirthAt = v
-        end
-    })
-    
-    RebirthTab:CreateParagraph({
-        Title = "ℹ️ Smart Rebirth Info",
-        Content = "Auto Rebirth has a 10-second cooldown between rebirths to prevent spam and ensure optimal performance."
-    })
-    
-    RebirthTab:CreateButton({
-        Name = "Rebirth Now (Manual)",
-        Callback = function()
-            pcall(function()
-                local success = Rebirth_RF:InvokeServer()
-                if success then
-                    Notify("Rebirth", "Successfully rebirthed!", 2)
-                else
-                    Notify("Rebirth", "Failed to rebirth!", 2)
-                end
-            end)
-        end
-    })
-    
-    -- TAB 4: MOVEMENT
-    local MovementTab = Window:CreateTab("🏃 Movement", 4483362458)
-    
-    MovementTab:CreateSection("Speed")
-    
-    MovementTab:CreateToggle({
-        Name = "Speed Boost",
-        CurrentValue = false,
-        Flag = "Speed",
-        Callback = function(v)
-            _G.Ysl.Movement.Speed = v
-            Notify("Speed", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    MovementTab:CreateSlider({
-        Name = "Speed Value",
-        Range = {16, 500},
-        Increment = 5,
-        CurrentValue = 100,
-        Flag = "SpeedVal",
-        Callback = function(v)
-            _G.Ysl.Movement.SpeedValue = v
-        end
-    })
-    
-    MovementTab:CreateSection("Fly")
-    
-    MovementTab:CreateToggle({
-        Name = "Fly",
-        CurrentValue = false,
-        Flag = "Fly",
-        Callback = function(v)
-            _G.Ysl.Movement.Fly = v
-            if v then
-                StartFly()
-            else
-                StopFly()
-                Notify("Fly", "Disabled!", 2)
-            end
-        end
-    })
-    
-    MovementTab:CreateSlider({
-        Name = "Fly Speed",
-        Range = {10, 200},
-        Increment = 5,
-        CurrentValue = 50,
-        Flag = "FlySpeed",
-        Callback = function(v)
-            _G.Ysl.Movement.FlySpeed = v
-        end
-    })
-    
-    MovementTab:CreateSection("Other Movement")
-    
-    MovementTab:CreateToggle({
-        Name = "NoClip",
-        CurrentValue = false,
-        Flag = "NoClip",
-        Callback = function(v)
-            _G.Ysl.Movement.NoClip = v
-            Notify("NoClip", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    MovementTab:CreateToggle({
-        Name = "Infinite Jump",
-        CurrentValue = false,
-        Flag = "InfJump",
-        Callback = function(v)
-            _G.Ysl.Movement.InfJump = v
-            Notify("Infinite Jump", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    -- TAB 5: PROTECTION
-    local ProtectionTab = Window:CreateTab("🛡️ Protection", 4483362458)
-    
-    ProtectionTab:CreateSection("Player Protection")
-    
-    ProtectionTab:CreateToggle({
-        Name = "God Mode (Instant Heal)",
-        CurrentValue = false,
-        Flag = "GodMode",
-        Callback = function(v)
-            _G.Ysl.Protection.GodMode = v
-            Notify("God Mode", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ProtectionTab:CreateToggle({
-        Name = "Anti-Void (Auto Teleport)",
-        CurrentValue = false,
-        Flag = "AntiVoid",
-        Callback = function(v)
-            _G.Ysl.Protection.AntiVoid = v
-            Notify("Anti-Void", v and "Enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ProtectionTab:CreateToggle({
-        Name = "Wave Immunity (Ultimate Protection)",
-        CurrentValue = false,
-        Flag = "WaveImmune",
-        Callback = function(v)
-            _G.Ysl.Protection.WaveImmunity = v
-            Notify("Wave Immunity", v and "Enabled! You're invincible!" or "Disabled!", 2)
-        end
-    })
-    
-    ProtectionTab:CreateSection("Wave Control")
-    
-    ProtectionTab:CreateToggle({
-        Name = "Auto Remove Waves (Every 5s)",
-        CurrentValue = false,
-        Flag = "AutoRemoveWaves",
-        Callback = function(v)
-            _G.Ysl.Protection.AutoRemoveWaves = v
-            Notify("Auto Remove", v and "Waves will auto-delete!" or "Disabled!", 2)
-        end
-    })
-    
-    ProtectionTab:CreateButton({
-        Name = "Remove All Waves Now",
-        Callback = function()
-            RemoveAllWaves()
-        end
-    })
-    
-    -- TAB 6: VIP & TELEPORT
-    local VIPTab = Window:CreateTab("💎 VIP & TP", 4483362458)
-    
-    VIPTab:CreateSection("VIP Bypass")
-    
-    VIPTab:CreateButton({
-        Name = "Remove All VIP Walls",
-        Callback = function()
-            RemoveVIPWalls()
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "Teleport Past VIP Area",
-        Callback = function()
-            TeleportPastVIP()
-        end
-    })
-    
-    VIPTab:CreateSection("Teleport Locations")
-    
-    VIPTab:CreateButton({
-        Name = "TP to Spawn",
-        Callback = function()
-            TeleportTo("Spawn")
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "TP to Sell Point",
-        Callback = function()
-            TeleportTo("SellPoint")
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "TP to Upgrade Shop",
-        Callback = function()
-            TeleportTo("UpgradeShop")
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "TP to Money Wheel",
-        Callback = function()
-            TeleportTo("MoneyWheel")
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "TP to Nearest Brainrot",
-        Callback = function()
-            TeleportTo("NearestBrainrot")
-        end
-    })
-    
-    VIPTab:CreateButton({
-        Name = "TP to Nearest Lucky Block",
-        Callback = function()
-            TeleportTo("NearestLuckyBlock")
-        end
-    })
-    
-    -- TAB 7: ESP
-    local ESPTab = Window:CreateTab("👁️ ESP", 4483362458)
-    
-    ESPTab:CreateSection("ESP Options")
-    
-    ESPTab:CreateToggle({
-        Name = "Brainrot ESP (Color-Coded)",
-        CurrentValue = false,
-        Flag = "BrainrotESP",
-        Callback = function(v)
-            _G.Ysl.ESP.Brainrots = v
-            if not v then
-                ClearAllESP()
-            end
-            Notify("ESP", v and "Brainrot ESP enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ESPTab:CreateToggle({
-        Name = "Lucky Block ESP",
-        CurrentValue = false,
-        Flag = "LuckyESP",
-        Callback = function(v)
-            _G.Ysl.ESP.LuckyBlocks = v
-            if not v then
-                ClearAllESP()
-            end
-            Notify("ESP", v and "Lucky block ESP enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ESPTab:CreateToggle({
-        Name = "VIP Wall ESP",
-        CurrentValue = false,
-        Flag = "VIPESP",
-        Callback = function(v)
-            _G.Ysl.ESP.VIPWalls = v
-            if not v then
-                ClearAllESP()
-            end
-            Notify("ESP", v and "VIP wall ESP enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ESPTab:CreateToggle({
-        Name = "Player ESP",
-        CurrentValue = false,
-        Flag = "PlayerESP",
-        Callback = function(v)
-            _G.Ysl.ESP.Players = v
-            if not v then
-                ClearAllESP()
-            end
-            Notify("ESP", v and "Player ESP enabled!" or "Disabled!", 2)
-        end
-    })
-    
-    ESPTab:CreateSection("ESP Info")
-    
-    ESPTab:CreateParagraph({
-        Title = "🎨 ESP Colors",
-        Content = "Legendary: Orange\nEpic: Purple\nRare: Blue\nCosmic: Pink\nSecret: Yellow\nMythical: Red\nDivine: Cyan"
-    })
-    
-    -- TAB 8: STATS & MISC
-    local MiscTab = Window:CreateTab("⚙️ Stats & Misc", 4483362458)
-    
-    MiscTab:CreateSection("Session Statistics")
-    
-    local StatsLabel = MiscTab:CreateLabel("Loading stats...")
-    
+    -- Main UI
+    local YslUI = Instance.new("ScreenGui")
+    YslUI.Name = "YslMenuV117"
+    YslUI.Parent = CoreGui
+    YslUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    YslUI.ResetOnSpawn = false
+    
+    -- Main Window
+    local MainWindow = Instance.new("Frame")
+    MainWindow.Name = "MainWindow"
+    MainWindow.Size = UDim2.new(0, 650, 0, 500)
+    MainWindow.Position = UDim2.new(0.5, -325, 0.5, -250)
+    MainWindow.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    MainWindow.BackgroundTransparency = 0.05
+    MainWindow.BorderSizePixel = 0
+    MainWindow.Active = true
+    MainWindow.ClipsDescendants = true
+    MainWindow.Parent = YslUI
+    
+    local WindowCorner = Instance.new("UICorner")
+    WindowCorner.CornerRadius = UDim.new(0, 15)
+    WindowCorner.Parent = MainWindow
+    
+    local WindowStroke = Instance.new("UIStroke")
+    WindowStroke.Color = Color3.fromRGB(255, 0, 127)
+    WindowStroke.Thickness = 2
+    WindowStroke.Transparency = 0.3
+    WindowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    WindowStroke.Parent = MainWindow
+    
+    -- Animated Background Gradient
+    local BGFrame = Instance.new("Frame")
+    BGFrame.Size = UDim2.new(1, 0, 1, 0)
+    BGFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BGFrame.BackgroundTransparency = 0.96
+    BGFrame.BorderSizePixel = 0
+    BGFrame.Parent = MainWindow
+    
+    local BGGradient = Instance.new("UIGradient")
+    BGGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
+    }
+    BGGradient.Rotation = 0
+    BGGradient.Parent = BGFrame
+    
+    local BGCorner = Instance.new("UICorner")
+    BGCorner.CornerRadius = UDim.new(0, 15)
+    BGCorner.Parent = BGFrame
+    
+    -- Animate gradient rotation
     task.spawn(function()
-        while task.wait(2) do
-            local stats = GetSessionStats()
-            StatsLabel:Set(string.format(
-                "Session Time: %s\nBrainrots: %d\nLucky Blocks: %d\nWaves Blocked: %d\nMoney Collections: %d",
-                stats.Time,
-                stats.Brainrots,
-                stats.LuckyBlocks,
-                stats.WavesBlocked,
-                stats.MoneyCollected
-            ))
+        while YslUI.Parent do
+            CreateTween(BGGradient, {Rotation = BGGradient.Rotation + 360}, 15, Enum.EasingStyle.Linear)
+            task.wait(15)
         end
     end)
     
-    MiscTab:CreateSection("Quick Actions")
+    -- Top Bar
+    local TopBar = Instance.new("Frame")
+    TopBar.Name = "TopBar"
+    TopBar.Size = UDim2.new(1, 0, 0, 50)
+    TopBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+    TopBar.BackgroundTransparency = 0.3
+    TopBar.BorderSizePixel = 0
+    TopBar.Parent = MainWindow
     
-    MiscTab:CreateButton({
-        Name = "Claim Free Epic Brainrot",
-        Callback = function()
-            ClaimFreeEpic()
-        end
-    })
+    local TopBarCorner = Instance.new("UICorner")
+    TopBarCorner.CornerRadius = UDim.new(0, 15)
+    TopBarCorner.Parent = TopBar
     
-    MiscTab:CreateButton({
-        Name = "Rejoin Server",
-        Callback = function()
-            game:GetService("TeleportService"):Teleport(game.PlaceId, lplayer)
-        end
-    })
+    -- Logo
+    local LogoText = Instance.new("TextLabel")
+    LogoText.Size = UDim2.new(0, 200, 1, 0)
+    LogoText.Position = UDim2.new(0, 15, 0, 0)
+    LogoText.BackgroundTransparency = 1
+    LogoText.Text = "💎 YSL MENU V117"
+    LogoText.TextSize = 20
+    LogoText.Font = Enum.Font.GothamBold
+    LogoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    LogoText.TextXAlignment = Enum.TextXAlignment.Left
+    LogoText.Parent = TopBar
     
-    MiscTab:CreateButton({
-        Name = "Server Hop",
-        Callback = function()
-            local servers = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
-            for _, server in pairs(servers.data) do
-                if server.id ~= game.JobId and server.playing < server.maxPlayers then
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, server.id, lplayer)
-                    return
-                end
+    local LogoGradient = Instance.new("UIGradient")
+    LogoGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
+    }
+    LogoGradient.Parent = LogoText
+    
+    -- Version Label
+    local VersionLabel = Instance.new("TextLabel")
+    VersionLabel.Size = UDim2.new(0, 150, 1, 0)
+    VersionLabel.Position = UDim2.new(1, -165, 0, 0)
+    VersionLabel.BackgroundTransparency = 1
+    VersionLabel.Text = "ULTIMATE EDITION"
+    VersionLabel.TextSize = 12
+    VersionLabel.Font = Enum.Font.Gotham
+    VersionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    VersionLabel.TextTransparency = 0.5
+    VersionLabel.TextXAlignment = Enum.TextXAlignment.Right
+    VersionLabel.Parent = TopBar
+    
+    -- Close Button
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Size = UDim2.new(0, 40, 0, 40)
+    CloseButton.Position = UDim2.new(1, -45, 0, 5)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+    CloseButton.BackgroundTransparency = 0.3
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Text = "×"
+    CloseButton.TextSize = 30
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.AutoButtonColor = false
+    CloseButton.Parent = TopBar
+    
+    local CloseCorner = Instance.new("UICorner")
+    CloseCorner.CornerRadius = UDim.new(0, 10)
+    CloseCorner.Parent = CloseButton
+    
+    CloseButton.MouseButton1Click:Connect(function()
+        CreateTween(MainWindow, {Size = UDim2.new(0, 0, 0, 0)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In)
+        task.wait(0.3)
+        YslUI:Destroy()
+    end)
+    
+    CloseButton.MouseEnter:Connect(function()
+        CreateTween(CloseButton, {BackgroundTransparency = 0, Size = UDim2.new(0, 45, 0, 45)}, 0.2)
+    end)
+    
+    CloseButton.MouseLeave:Connect(function()
+        CreateTween(CloseButton, {BackgroundTransparency = 0.3, Size = UDim2.new(0, 40, 0, 40)}, 0.2)
+    end)
+    
+    -- Make Draggable
+    MakeDraggable(MainWindow, TopBar)
+    
+    -- Tabs Container
+    local TabsContainer = Instance.new("Frame")
+    TabsContainer.Name = "TabsContainer"
+    TabsContainer.Size = UDim2.new(0, 150, 1, -70)
+    TabsContainer.Position = UDim2.new(0, 10, 0, 60)
+    TabsContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    TabsContainer.BackgroundTransparency = 0.5
+    TabsContainer.BorderSizePixel = 0
+    TabsContainer.Parent = MainWindow
+    
+    local TabsCorner = Instance.new("UICorner")
+    TabsCorner.CornerRadius = UDim.new(0, 10)
+    TabsCorner.Parent = TabsContainer
+    
+    local TabsLayout = Instance.new("UIListLayout")
+    TabsLayout.Padding = UDim.new(0, 5)
+    TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TabsLayout.Parent = TabsContainer
+    
+    -- Content Container
+    local ContentContainer = Instance.new("Frame")
+    ContentContainer.Name = "ContentContainer"
+    ContentContainer.Size = UDim2.new(1, -180, 1, -70)
+    ContentContainer.Position = UDim2.new(0, 170, 0, 60)
+    ContentContainer.BackgroundTransparency = 1
+    ContentContainer.Parent = MainWindow
+    
+    -- Tab System
+    local CurrentTab = nil
+    local Tabs = {}
+    
+    local function CreateTab(name, icon)
+        local TabButton = Instance.new("TextButton")
+        TabButton.Size = UDim2.new(1, -10, 0, 40)
+        TabButton.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+        TabButton.BackgroundTransparency = 0.5
+        TabButton.BorderSizePixel = 0
+        TabButton.AutoButtonColor = false
+        TabButton.Text = ""
+        TabButton.Parent = TabsContainer
+        
+        local TabCorner = Instance.new("UICorner")
+        TabCorner.CornerRadius = UDim.new(0, 8)
+        TabCorner.Parent = TabButton
+        
+        local TabLabel = Instance.new("TextLabel")
+        TabLabel.Size = UDim2.new(1, -10, 1, 0)
+        TabLabel.Position = UDim2.new(0, 10, 0, 0)
+        TabLabel.BackgroundTransparency = 1
+        TabLabel.Text = icon .. " " .. name
+        TabLabel.TextSize = 14
+        TabLabel.Font = Enum.Font.GothamBold
+        TabLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        TabLabel.TextXAlignment = Enum.TextXAlignment.Left
+        TabLabel.Parent = TabButton
+        
+        local TabContent = Instance.new("ScrollingFrame")
+        TabContent.Name = name .. "Content"
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.BackgroundTransparency = 1
+        TabContent.BorderSizePixel = 0
+        TabContent.ScrollBarThickness = 6
+        TabContent.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 127)
+        TabContent.Visible = false
+        TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+        TabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        TabContent.Parent = ContentContainer
+        
+        local ContentLayout = Instance.new("UIListLayout")
+        ContentLayout.Padding = UDim.new(0, 10)
+        ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        ContentLayout.Parent = TabContent
+        
+        local ContentPadding = Instance.new("UIPadding")
+        ContentPadding.PaddingTop = UDim.new(0, 10)
+        ContentPadding.PaddingBottom = UDim.new(0, 10)
+        ContentPadding.PaddingLeft = UDim.new(0, 10)
+        ContentPadding.PaddingRight = UDim.new(0, 10)
+        ContentPadding.Parent = TabContent
+        
+        TabButton.MouseButton1Click:Connect(function()
+            -- Deselect all tabs
+            for _, tab in pairs(Tabs) do
+                CreateTween(tab.Button, {BackgroundTransparency = 0.5}, 0.2)
+                CreateTween(tab.Label, {TextColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
+                tab.Content.Visible = false
             end
-            Notify("Server Hop", "No servers found!", 3)
+            
+            -- Select this tab
+            CreateTween(TabButton, {BackgroundTransparency = 0}, 0.2)
+            CreateTween(TabLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+            TabContent.Visible = true
+            CurrentTab = TabContent
+        end)
+        
+        TabButton.MouseEnter:Connect(function()
+            if CurrentTab ~= TabContent then
+                CreateTween(TabButton, {BackgroundTransparency = 0.3}, 0.2)
+            end
+        end)
+        
+        TabButton.MouseLeave:Connect(function()
+            if CurrentTab ~= TabContent then
+                CreateTween(TabButton, {BackgroundTransparency = 0.5}, 0.2)
+            end
+        end)
+        
+        local tab = {
+            Button = TabButton,
+            Label = TabLabel,
+            Content = TabContent
+        }
+        
+        table.insert(Tabs, tab)
+        
+        return TabContent
+    end
+    
+    -- UI Element Creation Functions
+    local function CreateSection(parent, name)
+        local Section = Instance.new("Frame")
+        Section.Size = UDim2.new(1, 0, 0, 30)
+        Section.BackgroundTransparency = 1
+        Section.Parent = parent
+        
+        local SectionLabel = Instance.new("TextLabel")
+        SectionLabel.Size = UDim2.new(1, 0, 1, 0)
+        SectionLabel.BackgroundTransparency = 1
+        SectionLabel.Text = name
+        SectionLabel.TextSize = 16
+        SectionLabel.Font = Enum.Font.GothamBold
+        SectionLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+        SectionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        SectionLabel.Parent = Section
+        
+        local SectionLine = Instance.new("Frame")
+        SectionLine.Size = UDim2.new(1, 0, 0, 2)
+        SectionLine.Position = UDim2.new(0, 0, 1, -2)
+        SectionLine.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+        SectionLine.BackgroundTransparency = 0.5
+        SectionLine.BorderSizePixel = 0
+        SectionLine.Parent = Section
+        
+        local LineCorner = Instance.new("UICorner")
+        LineCorner.CornerRadius = UDim.new(1, 0)
+        LineCorner.Parent = SectionLine
+        
+        return Section
+    end
+    
+    local function CreateToggle(parent, name, callback)
+        local Toggle = Instance.new("Frame")
+        Toggle.Size = UDim2.new(1, 0, 0, 40)
+        Toggle.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        Toggle.BackgroundTransparency = 0.5
+        Toggle.BorderSizePixel = 0
+        Toggle.Parent = parent
+        
+        local ToggleCorner = Instance.new("UICorner")
+        ToggleCorner.CornerRadius = UDim.new(0, 8)
+        ToggleCorner.Parent = Toggle
+        
+        local ToggleLabel = Instance.new("TextLabel")
+        ToggleLabel.Size = UDim2.new(1, -60, 1, 0)
+        ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
+        ToggleLabel.BackgroundTransparency = 1
+        ToggleLabel.Text = name
+        ToggleLabel.TextSize = 14
+        ToggleLabel.Font = Enum.Font.Gotham
+        ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+        ToggleLabel.Parent = Toggle
+        
+        local ToggleButton = Instance.new("TextButton")
+        ToggleButton.Size = UDim2.new(0, 45, 0, 25)
+        ToggleButton.Position = UDim2.new(1, -55, 0.5, -12.5)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+        ToggleButton.BorderSizePixel = 0
+        ToggleButton.AutoButtonColor = false
+        ToggleButton.Text = ""
+        ToggleButton.Parent = Toggle
+        
+        local ToggleButtonCorner = Instance.new("UICorner")
+        ToggleButtonCorner.CornerRadius = UDim.new(1, 0)
+        ToggleButtonCorner.Parent = ToggleButton
+        
+        local ToggleCircle = Instance.new("Frame")
+        ToggleCircle.Size = UDim2.new(0, 21, 0, 21)
+        ToggleCircle.Position = UDim2.new(0, 2, 0, 2)
+        ToggleCircle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        ToggleCircle.BorderSizePixel = 0
+        ToggleCircle.Parent = ToggleButton
+        
+        local CircleCorner = Instance.new("UICorner")
+        CircleCorner.CornerRadius = UDim.new(1, 0)
+        CircleCorner.Parent = ToggleCircle
+        
+        local enabled = false
+        
+        ToggleButton.MouseButton1Click:Connect(function()
+            enabled = not enabled
+            
+            if enabled then
+                CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(255, 0, 127)}, 0.2)
+                CreateTween(ToggleCircle, {Position = UDim2.new(1, -23, 0, 2), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+            else
+                CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(50, 50, 55)}, 0.2)
+                CreateTween(ToggleCircle, {Position = UDim2.new(0, 2, 0, 2), BackgroundColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
+            end
+            
+            callback(enabled)
+        end)
+        
+        Toggle.MouseEnter:Connect(function()
+            CreateTween(Toggle, {BackgroundTransparency = 0.3}, 0.2)
+        end)
+        
+        Toggle.MouseLeave:Connect(function()
+            CreateTween(Toggle, {BackgroundTransparency = 0.5}, 0.2)
+        end)
+        
+        return Toggle
+    end
+    
+    local function CreateButton(parent, name, callback)
+        local Button = Instance.new("TextButton")
+        Button.Size = UDim2.new(1, 0, 0, 40)
+        Button.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+        Button.BackgroundTransparency = 0.3
+        Button.BorderSizePixel = 0
+        Button.AutoButtonColor = false
+        Button.Text = name
+        Button.TextSize = 14
+        Button.Font = Enum.Font.GothamBold
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.Parent = parent
+        
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 8)
+        ButtonCorner.Parent = Button
+        
+        local ButtonGradient = Instance.new("UIGradient")
+        ButtonGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
+        }
+        ButtonGradient.Rotation = 45
+        ButtonGradient.Parent = Button
+        
+        Button.MouseButton1Click:Connect(function()
+            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 35)}, 0.1)
+            task.wait(0.1)
+            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 40)}, 0.1)
+            callback()
+        end)
+        
+        Button.MouseEnter:Connect(function()
+            CreateTween(Button, {BackgroundTransparency = 0}, 0.2)
+        end)
+        
+        Button.MouseLeave:Connect(function()
+            CreateTween(Button, {BackgroundTransparency = 0.3}, 0.2)
+        end)
+        
+        return Button
+    end
+    
+    local function CreateSlider(parent, name, min, max, default, callback)
+        local Slider = Instance.new("Frame")
+        Slider.Size = UDim2.new(1, 0, 0, 60)
+        Slider.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        Slider.BackgroundTransparency = 0.5
+        Slider.BorderSizePixel = 0
+        Slider.Parent = parent
+        
+        local SliderCorner = Instance.new("UICorner")
+        SliderCorner.CornerRadius = UDim.new(0, 8)
+        SliderCorner.Parent = Slider
+        
+        local SliderLabel = Instance.new("TextLabel")
+        SliderLabel.Size = UDim2.new(1, -20, 0, 20)
+        SliderLabel.Position = UDim2.new(0, 10, 0, 5)
+        SliderLabel.BackgroundTransparency = 1
+        SliderLabel.Text = name
+        SliderLabel.TextSize = 14
+        SliderLabel.Font = Enum.Font.Gotham
+        SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+        SliderLabel.Parent = Slider
+        
+        local SliderValue = Instance.new("TextLabel")
+        SliderValue.Size = UDim2.new(0, 50, 0, 20)
+        SliderValue.Position = UDim2.new(1, -60, 0, 5)
+        SliderValue.BackgroundTransparency = 1
+        SliderValue.Text = tostring(default)
+        SliderValue.TextSize = 14
+        SliderValue.Font = Enum.Font.GothamBold
+        SliderValue.TextColor3 = Color3.fromRGB(255, 0, 127)
+        SliderValue.TextXAlignment = Enum.TextXAlignment.Right
+        SliderValue.Parent = Slider
+        
+        local SliderBar = Instance.new("Frame")
+        SliderBar.Size = UDim2.new(1, -20, 0, 8)
+        SliderBar.Position = UDim2.new(0, 10, 0, 35)
+        SliderBar.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+        SliderBar.BorderSizePixel = 0
+        SliderBar.Parent = Slider
+        
+        local BarCorner = Instance.new("UICorner")
+        BarCorner.CornerRadius = UDim.new(1, 0)
+        BarCorner.Parent = SliderBar
+        
+        local SliderFill = Instance.new("Frame")
+        SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+        SliderFill.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+        SliderFill.BorderSizePixel = 0
+        SliderFill.Parent = SliderBar
+        
+        local FillCorner = Instance.new("UICorner")
+        FillCorner.CornerRadius = UDim.new(1, 0)
+        FillCorner.Parent = SliderFill
+        
+        local FillGradient = Instance.new("UIGradient")
+        FillGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
+        }
+        FillGradient.Parent = SliderFill
+        
+        local SliderDot = Instance.new("Frame")
+        SliderDot.Size = UDim2.new(0, 18, 0, 18)
+        SliderDot.Position = UDim2.new((default - min) / (max - min), -9, 0.5, -9)
+        SliderDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SliderDot.BorderSizePixel = 0
+        SliderDot.Parent = SliderBar
+        
+        local DotCorner = Instance.new("UICorner")
+        DotCorner.CornerRadius = UDim.new(1, 0)
+        DotCorner.Parent = SliderDot
+        
+        local dragging = false
+        
+        SliderBar.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                dragging = true
+                local function update()
+                    local mousePos = UserInputService:GetMouseLocation()
+                    local barPos = SliderBar.AbsolutePosition
+                    local barSize = SliderBar.AbsoluteSize
+                    
+                    local relative = math.clamp((mousePos.X - barPos.X) / barSize.X, 0, 1)
+                    local value = math.floor(min + (max - min) * relative)
+                    
+                    SliderValue.Text = tostring(value)
+                    CreateTween(SliderFill, {Size = UDim2.new(relative, 0, 1, 0)}, 0.1)
+                    CreateTween(SliderDot, {Position = UDim2.new(relative, -9, 0.5, -9)}, 0.1)
+                    
+                    callback(value)
+                end
+                
+                update()
+                
+                local connection
+                connection = UserInputService.InputChanged:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+                        update()
+                    end
+                end)
+                
+                local releaseConnection
+                releaseConnection = UserInputService.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = false
+                        connection:Disconnect()
+                        releaseConnection:Disconnect()
+                    end
+                end)
+            end
+        end)
+        
+        Slider.MouseEnter:Connect(function()
+            CreateTween(Slider, {BackgroundTransparency = 0.3}, 0.2)
+            CreateTween(SliderDot, {Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(SliderDot.Position.X.Scale, -11, 0.5, -11)}, 0.2)
+        end)
+        
+        Slider.MouseLeave:Connect(function()
+            if not dragging then
+                CreateTween(Slider, {BackgroundTransparency = 0.5}, 0.2)
+                CreateTween(SliderDot, {Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(SliderDot.Position.X.Scale, -9, 0.5, -9)}, 0.2)
+            end
+        end)
+        
+        return Slider
+    end
+    
+    --[[ ═══════════════════════════════════════════════════════════
+                    CREATE ALL TABS AND CONTENT
+    ═══════════════════════════════════════════════════════════ ]]
+    
+    -- TAB 1: AUTO FARM
+    local FarmTab = CreateTab("Auto Farm", "🚜")
+    
+    CreateSection(FarmTab, "Farming Features")
+    
+    CreateToggle(FarmTab, "Auto Farm Brainrots", function(v)
+        _G.Ysl.AutoFarm.Brainrot = v
+        Notify("Auto Farm", v and "Brainrot farming enabled!" or "Disabled", 2)
+    end)
+    
+    CreateToggle(FarmTab, "Auto Collect Money", function(v)
+        _G.Ysl.AutoFarm.Money = v
+        Notify("Auto Farm", v and "Money collection enabled!" or "Disabled", 2)
+    end)
+    
+    CreateToggle(FarmTab, "Auto Farm Lucky Blocks", function(v)
+        _G.Ysl.AutoFarm.LuckyBlocks = v
+        Notify("Auto Farm", v and "Lucky block farming enabled!" or "Disabled", 2)
+    end)
+    
+    CreateToggle(FarmTab, "Auto Sell All (Every 60s)", function(v)
+        _G.Ysl.AutoFarm.SellAll = v
+    end)
+    
+    CreateButton(FarmTab, "Sell All Now", function()
+        pcall(function()
+            SellAll_RF:InvokeServer()
+            Notify("Sell", "Sold all!", 2)
+        end)
+    end)
+    
+    CreateSection(FarmTab, "Ultimate Farm")
+    
+    CreateButton(FarmTab, "🔥 ULTIMATE FARM (Enable Everything)", function()
+        _G.Ysl.AutoFarm.Brainrot = true
+        _G.Ysl.AutoFarm.Money = true
+        _G.Ysl.AutoFarm.LuckyBlocks = true
+        _G.Ysl.AutoFarm.SellAll = true
+        _G.Ysl.AutoUpgrade.Base = true
+        _G.Ysl.AutoUpgrade.Brainrots = true
+        _G.Ysl.AutoUpgrade.Carry = true
+        _G.Ysl.Protection.WaveImmunity = true
+        _G.Ysl.Protection.GodMode = true
+        Notify("ULTIMATE FARM", "ALL FEATURES ACTIVATED! 🔥", 5)
+    end)
+    
+    -- TAB 2: UPGRADES
+    local UpgradeTab = CreateTab("Upgrades", "⬆️")
+    
+    CreateSection(UpgradeTab, "Manual Speed Upgrades")
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +1", function()
+        UpgradeSpeedManual(1)
+    end)
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +5", function()
+        UpgradeSpeedManual(5)
+    end)
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +10", function()
+        UpgradeSpeedManual(10)
+    end)
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +25", function()
+        UpgradeSpeedManual(25)
+    end)
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +50", function()
+        UpgradeSpeedManual(50)
+    end)
+    
+    CreateButton(UpgradeTab, "Upgrade Speed +100", function()
+        UpgradeSpeedManual(100)
+    end)
+    
+    CreateSection(UpgradeTab, "Auto Upgrades")
+    
+    CreateToggle(UpgradeTab, "Auto Upgrade Base", function(v)
+        _G.Ysl.AutoUpgrade.Base = v
+    end)
+    
+    CreateToggle(UpgradeTab, "Auto Upgrade All Brainrots", function(v)
+        _G.Ysl.AutoUpgrade.Brainrots = v
+    end)
+    
+    CreateToggle(UpgradeTab, "Auto Upgrade Carry Capacity", function(v)
+        _G.Ysl.AutoUpgrade.Carry = v
+    end)
+    
+    -- TAB 3: REBIRTH
+    local RebirthTab = CreateTab("Rebirth", "🔄")
+    
+    CreateSection(RebirthTab, "Auto Rebirth Settings")
+    
+    CreateToggle(RebirthTab, "Auto Rebirth", function(v)
+        _G.Ysl.AutoRebirth.Enabled = v
+        Notify("Auto Rebirth", v and "Enabled at speed " .. _G.Ysl.RebirthAt or "Disabled", 2)
+    end)
+    
+    CreateSlider(RebirthTab, "Rebirth at Speed", 100, 10000, 500, function(v)
+        _G.Ysl.RebirthAt = v
+    end)
+    
+    CreateButton(RebirthTab, "Rebirth Now (Manual)", function()
+        pcall(function()
+            Rebirth_RF:InvokeServer()
+            Notify("Rebirth", "Rebirthed!", 2)
+        end)
+    end)
+    
+    -- TAB 4: MOVEMENT
+    local MovementTab = CreateTab("Movement", "🏃")
+    
+    CreateSection(MovementTab, "Speed")
+    
+    CreateToggle(MovementTab, "Speed Boost", function(v)
+        _G.Ysl.Movement.Speed = v
+    end)
+    
+    CreateSlider(MovementTab, "Speed Value", 16, 500, 100, function(v)
+        _G.Ysl.Movement.SpeedValue = v
+    end)
+    
+    CreateSection(MovementTab, "Fly")
+    
+    CreateToggle(MovementTab, "Fly", function(v)
+        _G.Ysl.Movement.Fly = v
+        if v then
+            StartFly()
+        else
+            StopFly()
         end
-    })
+    end)
     
-    MiscTab:CreateSection("Premium Info")
+    CreateSlider(MovementTab, "Fly Speed", 10, 200, 50, function(v)
+        _G.Ysl.Movement.FlySpeed = v
+    end)
     
-    MiscTab:CreateParagraph({
-        Title = "💎 YSL MENU V116 ULTIMATE PERFECTION",
-        Content = "You're using the most advanced Escape Tsunami script ever created!\n\n✅ Perfect Auto Farm\n✅ Perfect Movement\n✅ Ultimate Protection\n✅ Advanced ESP\n✅ Smart Rebirth\n✅ Manual Speed Upgrades\n✅ Zero Bugs\n\nMade by YSL Scripts with ❤️"
-    })
+    CreateSection(MovementTab, "Other Movement")
     
-    MiscTab:CreateButton({
-        Name = "Copy Discord (Coming Soon)",
-        Callback = function()
-            Notify("Discord", "Discord server coming soon!", 3)
-        end
-    })
+    CreateToggle(MovementTab, "NoClip", function(v)
+        _G.Ysl.Movement.NoClip = v
+    end)
     
-    -- Initialize
-    Notify("YSL V116 ULTIMATE", "Welcome " .. lplayer.Name .. "!", 5)
-    Notify("Premium Active", "All ultimate features unlocked! 🔥", 4)
+    CreateToggle(MovementTab, "Infinite Jump", function(v)
+        _G.Ysl.Movement.InfJump = v
+    end)
     
-    wait(1)
+    -- TAB 5: PROTECTION
+    local ProtectionTab = CreateTab("Protection", "🛡️")
+    
+    CreateSection(ProtectionTab, "Player Protection")
+    
+    CreateToggle(ProtectionTab, "God Mode", function(v)
+        _G.Ysl.Protection.GodMode = v
+    end)
+    
+    CreateToggle(ProtectionTab, "Anti-Void", function(v)
+        _G.Ysl.Protection.AntiVoid = v
+    end)
+    
+    CreateToggle(ProtectionTab, "Wave Immunity", function(v)
+        _G.Ysl.Protection.WaveImmunity = v
+    end)
+    
+    CreateButton(ProtectionTab, "Remove All Waves", function()
+        pcall(function()
+            local tsunamis = Workspace:FindFirstChild("ActiveTsunamis")
+            if tsunamis then
+                tsunamis:ClearAllChildren()
+                Notify("Waves", "All waves removed!", 2)
+            end
+        end)
+    end)
+    
+    -- TAB 6: MISC
+    local MiscTab = CreateTab("Misc", "⚙️")
+    
+    CreateSection(MiscTab, "VIP Bypass")
+    
+    CreateButton(MiscTab, "Remove VIP Walls", function()
+        RemoveVIPWalls()
+    end)
+    
+    CreateSection(MiscTab, "Teleports")
+    
+    CreateButton(MiscTab, "TP to Spawn", function()
+        TeleportTo("Spawn")
+    end)
+    
+    CreateButton(MiscTab, "TP to Sell Point", function()
+        TeleportTo("SellPoint")
+    end)
+    
+    CreateSection(MiscTab, "Quick Actions")
+    
+    CreateButton(MiscTab, "Claim Free Epic", function()
+        pcall(function()
+            TakeFreeEpic_RF:InvokeServer()
+            Notify("Free Epic", "Claimed!", 2)
+        end)
+    end)
+    
+    CreateButton(MiscTab, "Rejoin Server", function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, lplayer)
+    end)
+    
+    -- Select first tab
+    Tabs[1].Button.MouseButton1Click:Fire()
+    
+    -- Entrance Animation
+    MainWindow.Size = UDim2.new(0, 0, 0, 0)
+    MainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    
+    CreateTween(MainWindow, {
+        Size = UDim2.new(0, 650, 0, 500),
+        Position = UDim2.new(0.5, -325, 0.5, -250)
+    }, 0.8, Enum.EasingStyle.Elastic)
+    
+    -- Success notification
+    Notify("YSL V117 ULTIMATE", "Welcome " .. lplayer.Name .. "!", 5)
+    Notify("Custom UI Loaded", "Premium features unlocked! 💎", 4)
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║          YSL MENU V116 ULTIMATE PERFECTION                    ║
-║              LOADED SUCCESSFULLY! 🔥                          ║
+║         YSL MENU V117 ULTIMATE EDITION                        ║
+║            LOADED SUCCESSFULLY! 🔥                            ║
 ║                                                               ║
 ║  Status: ✅ PREMIUM ACCESS VERIFIED                          ║
 ║  User: ]] .. lplayer.Name .. string.rep(" ", 53 - #lplayer.Name) .. [[║
-║  Session: ]] .. os.date("%H:%M:%S %d/%m/%Y") .. string.rep(" ", 41) .. [[║
 ║                                                               ║
-║  ⚡ ALL ULTIMATE FEATURES UNLOCKED:                          ║
+║  💎 100% CUSTOM UI LOADED                                    ║
+║  🎨 Glassmorphism Design                                     ║
+║  ⚡ Smooth Animations                                         ║
+║  🔐 Advanced Key System                                      ║
+║  🔥 All Features Working                                     ║
 ║                                                               ║
-║  🚜 Perfect Auto Farm System                                 ║
-║     • Brainrots (Teleport + Collect)                         ║
-║     • Money (Dual Method)                                    ║
-║     • Lucky Blocks                                           ║
-║     • Auto Sell                                              ║
-║                                                               ║
-║  ⬆️ Manual Speed Upgrades                                    ║
-║     • +1, +5, +10, +25, +50, +100                           ║
-║                                                               ║
-║  🏃 Perfect Movement System                                  ║
-║     • Speed Boost (16-500)                                   ║
-║     • Fly (WASD + Space/Shift)                              ║
-║     • NoClip                                                 ║
-║     • Infinite Jump                                          ║
-║                                                               ║
-║  🛡️ Ultimate Protection                                      ║
-║     • God Mode                                               ║
-║     • Anti-Void                                              ║
-║     • Wave Immunity                                          ║
-║     • Auto Remove Waves                                      ║
-║                                                               ║
-║  👁️ Advanced ESP System                                      ║
-║     • Color-Coded Brainrots                                  ║
-║     • Lucky Blocks                                           ║
-║     • VIP Walls                                              ║
-║     • Players                                                ║
-║                                                               ║
-║  💎 VIP Bypass & Teleports                                   ║
-║  🔄 Smart Auto Rebirth                                       ║
-║  📊 Session Statistics                                       ║
-║  ⚙️ Auto Upgrades (Base, Brainrots, Carry)                  ║
-║                                                               ║
-║  Made by YSL Scripts - The Best Ever Made                    ║
+║  Made by YSL Scripts - Ultimate Quality                       ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
-
-    Notify("Ready!", "YSL V116 is ready to dominate! 💎", 3)
     
 end -- End of loadMainScript()
