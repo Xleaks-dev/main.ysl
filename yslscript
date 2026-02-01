@@ -1,22 +1,22 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║         YSL MENU V117 ULTIMATE EDITION                        ║
-    ║              CUSTOM UI - THE BEST EVER MADE                   ║
+    ║         YSL MENU V118 ULTIMATE MASTERPIECE                    ║
+    ║         THE BEST SCRIPT EVER CREATED - BY YSL                 ║
     ║                                                               ║
-    ║  🎨 100% Custom Interface                                     ║
-    ║  💎 Premium Glassmorphism Design                             ║
-    ║  ⚡ Smooth Animations                                         ║
-    ║  🔐 Advanced Key System                                      ║
-    ║  🔥 Every Feature Working Perfectly                          ║
+    ║  🌈 Rainbow YSL Logo                                          ║
+    ║  👤 User Profile Picture                                      ║
+    ║  💬 Personalized Greeting                                     ║
+    ║  🎨 Premium Custom UI                                         ║
+    ║  ⚡ All Features Perfected                                    ║
     ║                                                               ║
-    ║  Created by YSL Scripts - Ultimate Quality                    ║
+    ║  Made by YSL Scripts - The Ultimate Quality                   ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
 print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║                YSL MENU V117 INITIALIZING...                  ║
-║              ULTIMATE CUSTOM UI LOADING...                    ║
+║              YSL MENU V118 INITIALIZING...                    ║
+║           ULTIMATE MASTERPIECE LOADING...                     ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
 
@@ -94,6 +94,12 @@ local function MakeDraggable(frame, dragHandle)
     end)
 end
 
+-- Get User Profile Picture
+local function GetUserThumbnail(userId)
+    local thumbnailUrl = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=150&height=150&format=png"
+    return thumbnailUrl
+end
+
 --[[ ═══════════════════════════════════════════════════════════
                     PREMIUM KEY SYSTEM UI
 ═══════════════════════════════════════════════════════════ ]]
@@ -110,7 +116,7 @@ local function CreateKeySystem()
     local Blur = Instance.new("BlurEffect")
     Blur.Size = 0
     Blur.Parent = game.Lighting
-    CreateTween(Blur, {Size = 25}, 0.5)
+    CreateTween(Blur, {Size = 30}, 0.5)
     
     -- Dark Overlay
     local Overlay = Instance.new("Frame")
@@ -120,21 +126,21 @@ local function CreateKeySystem()
     Overlay.BackgroundTransparency = 1
     Overlay.BorderSizePixel = 0
     Overlay.Parent = KeySystemUI
-    CreateTween(Overlay, {BackgroundTransparency = 0.5}, 0.5)
+    CreateTween(Overlay, {BackgroundTransparency = 0.6}, 0.5)
     
     -- Main Container
     local MainContainer = Instance.new("Frame")
     MainContainer.Name = "MainContainer"
-    MainContainer.Size = UDim2.new(0, 550, 0, 450)
-    MainContainer.Position = UDim2.new(0.5, -275, 0.5, -225)
-    MainContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-    MainContainer.BackgroundTransparency = 0.1
+    MainContainer.Size = UDim2.new(0, 600, 0, 500)
+    MainContainer.Position = UDim2.new(0.5, -300, 0.5, -250)
+    MainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    MainContainer.BackgroundTransparency = 0.05
     MainContainer.BorderSizePixel = 0
     MainContainer.ClipsDescendants = true
     MainContainer.Parent = KeySystemUI
     
     local MainCorner = Instance.new("UICorner")
-    MainCorner.CornerRadius = UDim.new(0, 20)
+    MainCorner.CornerRadius = UDim.new(0, 25)
     MainCorner.Parent = MainContainer
     
     local MainStroke = Instance.new("UIStroke")
@@ -143,6 +149,16 @@ local function CreateKeySystem()
     MainStroke.Transparency = 0
     MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     MainStroke.Parent = MainContainer
+    
+    -- Rainbow stroke animation
+    task.spawn(function()
+        local hue = 0
+        while KeySystemUI.Parent do
+            hue = (hue + 1) % 360
+            MainStroke.Color = Color3.fromHSV(hue / 360, 1, 1)
+            task.wait(0.03)
+        end
+    end)
     
     -- Gradient Background
     local GradientBG = Instance.new("Frame")
@@ -158,11 +174,11 @@ local function CreateKeySystem()
         ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
     }
-    BGGradient.Rotation = 45
+    BGGradient.Rotation = 0
     BGGradient.Parent = GradientBG
     
     local BGCorner = Instance.new("UICorner")
-    BGCorner.CornerRadius = UDim.new(0, 20)
+    BGCorner.CornerRadius = UDim.new(0, 25)
     BGCorner.Parent = GradientBG
     
     -- Animate gradient
@@ -176,7 +192,7 @@ local function CreateKeySystem()
     -- Top Bar
     local TopBar = Instance.new("Frame")
     TopBar.Name = "TopBar"
-    TopBar.Size = UDim2.new(1, 0, 0, 100)
+    TopBar.Size = UDim2.new(1, 0, 0, 120)
     TopBar.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
     TopBar.BackgroundTransparency = 0
     TopBar.BorderSizePixel = 0
@@ -187,92 +203,84 @@ local function CreateKeySystem()
         ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
     }
-    TopBarGradient.Rotation = 90
+    TopBarGradient.Rotation = 45
     TopBarGradient.Parent = TopBar
     
     local TopBarCorner = Instance.new("UICorner")
-    TopBarCorner.CornerRadius = UDim.new(0, 20)
+    TopBarCorner.CornerRadius = UDim.new(0, 25)
     TopBarCorner.Parent = TopBar
     
-    -- Logo/Icon
-    local Logo = Instance.new("TextLabel")
-    Logo.Size = UDim2.new(0, 80, 0, 80)
-    Logo.Position = UDim2.new(0, 20, 0, 10)
-    Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Logo.BackgroundTransparency = 0.9
-    Logo.Text = "🔐"
-    Logo.TextSize = 50
-    Logo.Font = Enum.Font.GothamBold
-    Logo.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Logo.Parent = TopBar
+    -- YSL Logo with RAINBOW effect
+    local YSLLogo = Instance.new("TextLabel")
+    YSLLogo.Size = UDim2.new(0, 200, 0, 60)
+    YSLLogo.Position = UDim2.new(0.5, -100, 0, 20)
+    YSLLogo.BackgroundTransparency = 1
+    YSLLogo.Text = "YSL"
+    YSLLogo.TextSize = 50
+    YSLLogo.Font = Enum.Font.GothamBold
+    YSLLogo.TextColor3 = Color3.fromRGB(255, 255, 255)
+    YSLLogo.Parent = TopBar
     
-    local LogoCorner = Instance.new("UICorner")
-    LogoCorner.CornerRadius = UDim.new(0, 15)
-    LogoCorner.Parent = Logo
+    local YSLStroke = Instance.new("UIStroke")
+    YSLStroke.Color = Color3.fromRGB(255, 0, 127)
+    YSLStroke.Thickness = 3
+    YSLStroke.Parent = YSLLogo
     
-    -- Title
-    local Title = Instance.new("TextLabel")
-    Title.Size = UDim2.new(0, 400, 0, 40)
-    Title.Position = UDim2.new(0, 110, 0, 15)
-    Title.BackgroundTransparency = 1
-    Title.Text = "YSL PREMIUM ACCESS"
-    Title.TextSize = 32
-    Title.Font = Enum.Font.GothamBold
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextXAlignment = Enum.TextXAlignment.Left
-    Title.Parent = TopBar
-    
-    local TitleStroke = Instance.new("UIStroke")
-    TitleStroke.Color = Color3.fromRGB(0, 0, 0)
-    TitleStroke.Thickness = 2
-    TitleStroke.Transparency = 0.5
-    TitleStroke.Parent = Title
+    -- Rainbow YSL Logo animation
+    task.spawn(function()
+        local hue = 0
+        while KeySystemUI.Parent do
+            hue = (hue + 2) % 360
+            YSLLogo.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
+            YSLStroke.Color = Color3.fromHSV((hue + 30) / 360, 1, 1)
+            task.wait(0.03)
+        end
+    end)
     
     -- Subtitle
     local Subtitle = Instance.new("TextLabel")
-    Subtitle.Size = UDim2.new(0, 400, 0, 30)
-    Subtitle.Position = UDim2.new(0, 110, 0, 55)
+    Subtitle.Size = UDim2.new(1, 0, 0, 30)
+    Subtitle.Position = UDim2.new(0, 0, 0, 85)
     Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "V117 ULTIMATE EDITION"
+    Subtitle.Text = "PREMIUM ACCESS V118"
     Subtitle.TextSize = 16
-    Subtitle.Font = Enum.Font.Gotham
+    Subtitle.Font = Enum.Font.GothamBold
     Subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
     Subtitle.TextTransparency = 0.3
-    Subtitle.TextXAlignment = Enum.TextXAlignment.Left
     Subtitle.Parent = TopBar
     
     -- Content Area
     local ContentArea = Instance.new("Frame")
     ContentArea.Name = "ContentArea"
-    ContentArea.Size = UDim2.new(1, -40, 1, -140)
-    ContentArea.Position = UDim2.new(0, 20, 0, 120)
+    ContentArea.Size = UDim2.new(1, -40, 1, -160)
+    ContentArea.Position = UDim2.new(0, 20, 0, 140)
     ContentArea.BackgroundTransparency = 1
     ContentArea.Parent = MainContainer
     
-    -- Info Text
-    local InfoText = Instance.new("TextLabel")
-    InfoText.Size = UDim2.new(1, 0, 0, 60)
-    InfoText.Position = UDim2.new(0, 0, 0, 0)
-    InfoText.BackgroundTransparency = 1
-    InfoText.Text = "Enter your premium key to unlock the most advanced\nEscape Tsunami script ever created"
-    InfoText.TextSize = 16
-    InfoText.Font = Enum.Font.Gotham
-    InfoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    InfoText.TextTransparency = 0.3
-    InfoText.TextWrapped = true
-    InfoText.Parent = ContentArea
+    -- Welcome Text
+    local WelcomeText = Instance.new("TextLabel")
+    WelcomeText.Size = UDim2.new(1, 0, 0, 70)
+    WelcomeText.Position = UDim2.new(0, 0, 0, 0)
+    WelcomeText.BackgroundTransparency = 1
+    WelcomeText.Text = "🔐 Welcome to YSL Premium\nEnter your key to unlock ultimate features"
+    WelcomeText.TextSize = 16
+    WelcomeText.Font = Enum.Font.Gotham
+    WelcomeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WelcomeText.TextTransparency = 0.3
+    WelcomeText.TextWrapped = true
+    WelcomeText.Parent = ContentArea
     
     -- Key Input Container
     local InputContainer = Instance.new("Frame")
     InputContainer.Size = UDim2.new(1, 0, 0, 70)
-    InputContainer.Position = UDim2.new(0, 0, 0, 80)
-    InputContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    InputContainer.Position = UDim2.new(0, 0, 0, 90)
+    InputContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
     InputContainer.BackgroundTransparency = 0.3
     InputContainer.BorderSizePixel = 0
     InputContainer.Parent = ContentArea
     
     local InputCorner = Instance.new("UICorner")
-    InputCorner.CornerRadius = UDim.new(0, 12)
+    InputCorner.CornerRadius = UDim.new(0, 15)
     InputCorner.Parent = InputContainer
     
     local InputStroke = Instance.new("UIStroke")
@@ -284,11 +292,11 @@ local function CreateKeySystem()
     
     -- Key Icon
     local KeyIcon = Instance.new("TextLabel")
-    KeyIcon.Size = UDim2.new(0, 50, 0, 50)
-    KeyIcon.Position = UDim2.new(0, 10, 0, 10)
+    KeyIcon.Size = UDim2.new(0, 60, 0, 60)
+    KeyIcon.Position = UDim2.new(0, 5, 0, 5)
     KeyIcon.BackgroundTransparency = 1
     KeyIcon.Text = "🔑"
-    KeyIcon.TextSize = 30
+    KeyIcon.TextSize = 35
     KeyIcon.Parent = InputContainer
     
     -- Key TextBox
@@ -299,14 +307,13 @@ local function CreateKeySystem()
     KeyBox.PlaceholderText = "Enter Premium Key..."
     KeyBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
     KeyBox.Text = ""
-    KeyBox.TextSize = 20
+    KeyBox.TextSize = 22
     KeyBox.Font = Enum.Font.GothamBold
     KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     KeyBox.TextXAlignment = Enum.TextXAlignment.Left
     KeyBox.ClearTextOnFocus = false
     KeyBox.Parent = InputContainer
     
-    -- Focus effect
     KeyBox.Focused:Connect(function()
         CreateTween(InputStroke, {Transparency = 0, Thickness = 3}, 0.2)
         CreateTween(InputContainer, {BackgroundTransparency = 0.1}, 0.2)
@@ -319,8 +326,8 @@ local function CreateKeySystem()
     
     -- Submit Button
     local SubmitButton = Instance.new("TextButton")
-    SubmitButton.Size = UDim2.new(0, 220, 0, 60)
-    SubmitButton.Position = UDim2.new(0.5, -110, 0, 170)
+    SubmitButton.Size = UDim2.new(0, 250, 0, 65)
+    SubmitButton.Position = UDim2.new(0.5, -125, 0, 180)
     SubmitButton.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
     SubmitButton.BorderSizePixel = 0
     SubmitButton.AutoButtonColor = false
@@ -328,7 +335,7 @@ local function CreateKeySystem()
     SubmitButton.Parent = ContentArea
     
     local SubmitCorner = Instance.new("UICorner")
-    SubmitCorner.CornerRadius = UDim.new(0, 12)
+    SubmitCorner.CornerRadius = UDim.new(0, 15)
     SubmitCorner.Parent = SubmitButton
     
     local SubmitGradient = Instance.new("UIGradient")
@@ -342,27 +349,26 @@ local function CreateKeySystem()
     local SubmitText = Instance.new("TextLabel")
     SubmitText.Size = UDim2.new(1, 0, 1, 0)
     SubmitText.BackgroundTransparency = 1
-    SubmitText.Text = "VERIFY KEY"
-    SubmitText.TextSize = 20
+    SubmitText.Text = "✨ VERIFY KEY ✨"
+    SubmitText.TextSize = 22
     SubmitText.Font = Enum.Font.GothamBold
     SubmitText.TextColor3 = Color3.fromRGB(255, 255, 255)
     SubmitText.Parent = SubmitButton
     
-    -- Button hover effect
     SubmitButton.MouseEnter:Connect(function()
-        CreateTween(SubmitButton, {Size = UDim2.new(0, 230, 0, 65)}, 0.2, Enum.EasingStyle.Back)
-        CreateTween(SubmitText, {TextSize = 22}, 0.2)
+        CreateTween(SubmitButton, {Size = UDim2.new(0, 260, 0, 70)}, 0.2, Enum.EasingStyle.Back)
+        CreateTween(SubmitText, {TextSize = 24}, 0.2)
     end)
     
     SubmitButton.MouseLeave:Connect(function()
-        CreateTween(SubmitButton, {Size = UDim2.new(0, 220, 0, 60)}, 0.2, Enum.EasingStyle.Back)
-        CreateTween(SubmitText, {TextSize = 20}, 0.2)
+        CreateTween(SubmitButton, {Size = UDim2.new(0, 250, 0, 65)}, 0.2, Enum.EasingStyle.Back)
+        CreateTween(SubmitText, {TextSize = 22}, 0.2)
     end)
     
     -- Status Label
     local StatusLabel = Instance.new("TextLabel")
     StatusLabel.Size = UDim2.new(1, 0, 0, 40)
-    StatusLabel.Position = UDim2.new(0, 0, 0, 250)
+    StatusLabel.Position = UDim2.new(0, 0, 0, 265)
     StatusLabel.BackgroundTransparency = 1
     StatusLabel.Text = ""
     StatusLabel.TextSize = 16
@@ -371,14 +377,15 @@ local function CreateKeySystem()
     StatusLabel.Parent = ContentArea
     
     -- Particles Effect
-    local function CreateParticle(parent)
+    local function CreateParticle()
         local particle = Instance.new("Frame")
-        particle.Size = UDim2.new(0, math.random(3, 8), 0, math.random(3, 8))
+        particle.Size = UDim2.new(0, math.random(4, 10), 0, math.random(4, 10))
         particle.Position = UDim2.new(math.random(), 0, 1, 0)
         particle.BackgroundColor3 = Color3.fromHSV(math.random(), 1, 1)
         particle.BackgroundTransparency = 0.3
         particle.BorderSizePixel = 0
-        particle.Parent = parent
+        particle.ZIndex = 10
+        particle.Parent = MainContainer
         
         local corner = Instance.new("UICorner")
         corner.CornerRadius = UDim.new(1, 0)
@@ -386,7 +393,8 @@ local function CreateKeySystem()
         
         CreateTween(particle, {
             Position = UDim2.new(math.random(), 0, -0.2, 0),
-            BackgroundTransparency = 1
+            BackgroundTransparency = 1,
+            Rotation = math.random(-180, 180)
         }, math.random(2, 4), Enum.EasingStyle.Linear)
         
         task.delay(4, function()
@@ -399,14 +407,13 @@ local function CreateKeySystem()
     MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
     
     CreateTween(MainContainer, {
-        Size = UDim2.new(0, 550, 0, 450),
-        Position = UDim2.new(0.5, -275, 0.5, -225)
-    }, 0.8, Enum.EasingStyle.Elastic)
+        Size = UDim2.new(0, 600, 0, 500),
+        Position = UDim2.new(0.5, -300, 0.5, -250)
+    }, 1, Enum.EasingStyle.Elastic)
     
-    -- Make Draggable
     MakeDraggable(MainContainer, TopBar)
     
-    -- Key Verification Function
+    -- Key Verification
     local function VerifyKey()
         local enteredKey = KeyBox.Text
         
@@ -414,37 +421,30 @@ local function CreateKeySystem()
             StatusLabel.Text = "⚠️ Please enter a key!"
             StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
             
-            -- Shake
             for i = 1, 3 do
-                CreateTween(InputContainer, {Position = UDim2.new(0, -10, 0, 80)}, 0.05)
+                CreateTween(InputContainer, {Position = UDim2.new(0, -10, 0, 90)}, 0.05)
                 task.wait(0.05)
-                CreateTween(InputContainer, {Position = UDim2.new(0, 10, 0, 80)}, 0.05)
+                CreateTween(InputContainer, {Position = UDim2.new(0, 10, 0, 90)}, 0.05)
                 task.wait(0.05)
             end
-            CreateTween(InputContainer, {Position = UDim2.new(0, 0, 0, 80)}, 0.05)
+            CreateTween(InputContainer, {Position = UDim2.new(0, 0, 0, 90)}, 0.05)
             return
         end
         
         if enteredKey == PREMIUM_KEY then
-            -- Success!
             StatusLabel.Text = "✅ KEY VERIFIED! Loading Premium Features..."
             StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
             
-            -- Success animation
             SubmitButton.Active = false
-            CreateTween(MainStroke, {Color = Color3.fromRGB(0, 255, 127)}, 0.3)
-            CreateTween(InputStroke, {Color = Color3.fromRGB(0, 255, 127)}, 0.3)
-            CreateTween(TopBar, {BackgroundColor3 = Color3.fromRGB(0, 255, 127)}, 0.3)
             
             -- Spawn particles
-            for i = 1, 20 do
+            for i = 1, 30 do
+                task.spawn(CreateParticle)
                 task.wait(0.05)
-                CreateParticle(MainContainer)
             end
             
-            task.wait(1.5)
+            task.wait(2)
             
-            -- Exit animation
             CreateTween(MainContainer, {
                 Size = UDim2.new(0, 0, 0, 0),
                 Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -461,29 +461,18 @@ local function CreateKeySystem()
             KEY_VERIFIED = true
             loadMainScript()
         else
-            -- Wrong key!
             StatusLabel.Text = "❌ INVALID KEY! Access Denied."
             StatusLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
             
-            -- Error animation
-            CreateTween(MainStroke, {Color = Color3.fromRGB(255, 0, 0)}, 0.2)
-            CreateTween(InputStroke, {Color = Color3.fromRGB(255, 0, 0)}, 0.2)
-            
-            -- Shake
             for i = 1, 5 do
-                CreateTween(MainContainer, {Position = UDim2.new(0.5, -285, 0.5, -225)}, 0.05)
+                CreateTween(MainContainer, {Position = UDim2.new(0.5, -310, 0.5, -250)}, 0.05)
                 task.wait(0.05)
-                CreateTween(MainContainer, {Position = UDim2.new(0.5, -265, 0.5, -225)}, 0.05)
+                CreateTween(MainContainer, {Position = UDim2.new(0.5, -290, 0.5, -250)}, 0.05)
                 task.wait(0.05)
             end
-            CreateTween(MainContainer, {Position = UDim2.new(0.5, -275, 0.5, -225)}, 0.1)
+            CreateTween(MainContainer, {Position = UDim2.new(0.5, -300, 0.5, -250)}, 0.1)
             
             KeyBox.Text = ""
-            
-            task.wait(0.5)
-            
-            CreateTween(MainStroke, {Color = Color3.fromRGB(255, 0, 127)}, 0.3)
-            CreateTween(InputStroke, {Color = Color3.fromRGB(255, 0, 127)}, 0.3)
         end
     end
     
@@ -498,7 +487,7 @@ end
 CreateKeySystem()
 
 --[[ ═══════════════════════════════════════════════════════════
-                    MAIN SCRIPT (LOADS AFTER KEY)
+                    MAIN SCRIPT
 ═══════════════════════════════════════════════════════════ ]]
 
 function loadMainScript()
@@ -507,7 +496,7 @@ function loadMainScript()
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║           LOADING ULTIMATE CUSTOM MENU...                     ║
+║          LOADING ULTIMATE CUSTOM MENU...                      ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
     
@@ -577,7 +566,7 @@ function loadMainScript()
         }
     }
     
-    -- Notification Function
+    -- Notification
     local function Notify(title, text, duration)
         duration = duration or 4
         game.StarterGui:SetCore("SendNotification", {
@@ -601,16 +590,12 @@ function loadMainScript()
         Notify("Respawn", "Features reactivated!", 2)
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    AUTO FARM FUNCTIONS (PERFECTED)
-    ═══════════════════════════════════════════════════════════ ]]
+    --[[ AUTO FARM FUNCTIONS ]]
     
     -- Auto Farm Brainrots
-    local BrainrotFarmRunning = false
     task.spawn(function()
         while task.wait(0.2) do
             if _G.Ysl.AutoFarm.Brainrot and _G.Ysl.Enabled then
-                BrainrotFarmRunning = true
                 pcall(function()
                     local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
                     if not activeBrainrots then return end
@@ -659,8 +644,6 @@ function loadMainScript()
                         task.wait(0.3)
                     end
                 end)
-            else
-                BrainrotFarmRunning = false
             end
         end
     end)
@@ -752,10 +735,7 @@ function loadMainScript()
         end
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    MANUAL SPEED UPGRADES
-    ═══════════════════════════════════════════════════════════ ]]
-    
+    -- Manual Speed Upgrades
     local function UpgradeSpeedManual(times)
         task.spawn(function()
             local successCount = 0
@@ -780,10 +760,7 @@ function loadMainScript()
         end)
     end
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    AUTO UPGRADES
-    ═══════════════════════════════════════════════════════════ ]]
-    
+    -- Auto Upgrades
     task.spawn(function()
         while task.wait(12) do
             if _G.Ysl.AutoUpgrade.Base and _G.Ysl.Enabled then
@@ -822,10 +799,7 @@ function loadMainScript()
         end
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    AUTO REBIRTH
-    ═══════════════════════════════════════════════════════════ ]]
-    
+    -- Auto Rebirth
     task.spawn(function()
         while task.wait(5) do
             if _G.Ysl.AutoRebirth.Enabled and _G.Ysl.Enabled then
@@ -846,11 +820,7 @@ function loadMainScript()
         end
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    MOVEMENT SYSTEM (PERFECT)
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    -- Speed
+    -- Movement System
     RunService.Heartbeat:Connect(function()
         if character and humanoid and humanoid.Parent then
             if _G.Ysl.Movement.Speed and _G.Ysl.Enabled then
@@ -952,11 +922,7 @@ function loadMainScript()
         end
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    PROTECTION SYSTEM
-    ═══════════════════════════════════════════════════════════ ]]
-    
-    -- God Mode
+    -- Protection
     RunService.Heartbeat:Connect(function()
         if character and humanoid and humanoid.Parent then
             if _G.Ysl.Protection.GodMode and _G.Ysl.Enabled then
@@ -967,7 +933,6 @@ function loadMainScript()
         end
     end)
     
-    -- Anti-Void
     task.spawn(function()
         while task.wait(0.5) do
             if _G.Ysl.Protection.AntiVoid and _G.Ysl.Enabled and hrp and hrp.Parent then
@@ -990,7 +955,6 @@ function loadMainScript()
         end
     end)
     
-    -- Wave Immunity
     RunService.Heartbeat:Connect(function()
         if character and humanoid and humanoid.Parent then
             if _G.Ysl.Protection.WaveImmunity and _G.Ysl.Enabled then
@@ -1029,10 +993,7 @@ function loadMainScript()
         end
     end)
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    MISC FUNCTIONS
-    ═══════════════════════════════════════════════════════════ ]]
-    
+    -- Misc Functions
     local function RemoveVIPWalls()
         pcall(function()
             local vipWalls = Workspace:FindFirstChild("VIPWalls")
@@ -1084,13 +1045,10 @@ function loadMainScript()
         end)
     end
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    CUSTOM UI CREATION
-    ═══════════════════════════════════════════════════════════ ]]
+    --[[ CUSTOM UI CREATION ]]
     
-    -- Main UI
     local YslUI = Instance.new("ScreenGui")
-    YslUI.Name = "YslMenuV117"
+    YslUI.Name = "YslMenuV118"
     YslUI.Parent = CoreGui
     YslUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     YslUI.ResetOnSpawn = false
@@ -1098,27 +1056,36 @@ function loadMainScript()
     -- Main Window
     local MainWindow = Instance.new("Frame")
     MainWindow.Name = "MainWindow"
-    MainWindow.Size = UDim2.new(0, 650, 0, 500)
-    MainWindow.Position = UDim2.new(0.5, -325, 0.5, -250)
-    MainWindow.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    MainWindow.Size = UDim2.new(0, 700, 0, 550)
+    MainWindow.Position = UDim2.new(0.5, -350, 0.5, -275)
+    MainWindow.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
     MainWindow.BackgroundTransparency = 0.05
     MainWindow.BorderSizePixel = 0
-    MainWindow.Active = true
     MainWindow.ClipsDescendants = true
     MainWindow.Parent = YslUI
     
     local WindowCorner = Instance.new("UICorner")
-    WindowCorner.CornerRadius = UDim.new(0, 15)
+    WindowCorner.CornerRadius = UDim.new(0, 20)
     WindowCorner.Parent = MainWindow
     
     local WindowStroke = Instance.new("UIStroke")
     WindowStroke.Color = Color3.fromRGB(255, 0, 127)
-    WindowStroke.Thickness = 2
+    WindowStroke.Thickness = 3
     WindowStroke.Transparency = 0.3
     WindowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     WindowStroke.Parent = MainWindow
     
-    -- Animated Background Gradient
+    -- Rainbow stroke
+    task.spawn(function()
+        local hue = 0
+        while YslUI.Parent do
+            hue = (hue + 1) % 360
+            WindowStroke.Color = Color3.fromHSV(hue / 360, 1, 1)
+            task.wait(0.03)
+        end
+    end)
+    
+    -- Animated Background
     local BGFrame = Instance.new("Frame")
     BGFrame.Size = UDim2.new(1, 0, 1, 0)
     BGFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1136,10 +1103,9 @@ function loadMainScript()
     BGGradient.Parent = BGFrame
     
     local BGCorner = Instance.new("UICorner")
-    BGCorner.CornerRadius = UDim.new(0, 15)
+    BGCorner.CornerRadius = UDim.new(0, 20)
     BGCorner.Parent = BGFrame
     
-    -- Animate gradient rotation
     task.spawn(function()
         while YslUI.Parent do
             CreateTween(BGGradient, {Rotation = BGGradient.Rotation + 360}, 15, Enum.EasingStyle.Linear)
@@ -1150,52 +1116,89 @@ function loadMainScript()
     -- Top Bar
     local TopBar = Instance.new("Frame")
     TopBar.Name = "TopBar"
-    TopBar.Size = UDim2.new(1, 0, 0, 50)
-    TopBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+    TopBar.Size = UDim2.new(1, 0, 0, 70)
+    TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     TopBar.BackgroundTransparency = 0.3
     TopBar.BorderSizePixel = 0
     TopBar.Parent = MainWindow
     
     local TopBarCorner = Instance.new("UICorner")
-    TopBarCorner.CornerRadius = UDim.new(0, 15)
+    TopBarCorner.CornerRadius = UDim.new(0, 20)
     TopBarCorner.Parent = TopBar
     
-    -- Logo
-    local LogoText = Instance.new("TextLabel")
-    LogoText.Size = UDim2.new(0, 200, 1, 0)
-    LogoText.Position = UDim2.new(0, 15, 0, 0)
-    LogoText.BackgroundTransparency = 1
-    LogoText.Text = "💎 YSL MENU V117"
-    LogoText.TextSize = 20
-    LogoText.Font = Enum.Font.GothamBold
-    LogoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    LogoText.TextXAlignment = Enum.TextXAlignment.Left
-    LogoText.Parent = TopBar
+    -- Profile Picture
+    local ProfilePic = Instance.new("ImageLabel")
+    ProfilePic.Name = "ProfilePic"
+    ProfilePic.Size = UDim2.new(0, 50, 0, 50)
+    ProfilePic.Position = UDim2.new(0, 10, 0, 10)
+    ProfilePic.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    ProfilePic.BorderSizePixel = 0
+    ProfilePic.Image = "rbxthumb://type=AvatarHeadShot&id=" .. lplayer.UserId .. "&w=150&h=150"
+    ProfilePic.Parent = TopBar
     
-    local LogoGradient = Instance.new("UIGradient")
-    LogoGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
-    }
-    LogoGradient.Parent = LogoText
+    local PicCorner = Instance.new("UICorner")
+    PicCorner.CornerRadius = UDim.new(1, 0)
+    PicCorner.Parent = ProfilePic
     
-    -- Version Label
-    local VersionLabel = Instance.new("TextLabel")
-    VersionLabel.Size = UDim2.new(0, 150, 1, 0)
-    VersionLabel.Position = UDim2.new(1, -165, 0, 0)
-    VersionLabel.BackgroundTransparency = 1
-    VersionLabel.Text = "ULTIMATE EDITION"
-    VersionLabel.TextSize = 12
-    VersionLabel.Font = Enum.Font.Gotham
-    VersionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    VersionLabel.TextTransparency = 0.5
-    VersionLabel.TextXAlignment = Enum.TextXAlignment.Right
-    VersionLabel.Parent = TopBar
+    local PicStroke = Instance.new("UIStroke")
+    PicStroke.Color = Color3.fromRGB(255, 0, 127)
+    PicStroke.Thickness = 3
+    PicStroke.Parent = ProfilePic
+    
+    -- Rainbow border for profile pic
+    task.spawn(function()
+        local hue = 0
+        while YslUI.Parent do
+            hue = (hue + 2) % 360
+            PicStroke.Color = Color3.fromHSV(hue / 360, 1, 1)
+            task.wait(0.03)
+        end
+    end)
+    
+    -- Greeting Text with RAINBOW YSL
+    local GreetingText = Instance.new("TextLabel")
+    GreetingText.Size = UDim2.new(0, 350, 0, 50)
+    GreetingText.Position = UDim2.new(0, 70, 0, 10)
+    GreetingText.BackgroundTransparency = 1
+    GreetingText.Text = "Hi, " .. lplayer.Name .. "! 👋"
+    GreetingText.TextSize = 24
+    GreetingText.Font = Enum.Font.GothamBold
+    GreetingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    GreetingText.TextXAlignment = Enum.TextXAlignment.Left
+    GreetingText.Parent = TopBar
+    
+    -- YSL Logo with RAINBOW
+    local YSLLogo = Instance.new("TextLabel")
+    YSLLogo.Size = UDim2.new(0, 150, 0, 50)
+    YSLLogo.Position = UDim2.new(1, -160, 0, 10)
+    YSLLogo.BackgroundTransparency = 1
+    YSLLogo.Text = "YSL V118"
+    YSLLogo.TextSize = 28
+    YSLLogo.Font = Enum.Font.GothamBold
+    YSLLogo.TextColor3 = Color3.fromRGB(255, 0, 127)
+    YSLLogo.TextXAlignment = Enum.TextXAlignment.Right
+    YSLLogo.Parent = TopBar
+    
+    local YSLStroke = Instance.new("UIStroke")
+    YSLStroke.Color = Color3.fromRGB(138, 43, 226)
+    YSLStroke.Thickness = 2
+    YSLStroke.Parent = YSLLogo
+    
+    -- Rainbow YSL animation
+    task.spawn(function()
+        local hue = 0
+        while YslUI.Parent do
+            hue = (hue + 2) % 360
+            YSLLogo.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
+            YSLStroke.Color = Color3.fromHSV((hue + 60) / 360, 1, 1)
+            task.wait(0.03)
+        end
+    end)
     
     -- Close Button
     local CloseButton = Instance.new("TextButton")
     CloseButton.Size = UDim2.new(0, 40, 0, 40)
-    CloseButton.Position = UDim2.new(1, -45, 0, 5)
+    CloseButton.Position = UDim2.new(1, -50, 0, 15)
     CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
     CloseButton.BackgroundTransparency = 0.3
     CloseButton.BorderSizePixel = 0
@@ -1224,21 +1227,20 @@ function loadMainScript()
         CreateTween(CloseButton, {BackgroundTransparency = 0.3, Size = UDim2.new(0, 40, 0, 40)}, 0.2)
     end)
     
-    -- Make Draggable
     MakeDraggable(MainWindow, TopBar)
     
     -- Tabs Container
     local TabsContainer = Instance.new("Frame")
     TabsContainer.Name = "TabsContainer"
-    TabsContainer.Size = UDim2.new(0, 150, 1, -70)
-    TabsContainer.Position = UDim2.new(0, 10, 0, 60)
-    TabsContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-    TabsContainer.BackgroundTransparency = 0.5
+    TabsContainer.Size = UDim2.new(0, 160, 1, -90)
+    TabsContainer.Position = UDim2.new(0, 10, 0, 80)
+    TabsContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    BackgroundTransparency = 0.5
     TabsContainer.BorderSizePixel = 0
     TabsContainer.Parent = MainWindow
     
     local TabsCorner = Instance.new("UICorner")
-    TabsCorner.CornerRadius = UDim.new(0, 10)
+    TabsCorner.CornerRadius = UDim.new(0, 12)
     TabsCorner.Parent = TabsContainer
     
     local TabsLayout = Instance.new("UIListLayout")
@@ -1249,19 +1251,19 @@ function loadMainScript()
     -- Content Container
     local ContentContainer = Instance.new("Frame")
     ContentContainer.Name = "ContentContainer"
-    ContentContainer.Size = UDim2.new(1, -180, 1, -70)
-    ContentContainer.Position = UDim2.new(0, 170, 0, 60)
+    ContentContainer.Size = UDim2.new(1, -190, 1, -90)
+    ContentContainer.Position = UDim2.new(0, 180, 0, 80)
     ContentContainer.BackgroundTransparency = 1
     ContentContainer.Parent = MainWindow
     
-    -- Tab System
+    -- Tab System & UI Elements
     local CurrentTab = nil
     local Tabs = {}
     
     local function CreateTab(name, icon)
         local TabButton = Instance.new("TextButton")
-        TabButton.Size = UDim2.new(1, -10, 0, 40)
-        TabButton.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+        TabButton.Size = UDim2.new(1, -10, 0, 45)
+        TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
         TabButton.BackgroundTransparency = 0.5
         TabButton.BorderSizePixel = 0
         TabButton.AutoButtonColor = false
@@ -1269,7 +1271,7 @@ function loadMainScript()
         TabButton.Parent = TabsContainer
         
         local TabCorner = Instance.new("UICorner")
-        TabCorner.CornerRadius = UDim.new(0, 8)
+        TabCorner.CornerRadius = UDim.new(0, 10)
         TabCorner.Parent = TabButton
         
         local TabLabel = Instance.new("TextLabel")
@@ -1277,7 +1279,7 @@ function loadMainScript()
         TabLabel.Position = UDim2.new(0, 10, 0, 0)
         TabLabel.BackgroundTransparency = 1
         TabLabel.Text = icon .. " " .. name
-        TabLabel.TextSize = 14
+        TabLabel.TextSize = 15
         TabLabel.Font = Enum.Font.GothamBold
         TabLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
         TabLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1288,7 +1290,7 @@ function loadMainScript()
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.BackgroundTransparency = 1
         TabContent.BorderSizePixel = 0
-        TabContent.ScrollBarThickness = 6
+        TabContent.ScrollBarThickness = 8
         TabContent.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 127)
         TabContent.Visible = false
         TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -1308,14 +1310,12 @@ function loadMainScript()
         ContentPadding.Parent = TabContent
         
         TabButton.MouseButton1Click:Connect(function()
-            -- Deselect all tabs
             for _, tab in pairs(Tabs) do
                 CreateTween(tab.Button, {BackgroundTransparency = 0.5}, 0.2)
                 CreateTween(tab.Label, {TextColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
                 tab.Content.Visible = false
             end
             
-            -- Select this tab
             CreateTween(TabButton, {BackgroundTransparency = 0}, 0.2)
             CreateTween(TabLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
             TabContent.Visible = true
@@ -1341,14 +1341,12 @@ function loadMainScript()
         }
         
         table.insert(Tabs, tab)
-        
         return TabContent
     end
     
-    -- UI Element Creation Functions
     local function CreateSection(parent, name)
         local Section = Instance.new("Frame")
-        Section.Size = UDim2.new(1, 0, 0, 30)
+        Section.Size = UDim2.new(1, 0, 0, 35)
         Section.BackgroundTransparency = 1
         Section.Parent = parent
         
@@ -1356,7 +1354,7 @@ function loadMainScript()
         SectionLabel.Size = UDim2.new(1, 0, 1, 0)
         SectionLabel.BackgroundTransparency = 1
         SectionLabel.Text = name
-        SectionLabel.TextSize = 16
+        SectionLabel.TextSize = 18
         SectionLabel.Font = Enum.Font.GothamBold
         SectionLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
         SectionLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1379,30 +1377,30 @@ function loadMainScript()
     
     local function CreateToggle(parent, name, callback)
         local Toggle = Instance.new("Frame")
-        Toggle.Size = UDim2.new(1, 0, 0, 40)
-        Toggle.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        Toggle.Size = UDim2.new(1, 0, 0, 45)
+        Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
         Toggle.BackgroundTransparency = 0.5
         Toggle.BorderSizePixel = 0
         Toggle.Parent = parent
         
         local ToggleCorner = Instance.new("UICorner")
-        ToggleCorner.CornerRadius = UDim.new(0, 8)
+        ToggleCorner.CornerRadius = UDim.new(0, 10)
         ToggleCorner.Parent = Toggle
         
         local ToggleLabel = Instance.new("TextLabel")
-        ToggleLabel.Size = UDim2.new(1, -60, 1, 0)
-        ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
+        ToggleLabel.Size = UDim2.new(1, -70, 1, 0)
+        ToggleLabel.Position = UDim2.new(0, 15, 0, 0)
         ToggleLabel.BackgroundTransparency = 1
         ToggleLabel.Text = name
-        ToggleLabel.TextSize = 14
+        ToggleLabel.TextSize = 15
         ToggleLabel.Font = Enum.Font.Gotham
         ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
         ToggleLabel.Parent = Toggle
         
         local ToggleButton = Instance.new("TextButton")
-        ToggleButton.Size = UDim2.new(0, 45, 0, 25)
-        ToggleButton.Position = UDim2.new(1, -55, 0.5, -12.5)
+        ToggleButton.Size = UDim2.new(0, 50, 0, 28)
+        ToggleButton.Position = UDim2.new(1, -60, 0.5, -14)
         ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
         ToggleButton.BorderSizePixel = 0
         ToggleButton.AutoButtonColor = false
@@ -1414,7 +1412,7 @@ function loadMainScript()
         ToggleButtonCorner.Parent = ToggleButton
         
         local ToggleCircle = Instance.new("Frame")
-        ToggleCircle.Size = UDim2.new(0, 21, 0, 21)
+        ToggleCircle.Size = UDim2.new(0, 24, 0, 24)
         ToggleCircle.Position = UDim2.new(0, 2, 0, 2)
         ToggleCircle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
         ToggleCircle.BorderSizePixel = 0
@@ -1431,7 +1429,7 @@ function loadMainScript()
             
             if enabled then
                 CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(255, 0, 127)}, 0.2)
-                CreateTween(ToggleCircle, {Position = UDim2.new(1, -23, 0, 2), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
+                CreateTween(ToggleCircle, {Position = UDim2.new(1, -26, 0, 2), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
             else
                 CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(50, 50, 55)}, 0.2)
                 CreateTween(ToggleCircle, {Position = UDim2.new(0, 2, 0, 2), BackgroundColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
@@ -1453,19 +1451,19 @@ function loadMainScript()
     
     local function CreateButton(parent, name, callback)
         local Button = Instance.new("TextButton")
-        Button.Size = UDim2.new(1, 0, 0, 40)
+        Button.Size = UDim2.new(1, 0, 0, 45)
         Button.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
         Button.BackgroundTransparency = 0.3
         Button.BorderSizePixel = 0
         Button.AutoButtonColor = false
         Button.Text = name
-        Button.TextSize = 14
+        Button.TextSize = 16
         Button.Font = Enum.Font.GothamBold
         Button.TextColor3 = Color3.fromRGB(255, 255, 255)
         Button.Parent = parent
         
         local ButtonCorner = Instance.new("UICorner")
-        ButtonCorner.CornerRadius = UDim.new(0, 8)
+        ButtonCorner.CornerRadius = UDim.new(0, 10)
         ButtonCorner.Parent = Button
         
         local ButtonGradient = Instance.new("UIGradient")
@@ -1477,9 +1475,9 @@ function loadMainScript()
         ButtonGradient.Parent = Button
         
         Button.MouseButton1Click:Connect(function()
-            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 35)}, 0.1)
-            task.wait(0.1)
             CreateTween(Button, {Size = UDim2.new(1, 0, 0, 40)}, 0.1)
+            task.wait(0.1)
+            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 45)}, 0.1)
             callback()
         end)
         
@@ -1496,42 +1494,42 @@ function loadMainScript()
     
     local function CreateSlider(parent, name, min, max, default, callback)
         local Slider = Instance.new("Frame")
-        Slider.Size = UDim2.new(1, 0, 0, 60)
-        Slider.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        Slider.Size = UDim2.new(1, 0, 0, 70)
+        Slider.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
         Slider.BackgroundTransparency = 0.5
         Slider.BorderSizePixel = 0
         Slider.Parent = parent
         
         local SliderCorner = Instance.new("UICorner")
-        SliderCorner.CornerRadius = UDim.new(0, 8)
+        SliderCorner.CornerRadius = UDim.new(0, 10)
         SliderCorner.Parent = Slider
         
         local SliderLabel = Instance.new("TextLabel")
-        SliderLabel.Size = UDim2.new(1, -20, 0, 20)
-        SliderLabel.Position = UDim2.new(0, 10, 0, 5)
+        SliderLabel.Size = UDim2.new(1, -20, 0, 25)
+        SliderLabel.Position = UDim2.new(0, 15, 0, 8)
         SliderLabel.BackgroundTransparency = 1
         SliderLabel.Text = name
-        SliderLabel.TextSize = 14
+        SliderLabel.TextSize = 15
         SliderLabel.Font = Enum.Font.Gotham
         SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
         SliderLabel.Parent = Slider
         
         local SliderValue = Instance.new("TextLabel")
-        SliderValue.Size = UDim2.new(0, 50, 0, 20)
-        SliderValue.Position = UDim2.new(1, -60, 0, 5)
+        SliderValue.Size = UDim2.new(0, 60, 0, 25)
+        SliderValue.Position = UDim2.new(1, -75, 0, 8)
         SliderValue.BackgroundTransparency = 1
         SliderValue.Text = tostring(default)
-        SliderValue.TextSize = 14
+        SliderValue.TextSize = 15
         SliderValue.Font = Enum.Font.GothamBold
         SliderValue.TextColor3 = Color3.fromRGB(255, 0, 127)
         SliderValue.TextXAlignment = Enum.TextXAlignment.Right
         SliderValue.Parent = Slider
         
         local SliderBar = Instance.new("Frame")
-        SliderBar.Size = UDim2.new(1, -20, 0, 8)
-        SliderBar.Position = UDim2.new(0, 10, 0, 35)
-        SliderBar.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+        SliderBar.Size = UDim2.new(1, -30, 0, 10)
+        SliderBar.Position = UDim2.new(0, 15, 0, 45)
+        SliderBar.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         SliderBar.BorderSizePixel = 0
         SliderBar.Parent = Slider
         
@@ -1557,8 +1555,8 @@ function loadMainScript()
         FillGradient.Parent = SliderFill
         
         local SliderDot = Instance.new("Frame")
-        SliderDot.Size = UDim2.new(0, 18, 0, 18)
-        SliderDot.Position = UDim2.new((default - min) / (max - min), -9, 0.5, -9)
+        SliderDot.Size = UDim2.new(0, 20, 0, 20)
+        SliderDot.Position = UDim2.new((default - min) / (max - min), -10, 0.5, -10)
         SliderDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         SliderDot.BorderSizePixel = 0
         SliderDot.Parent = SliderBar
@@ -1582,7 +1580,7 @@ function loadMainScript()
                     
                     SliderValue.Text = tostring(value)
                     CreateTween(SliderFill, {Size = UDim2.new(relative, 0, 1, 0)}, 0.1)
-                    CreateTween(SliderDot, {Position = UDim2.new(relative, -9, 0.5, -9)}, 0.1)
+                    CreateTween(SliderDot, {Position = UDim2.new(relative, -10, 0.5, -10)}, 0.1)
                     
                     callback(value)
                 end
@@ -1609,28 +1607,25 @@ function loadMainScript()
         
         Slider.MouseEnter:Connect(function()
             CreateTween(Slider, {BackgroundTransparency = 0.3}, 0.2)
-            CreateTween(SliderDot, {Size = UDim2.new(0, 22, 0, 22), Position = UDim2.new(SliderDot.Position.X.Scale, -11, 0.5, -11)}, 0.2)
+            CreateTween(SliderDot, {Size = UDim2.new(0, 24, 0, 24), Position = UDim2.new(SliderDot.Position.X.Scale, -12, 0.5, -12)}, 0.2)
         end)
         
         Slider.MouseLeave:Connect(function()
             if not dragging then
                 CreateTween(Slider, {BackgroundTransparency = 0.5}, 0.2)
-                CreateTween(SliderDot, {Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(SliderDot.Position.X.Scale, -9, 0.5, -9)}, 0.2)
+                CreateTween(SliderDot, {Size = UDim2.new(0, 20, 0, 20), Position = UDim2.new(SliderDot.Position.X.Scale, -10, 0.5, -10)}, 0.2)
             end
         end)
         
         return Slider
     end
     
-    --[[ ═══════════════════════════════════════════════════════════
-                    CREATE ALL TABS AND CONTENT
-    ═══════════════════════════════════════════════════════════ ]]
+    -- CREATE ALL TABS
     
     -- TAB 1: AUTO FARM
     local FarmTab = CreateTab("Auto Farm", "🚜")
     
     CreateSection(FarmTab, "Farming Features")
-    
     CreateToggle(FarmTab, "Auto Farm Brainrots", function(v)
         _G.Ysl.AutoFarm.Brainrot = v
         Notify("Auto Farm", v and "Brainrot farming enabled!" or "Disabled", 2)
@@ -1658,7 +1653,6 @@ function loadMainScript()
     end)
     
     CreateSection(FarmTab, "Ultimate Farm")
-    
     CreateButton(FarmTab, "🔥 ULTIMATE FARM (Enable Everything)", function()
         _G.Ysl.AutoFarm.Brainrot = true
         _G.Ysl.AutoFarm.Money = true
@@ -1676,50 +1670,22 @@ function loadMainScript()
     local UpgradeTab = CreateTab("Upgrades", "⬆️")
     
     CreateSection(UpgradeTab, "Manual Speed Upgrades")
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +1", function()
-        UpgradeSpeedManual(1)
-    end)
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +5", function()
-        UpgradeSpeedManual(5)
-    end)
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +10", function()
-        UpgradeSpeedManual(10)
-    end)
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +25", function()
-        UpgradeSpeedManual(25)
-    end)
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +50", function()
-        UpgradeSpeedManual(50)
-    end)
-    
-    CreateButton(UpgradeTab, "Upgrade Speed +100", function()
-        UpgradeSpeedManual(100)
-    end)
+    CreateButton(UpgradeTab, "Upgrade Speed +1", function() UpgradeSpeedManual(1) end)
+    CreateButton(UpgradeTab, "Upgrade Speed +5", function() UpgradeSpeedManual(5) end)
+    CreateButton(UpgradeTab, "Upgrade Speed +10", function() UpgradeSpeedManual(10) end)
+    CreateButton(UpgradeTab, "Upgrade Speed +25", function() UpgradeSpeedManual(25) end)
+    CreateButton(UpgradeTab, "Upgrade Speed +50", function() UpgradeSpeedManual(50) end)
+    CreateButton(UpgradeTab, "Upgrade Speed +100", function() UpgradeSpeedManual(100) end)
     
     CreateSection(UpgradeTab, "Auto Upgrades")
-    
-    CreateToggle(UpgradeTab, "Auto Upgrade Base", function(v)
-        _G.Ysl.AutoUpgrade.Base = v
-    end)
-    
-    CreateToggle(UpgradeTab, "Auto Upgrade All Brainrots", function(v)
-        _G.Ysl.AutoUpgrade.Brainrots = v
-    end)
-    
-    CreateToggle(UpgradeTab, "Auto Upgrade Carry Capacity", function(v)
-        _G.Ysl.AutoUpgrade.Carry = v
-    end)
+    CreateToggle(UpgradeTab, "Auto Upgrade Base", function(v) _G.Ysl.AutoUpgrade.Base = v end)
+    CreateToggle(UpgradeTab, "Auto Upgrade All Brainrots", function(v) _G.Ysl.AutoUpgrade.Brainrots = v end)
+    CreateToggle(UpgradeTab, "Auto Upgrade Carry Capacity", function(v) _G.Ysl.AutoUpgrade.Carry = v end)
     
     -- TAB 3: REBIRTH
     local RebirthTab = CreateTab("Rebirth", "🔄")
     
     CreateSection(RebirthTab, "Auto Rebirth Settings")
-    
     CreateToggle(RebirthTab, "Auto Rebirth", function(v)
         _G.Ysl.AutoRebirth.Enabled = v
         Notify("Auto Rebirth", v and "Enabled at speed " .. _G.Ysl.RebirthAt or "Disabled", 2)
@@ -1740,56 +1706,27 @@ function loadMainScript()
     local MovementTab = CreateTab("Movement", "🏃")
     
     CreateSection(MovementTab, "Speed")
-    
-    CreateToggle(MovementTab, "Speed Boost", function(v)
-        _G.Ysl.Movement.Speed = v
-    end)
-    
-    CreateSlider(MovementTab, "Speed Value", 16, 500, 100, function(v)
-        _G.Ysl.Movement.SpeedValue = v
-    end)
+    CreateToggle(MovementTab, "Speed Boost", function(v) _G.Ysl.Movement.Speed = v end)
+    CreateSlider(MovementTab, "Speed Value", 16, 500, 100, function(v) _G.Ysl.Movement.SpeedValue = v end)
     
     CreateSection(MovementTab, "Fly")
-    
     CreateToggle(MovementTab, "Fly", function(v)
         _G.Ysl.Movement.Fly = v
-        if v then
-            StartFly()
-        else
-            StopFly()
-        end
+        if v then StartFly() else StopFly() end
     end)
-    
-    CreateSlider(MovementTab, "Fly Speed", 10, 200, 50, function(v)
-        _G.Ysl.Movement.FlySpeed = v
-    end)
+    CreateSlider(MovementTab, "Fly Speed", 10, 200, 50, function(v) _G.Ysl.Movement.FlySpeed = v end)
     
     CreateSection(MovementTab, "Other Movement")
-    
-    CreateToggle(MovementTab, "NoClip", function(v)
-        _G.Ysl.Movement.NoClip = v
-    end)
-    
-    CreateToggle(MovementTab, "Infinite Jump", function(v)
-        _G.Ysl.Movement.InfJump = v
-    end)
+    CreateToggle(MovementTab, "NoClip", function(v) _G.Ysl.Movement.NoClip = v end)
+    CreateToggle(MovementTab, "Infinite Jump", function(v) _G.Ysl.Movement.InfJump = v end)
     
     -- TAB 5: PROTECTION
     local ProtectionTab = CreateTab("Protection", "🛡️")
     
     CreateSection(ProtectionTab, "Player Protection")
-    
-    CreateToggle(ProtectionTab, "God Mode", function(v)
-        _G.Ysl.Protection.GodMode = v
-    end)
-    
-    CreateToggle(ProtectionTab, "Anti-Void", function(v)
-        _G.Ysl.Protection.AntiVoid = v
-    end)
-    
-    CreateToggle(ProtectionTab, "Wave Immunity", function(v)
-        _G.Ysl.Protection.WaveImmunity = v
-    end)
+    CreateToggle(ProtectionTab, "God Mode", function(v) _G.Ysl.Protection.GodMode = v end)
+    CreateToggle(ProtectionTab, "Anti-Void", function(v) _G.Ysl.Protection.AntiVoid = v end)
+    CreateToggle(ProtectionTab, "Wave Immunity", function(v) _G.Ysl.Protection.WaveImmunity = v end)
     
     CreateButton(ProtectionTab, "Remove All Waves", function()
         pcall(function()
@@ -1805,30 +1742,19 @@ function loadMainScript()
     local MiscTab = CreateTab("Misc", "⚙️")
     
     CreateSection(MiscTab, "VIP Bypass")
-    
-    CreateButton(MiscTab, "Remove VIP Walls", function()
-        RemoveVIPWalls()
-    end)
+    CreateButton(MiscTab, "Remove VIP Walls", function() RemoveVIPWalls() end)
     
     CreateSection(MiscTab, "Teleports")
-    
-    CreateButton(MiscTab, "TP to Spawn", function()
-        TeleportTo("Spawn")
-    end)
-    
-    CreateButton(MiscTab, "TP to Sell Point", function()
-        TeleportTo("SellPoint")
-    end)
+    CreateButton(MiscTab, "TP to Spawn", function() TeleportTo("Spawn") end)
+    CreateButton(MiscTab, "TP to Sell Point", function() TeleportTo("SellPoint") end)
     
     CreateSection(MiscTab, "Quick Actions")
-    
     CreateButton(MiscTab, "Claim Free Epic", function()
         pcall(function()
             TakeFreeEpic_RF:InvokeServer()
             Notify("Free Epic", "Claimed!", 2)
         end)
     end)
-    
     CreateButton(MiscTab, "Rejoin Server", function()
         game:GetService("TeleportService"):Teleport(game.PlaceId, lplayer)
     end)
@@ -1841,30 +1767,29 @@ function loadMainScript()
     MainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
     
     CreateTween(MainWindow, {
-        Size = UDim2.new(0, 650, 0, 500),
-        Position = UDim2.new(0.5, -325, 0.5, -250)
-    }, 0.8, Enum.EasingStyle.Elastic)
+        Size = UDim2.new(0, 700, 0, 550),
+        Position = UDim2.new(0.5, -350, 0.5, -275)
+    }, 1, Enum.EasingStyle.Elastic)
     
-    -- Success notification
-    Notify("YSL V117 ULTIMATE", "Welcome " .. lplayer.Name .. "!", 5)
-    Notify("Custom UI Loaded", "Premium features unlocked! 💎", 4)
+    Notify("YSL V118 ULTIMATE", "Welcome " .. lplayer.Name .. "! 👋", 5)
+    Notify("Masterpiece Loaded", "Premium features unlocked! 💎", 4)
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║         YSL MENU V117 ULTIMATE EDITION                        ║
-║            LOADED SUCCESSFULLY! 🔥                            ║
+║        YSL MENU V118 ULTIMATE MASTERPIECE                     ║
+║           LOADED SUCCESSFULLY! 🔥                             ║
 ║                                                               ║
 ║  Status: ✅ PREMIUM ACCESS VERIFIED                          ║
 ║  User: ]] .. lplayer.Name .. string.rep(" ", 53 - #lplayer.Name) .. [[║
 ║                                                               ║
-║  💎 100% CUSTOM UI LOADED                                    ║
-║  🎨 Glassmorphism Design                                     ║
-║  ⚡ Smooth Animations                                         ║
-║  🔐 Advanced Key System                                      ║
-║  🔥 All Features Working                                     ║
+║  🌈 RAINBOW YSL LOGO                                         ║
+║  👤 USER PROFILE PICTURE                                      ║
+║  💬 PERSONALIZED GREETING                                     ║
+║  🎨 100% CUSTOM UI                                           ║
+║  ⚡ ALL FEATURES PERFECTED                                    ║
 ║                                                               ║
-║  Made by YSL Scripts - Ultimate Quality                       ║
+║  Made by YSL Scripts - The Ultimate Quality                   ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
     
-end -- End of loadMainScript()
+end
