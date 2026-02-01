@@ -1,22 +1,21 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║         YSL MENU V118 ULTIMATE MASTERPIECE                    ║
-    ║         THE BEST SCRIPT EVER CREATED - BY YSL                 ║
+    ║         YSL SCRIPTS V2 - ULTIMATE EDITION                     ║
+    ║         Enhanced Speed System + Auto Collection               ║
     ║                                                               ║
-    ║  🌈 Rainbow YSL Logo                                          ║
-    ║  👤 User Profile Picture                                      ║
-    ║  💬 Personalized Greeting                                     ║
-    ║  🎨 Premium Custom UI                                         ║
-    ║  ⚡ All Features Perfected                                    ║
+    ║  🚀 Custom Speed Bypass (16-1000)                            ║
+    ║  💰 Fixed Auto Money Collection                              ║
+    ║  ⚡ Visual Speed Display                                      ║
+    ║  🎨 Improved UI with Toggle Key                              ║
     ║                                                               ║
-    ║  Made by YSL Scripts - The Ultimate Quality                   ║
+    ║  Made by yslscripts - The Best Quality                       ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
 print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║              YSL MENU V118 INITIALIZING...                    ║
-║           ULTIMATE MASTERPIECE LOADING...                     ║
+║              YSL SCRIPTS V2 LOADING...                        ║
+║           ULTIMATE EDITION INITIALIZING...                    ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
 
@@ -92,12 +91,6 @@ local function MakeDraggable(frame, dragHandle)
             }, 0.1, Enum.EasingStyle.Linear)
         end
     end)
-end
-
--- Get User Profile Picture
-local function GetUserThumbnail(userId)
-    local thumbnailUrl = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=150&height=150&format=png"
-    return thumbnailUrl
 end
 
 --[[ ═══════════════════════════════════════════════════════════
@@ -215,8 +208,8 @@ local function CreateKeySystem()
     YSLLogo.Size = UDim2.new(0, 200, 0, 60)
     YSLLogo.Position = UDim2.new(0.5, -100, 0, 20)
     YSLLogo.BackgroundTransparency = 1
-    YSLLogo.Text = "YSL"
-    YSLLogo.TextSize = 50
+    YSLLogo.Text = "yslscripts"
+    YSLLogo.TextSize = 40
     YSLLogo.Font = Enum.Font.GothamBold
     YSLLogo.TextColor3 = Color3.fromRGB(255, 255, 255)
     YSLLogo.Parent = TopBar
@@ -242,7 +235,7 @@ local function CreateKeySystem()
     Subtitle.Size = UDim2.new(1, 0, 0, 30)
     Subtitle.Position = UDim2.new(0, 0, 0, 85)
     Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "PREMIUM ACCESS V118"
+    Subtitle.Text = "PREMIUM ACCESS V2"
     Subtitle.TextSize = 16
     Subtitle.Font = Enum.Font.GothamBold
     Subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -262,7 +255,7 @@ local function CreateKeySystem()
     WelcomeText.Size = UDim2.new(1, 0, 0, 70)
     WelcomeText.Position = UDim2.new(0, 0, 0, 0)
     WelcomeText.BackgroundTransparency = 1
-    WelcomeText.Text = "🔐 Welcome to YSL Premium\nEnter your key to unlock ultimate features"
+    WelcomeText.Text = "🔐 Welcome to yslscripts Premium\nEnter your key to unlock ultimate features"
     WelcomeText.TextSize = 16
     WelcomeText.Font = Enum.Font.Gotham
     WelcomeText.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -376,32 +369,6 @@ local function CreateKeySystem()
     StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
     StatusLabel.Parent = ContentArea
     
-    -- Particles Effect
-    local function CreateParticle()
-        local particle = Instance.new("Frame")
-        particle.Size = UDim2.new(0, math.random(4, 10), 0, math.random(4, 10))
-        particle.Position = UDim2.new(math.random(), 0, 1, 0)
-        particle.BackgroundColor3 = Color3.fromHSV(math.random(), 1, 1)
-        particle.BackgroundTransparency = 0.3
-        particle.BorderSizePixel = 0
-        particle.ZIndex = 10
-        particle.Parent = MainContainer
-        
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(1, 0)
-        corner.Parent = particle
-        
-        CreateTween(particle, {
-            Position = UDim2.new(math.random(), 0, -0.2, 0),
-            BackgroundTransparency = 1,
-            Rotation = math.random(-180, 180)
-        }, math.random(2, 4), Enum.EasingStyle.Linear)
-        
-        task.delay(4, function()
-            particle:Destroy()
-        end)
-    end
-    
     -- Entrance Animation
     MainContainer.Size = UDim2.new(0, 0, 0, 0)
     MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -437,13 +404,7 @@ local function CreateKeySystem()
             
             SubmitButton.Active = false
             
-            -- Spawn particles
-            for i = 1, 30 do
-                task.spawn(CreateParticle)
-                task.wait(0.05)
-            end
-            
-            task.wait(2)
+            task.wait(1.5)
             
             CreateTween(MainContainer, {
                 Size = UDim2.new(0, 0, 0, 0),
@@ -525,11 +486,11 @@ function loadMainScript()
         Stats = {
             Brainrots = 0,
             LuckyBlocks = 0,
-            WavesBlocked = 0,
             MoneyCollected = 0,
             SessionStart = os.time()
         },
         RebirthAt = 500,
+        CustomSpeed = 100,
         AutoFarm = {
             Brainrot = false,
             Money = false,
@@ -546,22 +507,16 @@ function loadMainScript()
             LastRebirth = 0
         },
         Movement = {
-            Speed = false,
+            CustomSpeedEnabled = false,
             SpeedValue = 100,
             Fly = false,
             FlySpeed = 50,
             NoClip = false,
             InfJump = false
         },
-        Protection = {
-            GodMode = false,
-            AntiVoid = false,
-            WaveImmunity = false
-        },
         ESP = {
             Brainrots = false,
             LuckyBlocks = false,
-            VIPWalls = false,
             Players = false
         }
     }
@@ -570,7 +525,7 @@ function loadMainScript()
     local function Notify(title, text, duration)
         duration = duration or 4
         game.StarterGui:SetCore("SendNotification", {
-            Title = "YSL | " .. title,
+            Title = "yslscripts | " .. title,
             Text = text,
             Duration = duration
         })
@@ -589,6 +544,37 @@ function loadMainScript()
         hrp = char:WaitForChild("HumanoidRootPart")
         Notify("Respawn", "Features reactivated!", 2)
     end)
+    
+    --[[ CUSTOM SPEED SYSTEM ]]
+    
+    local customSpeedConnection = nil
+    
+    local function EnableCustomSpeed(speed)
+        if customSpeedConnection then
+            customSpeedConnection:Disconnect()
+        end
+        
+        _G.Ysl.Movement.SpeedValue = math.clamp(speed, 16, 1000)
+        
+        customSpeedConnection = RunService.Heartbeat:Connect(function()
+            if character and humanoid and humanoid.Parent and _G.Ysl.Movement.CustomSpeedEnabled then
+                humanoid.WalkSpeed = _G.Ysl.Movement.SpeedValue
+            end
+        end)
+        
+        Notify("Speed Changed", "Speed set to: " .. _G.Ysl.Movement.SpeedValue, 3)
+    end
+    
+    local function DisableCustomSpeed()
+        if customSpeedConnection then
+            customSpeedConnection:Disconnect()
+            customSpeedConnection = nil
+        end
+        
+        if humanoid then
+            humanoid.WalkSpeed = 16
+        end
+    end
     
     --[[ AUTO FARM FUNCTIONS ]]
     
@@ -648,30 +634,51 @@ function loadMainScript()
         end
     end)
     
-    -- Auto Collect Money
+    -- FIXED Auto Collect Money - Now walks to collection points
     task.spawn(function()
-        while task.wait(0.4) do
+        while task.wait(0.5) do
             if _G.Ysl.AutoFarm.Money and _G.Ysl.Enabled then
                 pcall(function()
-                    CollectMoney_RE:FireServer()
                     local bases = Workspace:FindFirstChild("Bases")
-                    if bases then
-                        for _, base in pairs(bases:GetChildren()) do
-                            local slots = base:FindFirstChild("Slots")
-                            if slots then
-                                for _, slot in pairs(slots:GetChildren()) do
-                                    local collect = slot:FindFirstChild("Collect")
-                                    if collect and collect:IsA("BasePart") then
-                                        local detector = collect:FindFirstChildOfClass("ClickDetector")
-                                        if detector then
-                                            fireclickdetector(detector)
-                                        end
+                    if not bases then return end
+                    
+                    local nearestCollect = nil
+                    local nearestDistance = 300
+                    
+                    for _, base in pairs(bases:GetChildren()) do
+                        local slots = base:FindFirstChild("Slots")
+                        if slots then
+                            for _, slot in pairs(slots:GetChildren()) do
+                                local collect = slot:FindFirstChild("Collect")
+                                if collect and collect:IsA("BasePart") then
+                                    local distance = (collect.Position - hrp.Position).Magnitude
+                                    
+                                    if distance < nearestDistance then
+                                        nearestDistance = distance
+                                        nearestCollect = collect
                                     end
                                 end
                             end
                         end
                     end
-                    _G.Ysl.Stats.MoneyCollected = _G.Ysl.Stats.MoneyCollected + 1
+                    
+                    if nearestCollect then
+                        -- Walk to the collect point
+                        hrp.CFrame = CFrame.new(nearestCollect.Position + Vector3.new(0, 3, 0))
+                        task.wait(0.2)
+                        
+                        -- Fire the remote event
+                        CollectMoney_RE:FireServer()
+                        
+                        -- Also try clicking if there's a detector
+                        local detector = nearestCollect:FindFirstChildOfClass("ClickDetector")
+                        if detector then
+                            fireclickdetector(detector)
+                        end
+                        
+                        _G.Ysl.Stats.MoneyCollected = _G.Ysl.Stats.MoneyCollected + 1
+                        task.wait(0.3)
+                    end
                 end)
             end
         end
@@ -820,19 +827,6 @@ function loadMainScript()
         end
     end)
     
-    -- Movement System
-    RunService.Heartbeat:Connect(function()
-        if character and humanoid and humanoid.Parent then
-            if _G.Ysl.Movement.Speed and _G.Ysl.Enabled then
-                humanoid.WalkSpeed = _G.Ysl.Movement.SpeedValue
-            else
-                if humanoid.WalkSpeed ~= 16 then
-                    humanoid.WalkSpeed = 16
-                end
-            end
-        end
-    end)
-    
     -- Fly
     local flying = false
     local flyBodyVelocity, flyBodyGyro
@@ -922,96 +916,7 @@ function loadMainScript()
         end
     end)
     
-    -- Protection
-    RunService.Heartbeat:Connect(function()
-        if character and humanoid and humanoid.Parent then
-            if _G.Ysl.Protection.GodMode and _G.Ysl.Enabled then
-                if humanoid.Health < humanoid.MaxHealth then
-                    humanoid.Health = humanoid.MaxHealth
-                end
-            end
-        end
-    end)
-    
-    task.spawn(function()
-        while task.wait(0.5) do
-            if _G.Ysl.Protection.AntiVoid and _G.Ysl.Enabled and hrp and hrp.Parent then
-                if hrp.Position.Y < -50 then
-                    pcall(function()
-                        local bases = Workspace:FindFirstChild("Bases")
-                        if bases then
-                            for _, base in pairs(bases:GetChildren()) do
-                                local spawn = base:FindFirstChild("Spawn")
-                                if spawn and spawn:IsA("BasePart") then
-                                    hrp.CFrame = spawn.CFrame + Vector3.new(0, 10, 0)
-                                    humanoid.Health = humanoid.MaxHealth
-                                    break
-                                end
-                            end
-                        end
-                    end)
-                end
-            end
-        end
-    end)
-    
-    RunService.Heartbeat:Connect(function()
-        if character and humanoid and humanoid.Parent then
-            if _G.Ysl.Protection.WaveImmunity and _G.Ysl.Enabled then
-                pcall(function()
-                    if humanoid.Health < humanoid.MaxHealth then
-                        humanoid.Health = humanoid.MaxHealth
-                        _G.Ysl.Stats.WavesBlocked = _G.Ysl.Stats.WavesBlocked + 1
-                    end
-                    
-                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
-                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
-                    
-                    local tsunamis = Workspace:FindFirstChild("ActiveTsunamis")
-                    if tsunamis then
-                        for _, tsunami in pairs(tsunamis:GetChildren()) do
-                            for _, part in pairs(tsunami:GetDescendants()) do
-                                if part:IsA("BasePart") and (part.Position - hrp.Position).Magnitude <= 100 then
-                                    part.CanCollide = false
-                                    part.CanTouch = false
-                                end
-                            end
-                        end
-                    end
-                    
-                    local lava = Workspace:FindFirstChild("Lava")
-                    if lava then
-                        for _, part in pairs(lava:GetDescendants()) do
-                            if part:IsA("BasePart") then
-                                part.CanCollide = false
-                                part.CanTouch = false
-                            end
-                        end
-                    end
-                end)
-            end
-        end
-    end)
-    
     -- Misc Functions
-    local function RemoveVIPWalls()
-        pcall(function()
-            local vipWalls = Workspace:FindFirstChild("VIPWalls")
-            if vipWalls then
-                local count = 0
-                for _, wall in pairs(vipWalls:GetChildren()) do
-                    if wall:IsA("BasePart") then
-                        wall:Destroy()
-                        count = count + 1
-                    end
-                end
-                if count > 0 then
-                    Notify("VIP Bypass", count .. " walls removed!", 2)
-                end
-            end
-        end)
-    end
-    
     local function TeleportTo(location)
         local locations = {
             Spawn = function()
@@ -1048,7 +953,7 @@ function loadMainScript()
     --[[ CUSTOM UI CREATION ]]
     
     local YslUI = Instance.new("ScreenGui")
-    YslUI.Name = "YslMenuV118"
+    YslUI.Name = "YslMenuV2"
     YslUI.Parent = CoreGui
     YslUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     YslUI.ResetOnSpawn = false
@@ -1062,6 +967,7 @@ function loadMainScript()
     MainWindow.BackgroundTransparency = 0.05
     MainWindow.BorderSizePixel = 0
     MainWindow.ClipsDescendants = true
+    MainWindow.Visible = true
     MainWindow.Parent = YslUI
     
     local WindowCorner = Instance.new("UICorner")
@@ -1155,7 +1061,7 @@ function loadMainScript()
         end
     end)
     
-    -- Greeting Text with RAINBOW YSL
+    -- Greeting Text
     local GreetingText = Instance.new("TextLabel")
     GreetingText.Size = UDim2.new(0, 350, 0, 50)
     GreetingText.Position = UDim2.new(0, 70, 0, 10)
@@ -1167,16 +1073,16 @@ function loadMainScript()
     GreetingText.TextXAlignment = Enum.TextXAlignment.Left
     GreetingText.Parent = TopBar
     
-    -- YSL Logo with RAINBOW
+    -- YSL Logo with RAINBOW in center
     local YSLLogo = Instance.new("TextLabel")
-    YSLLogo.Size = UDim2.new(0, 150, 0, 50)
-    YSLLogo.Position = UDim2.new(1, -160, 0, 10)
+    YSLLogo.Size = UDim2.new(0, 200, 0, 50)
+    YSLLogo.Position = UDim2.new(0.5, -100, 0, 10)
     YSLLogo.BackgroundTransparency = 1
-    YSLLogo.Text = "YSL V118"
-    YSLLogo.TextSize = 28
+    YSLLogo.Text = "yslscripts"
+    YSLLogo.TextSize = 32
     YSLLogo.Font = Enum.Font.GothamBold
     YSLLogo.TextColor3 = Color3.fromRGB(255, 0, 127)
-    YSLLogo.TextXAlignment = Enum.TextXAlignment.Right
+    YSLLogo.TextXAlignment = Enum.TextXAlignment.Center
     YSLLogo.Parent = TopBar
     
     local YSLStroke = Instance.new("UIStroke")
@@ -1195,38 +1101,6 @@ function loadMainScript()
         end
     end)
     
-    -- Close Button
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Size = UDim2.new(0, 40, 0, 40)
-    CloseButton.Position = UDim2.new(1, -50, 0, 15)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-    CloseButton.BackgroundTransparency = 0.3
-    CloseButton.BorderSizePixel = 0
-    CloseButton.Text = "×"
-    CloseButton.TextSize = 30
-    CloseButton.Font = Enum.Font.GothamBold
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.AutoButtonColor = false
-    CloseButton.Parent = TopBar
-    
-    local CloseCorner = Instance.new("UICorner")
-    CloseCorner.CornerRadius = UDim.new(0, 10)
-    CloseCorner.Parent = CloseButton
-    
-    CloseButton.MouseButton1Click:Connect(function()
-        CreateTween(MainWindow, {Size = UDim2.new(0, 0, 0, 0)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In)
-        task.wait(0.3)
-        YslUI:Destroy()
-    end)
-    
-    CloseButton.MouseEnter:Connect(function()
-        CreateTween(CloseButton, {BackgroundTransparency = 0, Size = UDim2.new(0, 45, 0, 45)}, 0.2)
-    end)
-    
-    CloseButton.MouseLeave:Connect(function()
-        CreateTween(CloseButton, {BackgroundTransparency = 0.3, Size = UDim2.new(0, 40, 0, 40)}, 0.2)
-    end)
-    
     MakeDraggable(MainWindow, TopBar)
     
     -- Tabs Container
@@ -1235,7 +1109,7 @@ function loadMainScript()
     TabsContainer.Size = UDim2.new(0, 160, 1, -90)
     TabsContainer.Position = UDim2.new(0, 10, 0, 80)
     TabsContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-    BackgroundTransparency = 0.5
+    TabsContainer.BackgroundTransparency = 0.5
     TabsContainer.BorderSizePixel = 0
     TabsContainer.Parent = MainWindow
     
@@ -1620,6 +1494,64 @@ function loadMainScript()
         return Slider
     end
     
+    local function CreateTextBox(parent, name, placeholder, callback)
+        local TextBoxFrame = Instance.new("Frame")
+        TextBoxFrame.Size = UDim2.new(1, 0, 0, 70)
+        TextBoxFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+        TextBoxFrame.BackgroundTransparency = 0.5
+        TextBoxFrame.BorderSizePixel = 0
+        TextBoxFrame.Parent = parent
+        
+        local TBCorner = Instance.new("UICorner")
+        TBCorner.CornerRadius = UDim.new(0, 10)
+        TBCorner.Parent = TextBoxFrame
+        
+        local TBLabel = Instance.new("TextLabel")
+        TBLabel.Size = UDim2.new(1, -20, 0, 25)
+        TBLabel.Position = UDim2.new(0, 10, 0, 5)
+        TBLabel.BackgroundTransparency = 1
+        TBLabel.Text = name
+        TBLabel.TextSize = 14
+        TBLabel.Font = Enum.Font.GothamBold
+        TBLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
+        TBLabel.TextXAlignment = Enum.TextXAlignment.Left
+        TBLabel.Parent = TextBoxFrame
+        
+        local TextBox = Instance.new("TextBox")
+        TextBox.Size = UDim2.new(1, -20, 0, 30)
+        TextBox.Position = UDim2.new(0, 10, 0, 32)
+        TextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+        TextBox.BorderSizePixel = 0
+        TextBox.Text = ""
+        TextBox.PlaceholderText = placeholder
+        TextBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextBox.TextSize = 16
+        TextBox.Font = Enum.Font.Gotham
+        TextBox.ClearTextOnFocus = false
+        TextBox.Parent = TextBoxFrame
+        
+        local TBInputCorner = Instance.new("UICorner")
+        TBInputCorner.CornerRadius = UDim.new(0, 8)
+        TBInputCorner.Parent = TextBox
+        
+        TextBox.FocusLost:Connect(function(enterPressed)
+            if enterPressed then
+                callback(TextBox.Text)
+            end
+        end)
+        
+        TextBoxFrame.MouseEnter:Connect(function()
+            CreateTween(TextBoxFrame, {BackgroundTransparency = 0.3}, 0.2)
+        end)
+        
+        TextBoxFrame.MouseLeave:Connect(function()
+            CreateTween(TextBoxFrame, {BackgroundTransparency = 0.5}, 0.2)
+        end)
+        
+        return TextBoxFrame, TextBox
+    end
+    
     -- CREATE ALL TABS
     
     -- TAB 1: AUTO FARM
@@ -1631,7 +1563,7 @@ function loadMainScript()
         Notify("Auto Farm", v and "Brainrot farming enabled!" or "Disabled", 2)
     end)
     
-    CreateToggle(FarmTab, "Auto Collect Money", function(v)
+    CreateToggle(FarmTab, "Auto Collect Money (Fixed)", function(v)
         _G.Ysl.AutoFarm.Money = v
         Notify("Auto Farm", v and "Money collection enabled!" or "Disabled", 2)
     end)
@@ -1661,8 +1593,6 @@ function loadMainScript()
         _G.Ysl.AutoUpgrade.Base = true
         _G.Ysl.AutoUpgrade.Brainrots = true
         _G.Ysl.AutoUpgrade.Carry = true
-        _G.Ysl.Protection.WaveImmunity = true
-        _G.Ysl.Protection.GodMode = true
         Notify("ULTIMATE FARM", "ALL FEATURES ACTIVATED! 🔥", 5)
     end)
     
@@ -1705,9 +1635,67 @@ function loadMainScript()
     -- TAB 4: MOVEMENT
     local MovementTab = CreateTab("Movement", "🏃")
     
-    CreateSection(MovementTab, "Speed")
-    CreateToggle(MovementTab, "Speed Boost", function(v) _G.Ysl.Movement.Speed = v end)
-    CreateSlider(MovementTab, "Speed Value", 16, 500, 100, function(v) _G.Ysl.Movement.SpeedValue = v end)
+    -- Speed Display Label
+    local SpeedDisplayLabel = nil
+    
+    CreateSection(MovementTab, "Custom Speed Bypass (16-1000)")
+    
+    local _, speedInput = CreateTextBox(MovementTab, "Change Speed", "Enter speed (16-1000)", function(text)
+        local speed = tonumber(text)
+        if speed then
+            if speed >= 16 and speed <= 1000 then
+                _G.Ysl.Movement.SpeedValue = speed
+                EnableCustomSpeed(speed)
+                if SpeedDisplayLabel then
+                    SpeedDisplayLabel.Text = "Current Speed: " .. speed
+                end
+            else
+                Notify("Invalid Speed", "Please enter a number between 16-1000!", 3)
+            end
+        else
+            Notify("Invalid Input", "Please enter a valid number!", 3)
+        end
+    end)
+    
+    CreateToggle(MovementTab, "Enable Custom Speed", function(v)
+        _G.Ysl.Movement.CustomSpeedEnabled = v
+        if v then
+            EnableCustomSpeed(_G.Ysl.Movement.SpeedValue)
+        else
+            DisableCustomSpeed()
+        end
+    end)
+    
+    -- Speed Display
+    local SpeedDisplay = Instance.new("Frame")
+    SpeedDisplay.Size = UDim2.new(1, 0, 0, 50)
+    SpeedDisplay.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    SpeedDisplay.BackgroundTransparency = 0.5
+    SpeedDisplay.BorderSizePixel = 0
+    SpeedDisplay.Parent = MovementTab
+    
+    local SDCorner = Instance.new("UICorner")
+    SDCorner.CornerRadius = UDim.new(0, 10)
+    SDCorner.Parent = SpeedDisplay
+    
+    SpeedDisplayLabel = Instance.new("TextLabel")
+    SpeedDisplayLabel.Size = UDim2.new(1, 0, 1, 0)
+    SpeedDisplayLabel.BackgroundTransparency = 1
+    SpeedDisplayLabel.Text = "Current Speed: " .. _G.Ysl.Movement.SpeedValue
+    SpeedDisplayLabel.TextSize = 18
+    SpeedDisplayLabel.Font = Enum.Font.GothamBold
+    SpeedDisplayLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
+    SpeedDisplayLabel.Parent = SpeedDisplay
+    
+    -- Update display every second
+    task.spawn(function()
+        while YslUI.Parent do
+            if SpeedDisplayLabel then
+                SpeedDisplayLabel.Text = "Current Speed: " .. (_G.Ysl.Movement.CustomSpeedEnabled and _G.Ysl.Movement.SpeedValue or humanoid.WalkSpeed)
+            end
+            task.wait(0.5)
+        end
+    end)
     
     CreateSection(MovementTab, "Fly")
     CreateToggle(MovementTab, "Fly", function(v)
@@ -1720,29 +1708,8 @@ function loadMainScript()
     CreateToggle(MovementTab, "NoClip", function(v) _G.Ysl.Movement.NoClip = v end)
     CreateToggle(MovementTab, "Infinite Jump", function(v) _G.Ysl.Movement.InfJump = v end)
     
-    -- TAB 5: PROTECTION
-    local ProtectionTab = CreateTab("Protection", "🛡️")
-    
-    CreateSection(ProtectionTab, "Player Protection")
-    CreateToggle(ProtectionTab, "God Mode", function(v) _G.Ysl.Protection.GodMode = v end)
-    CreateToggle(ProtectionTab, "Anti-Void", function(v) _G.Ysl.Protection.AntiVoid = v end)
-    CreateToggle(ProtectionTab, "Wave Immunity", function(v) _G.Ysl.Protection.WaveImmunity = v end)
-    
-    CreateButton(ProtectionTab, "Remove All Waves", function()
-        pcall(function()
-            local tsunamis = Workspace:FindFirstChild("ActiveTsunamis")
-            if tsunamis then
-                tsunamis:ClearAllChildren()
-                Notify("Waves", "All waves removed!", 2)
-            end
-        end)
-    end)
-    
-    -- TAB 6: MISC
+    -- TAB 5: MISC
     local MiscTab = CreateTab("Misc", "⚙️")
-    
-    CreateSection(MiscTab, "VIP Bypass")
-    CreateButton(MiscTab, "Remove VIP Walls", function() RemoveVIPWalls() end)
     
     CreateSection(MiscTab, "Teleports")
     CreateButton(MiscTab, "TP to Spawn", function() TeleportTo("Spawn") end)
@@ -1760,7 +1727,16 @@ function loadMainScript()
     end)
     
     -- Select first tab
-    Tabs[1].Button.MouseButton1Click:Fire()
+    if #Tabs > 0 then
+        Tabs[1].Button.MouseButton1Click:Fire()
+    end
+    
+    -- Toggle Menu with RightShift
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.RightShift then
+            MainWindow.Visible = not MainWindow.Visible
+        end
+    end)
     
     -- Entrance Animation
     MainWindow.Size = UDim2.new(0, 0, 0, 0)
@@ -1771,24 +1747,24 @@ function loadMainScript()
         Position = UDim2.new(0.5, -350, 0.5, -275)
     }, 1, Enum.EasingStyle.Elastic)
     
-    Notify("YSL V118 ULTIMATE", "Welcome " .. lplayer.Name .. "! 👋", 5)
-    Notify("Masterpiece Loaded", "Premium features unlocked! 💎", 4)
+    Notify("yslscripts V2", "Welcome " .. lplayer.Name .. "! 👋", 5)
+    Notify("Premium Loaded", "Press RightShift to toggle menu! 💎", 4)
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║        YSL MENU V118 ULTIMATE MASTERPIECE                     ║
+║        yslscripts V2 ULTIMATE EDITION                         ║
 ║           LOADED SUCCESSFULLY! 🔥                             ║
 ║                                                               ║
 ║  Status: ✅ PREMIUM ACCESS VERIFIED                          ║
 ║  User: ]] .. lplayer.Name .. string.rep(" ", 53 - #lplayer.Name) .. [[║
 ║                                                               ║
-║  🌈 RAINBOW YSL LOGO                                         ║
-║  👤 USER PROFILE PICTURE                                      ║
-║  💬 PERSONALIZED GREETING                                     ║
+║  🚀 CUSTOM SPEED BYPASS (16-1000)                            ║
+║  💰 FIXED AUTO MONEY COLLECTION                              ║
+║  ⚡ VISUAL SPEED DISPLAY                                      ║
 ║  🎨 100% CUSTOM UI                                           ║
-║  ⚡ ALL FEATURES PERFECTED                                    ║
+║  🔑 Toggle: RightShift                                        ║
 ║                                                               ║
-║  Made by YSL Scripts - The Ultimate Quality                   ║
+║  Made by yslscripts - The Ultimate Quality                    ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
     
