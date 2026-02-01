@@ -518,7 +518,7 @@ local function CreatePremiumKeySystem()
                 local particle = Instance.new("Frame")
                 particle.Size = UDim2.new(0, 10, 0, 10)
                 particle.Position = UDim2.new(0.5, 0, 0.5, 0)
-                particle.BackgroundColor3 = Color3.fromHSV(math.random() 0, 1, 1)
+                particle.BackgroundColor3 = Color3.fromHSV(math.random(), 1, 1)
                 particle.BorderSizePixel = 0
                 particle.Parent = MainContainer
                 
