@@ -1,23 +1,20 @@
 --[[
     ╔═══════════════════════════════════════════════════════════════╗
-    ║         yslscripts V3 - ULTIMATE FIXED EDITION                ║
-    ║         All Features Working - Premium Quality                ║
+    ║         yslscripts ULTIMATE - EVERYTHING WORKING              ║
+    ║         The REAL Deal - No Cap                                ║
     ║                                                               ║
-    ║  ⚡ Working Speed Upgrades                                    ║
-    ║  💰 Fixed Auto Money (Your Base Only)                        ║
-    ║  🎯 Smart Brainrot Farming                                    ║
-    ║  🎁 Advanced Lucky Block Farm                                ║
-    ║  🚫 VIP & VIP+ Bypass                                        ║
-    ║  🎨 Premium Custom UI                                        ║
+    ║  ⚡ REAL Speed Control (Change WalkSpeed)                    ║
+    ║  💰 FIXED Auto Money (Actually Works)                        ║
+    ║  🎯 Advanced Everything                                       ║
+    ║  🚫 VIP Bypass                                                ║
     ║                                                               ║
-    ║  Made by yslscripts - The Best Quality                       ║
+    ║  Made by yslscripts - Actually Working This Time             ║
     ╚═══════════════════════════════════════════════════════════════╝
 ]]
 
 print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║              yslscripts V3 LOADING...                         ║
-║           ULTIMATE FIXED EDITION INITIALIZING...              ║
+║              yslscripts ULTIMATE LOADING...                   ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
 
@@ -38,9 +35,7 @@ local mouse = lplayer:GetMouse()
 local PREMIUM_KEY = "ysl-key-escapetsunami"
 local KEY_VERIFIED = false
 
---[[ ═══════════════════════════════════════════════════════════
-                    UTILITY FUNCTIONS
-═══════════════════════════════════════════════════════════ ]]
+--[[ UTILITY FUNCTIONS ]]
 
 local function CreateTween(object, properties, duration, style, direction)
     duration = duration or 0.3
@@ -95,9 +90,7 @@ local function MakeDraggable(frame, dragHandle)
     end)
 end
 
---[[ ═══════════════════════════════════════════════════════════
-                    PREMIUM KEY SYSTEM UI
-═══════════════════════════════════════════════════════════ ]]
+--[[ KEY SYSTEM ]]
 
 local function CreateKeySystem()
     local KeySystemUI = Instance.new("ScreenGui")
@@ -112,7 +105,6 @@ local function CreateKeySystem()
     CreateTween(Blur, {Size = 30}, 0.5)
     
     local Overlay = Instance.new("Frame")
-    Overlay.Name = "Overlay"
     Overlay.Size = UDim2.new(1, 0, 1, 0)
     Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Overlay.BackgroundTransparency = 1
@@ -121,7 +113,6 @@ local function CreateKeySystem()
     CreateTween(Overlay, {BackgroundTransparency = 0.6}, 0.5)
     
     local MainContainer = Instance.new("Frame")
-    MainContainer.Name = "MainContainer"
     MainContainer.Size = UDim2.new(0, 600, 0, 500)
     MainContainer.Position = UDim2.new(0.5, -300, 0.5, -250)
     MainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
@@ -137,8 +128,6 @@ local function CreateKeySystem()
     local MainStroke = Instance.new("UIStroke")
     MainStroke.Color = Color3.fromRGB(255, 0, 127)
     MainStroke.Thickness = 3
-    MainStroke.Transparency = 0
-    MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     MainStroke.Parent = MainContainer
     
     task.spawn(function()
@@ -150,113 +139,45 @@ local function CreateKeySystem()
         end
     end)
     
-    local GradientBG = Instance.new("Frame")
-    GradientBG.Size = UDim2.new(1, 0, 1, 0)
-    GradientBG.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    GradientBG.BackgroundTransparency = 0.95
-    GradientBG.BorderSizePixel = 0
-    GradientBG.Parent = MainContainer
-    
-    local BGGradient = Instance.new("UIGradient")
-    BGGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
-    }
-    BGGradient.Rotation = 0
-    BGGradient.Parent = GradientBG
-    
-    local BGCorner = Instance.new("UICorner")
-    BGCorner.CornerRadius = UDim.new(0, 25)
-    BGCorner.Parent = GradientBG
-    
-    task.spawn(function()
-        while KeySystemUI.Parent do
-            CreateTween(BGGradient, {Rotation = BGGradient.Rotation + 360}, 10, Enum.EasingStyle.Linear)
-            task.wait(10)
-        end
-    end)
-    
     local TopBar = Instance.new("Frame")
-    TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 120)
     TopBar.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
-    TopBar.BackgroundTransparency = 0
     TopBar.BorderSizePixel = 0
     TopBar.Parent = MainContainer
-    
-    local TopBarGradient = Instance.new("UIGradient")
-    TopBarGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
-    }
-    TopBarGradient.Rotation = 45
-    TopBarGradient.Parent = TopBar
     
     local TopBarCorner = Instance.new("UICorner")
     TopBarCorner.CornerRadius = UDim.new(0, 25)
     TopBarCorner.Parent = TopBar
     
     local YSLLogo = Instance.new("TextLabel")
-    YSLLogo.Size = UDim2.new(0, 200, 0, 60)
-    YSLLogo.Position = UDim2.new(0.5, -100, 0, 20)
+    YSLLogo.Size = UDim2.new(0, 300, 0, 60)
+    YSLLogo.Position = UDim2.new(0.5, -150, 0, 30)
     YSLLogo.BackgroundTransparency = 1
     YSLLogo.Text = "yslscripts"
-    YSLLogo.TextSize = 40
+    YSLLogo.TextSize = 50
     YSLLogo.Font = Enum.Font.GothamBold
     YSLLogo.TextColor3 = Color3.fromRGB(255, 255, 255)
     YSLLogo.Parent = TopBar
-    
-    local YSLStroke = Instance.new("UIStroke")
-    YSLStroke.Color = Color3.fromRGB(255, 0, 127)
-    YSLStroke.Thickness = 3
-    YSLStroke.Parent = YSLLogo
     
     task.spawn(function()
         local hue = 0
         while KeySystemUI.Parent do
             hue = (hue + 2) % 360
             YSLLogo.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
-            YSLStroke.Color = Color3.fromHSV((hue + 30) / 360, 1, 1)
             task.wait(0.03)
         end
     end)
     
-    local Subtitle = Instance.new("TextLabel")
-    Subtitle.Size = UDim2.new(1, 0, 0, 30)
-    Subtitle.Position = UDim2.new(0, 0, 0, 85)
-    Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "PREMIUM ACCESS V3"
-    Subtitle.TextSize = 16
-    Subtitle.Font = Enum.Font.GothamBold
-    Subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Subtitle.TextTransparency = 0.3
-    Subtitle.Parent = TopBar
-    
     local ContentArea = Instance.new("Frame")
-    ContentArea.Name = "ContentArea"
     ContentArea.Size = UDim2.new(1, -40, 1, -160)
     ContentArea.Position = UDim2.new(0, 20, 0, 140)
     ContentArea.BackgroundTransparency = 1
     ContentArea.Parent = MainContainer
     
-    local WelcomeText = Instance.new("TextLabel")
-    WelcomeText.Size = UDim2.new(1, 0, 0, 70)
-    WelcomeText.Position = UDim2.new(0, 0, 0, 0)
-    WelcomeText.BackgroundTransparency = 1
-    WelcomeText.Text = "🔐 Welcome to yslscripts Premium\nEnter your key to unlock ultimate features"
-    WelcomeText.TextSize = 16
-    WelcomeText.Font = Enum.Font.Gotham
-    WelcomeText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    WelcomeText.TextTransparency = 0.3
-    WelcomeText.TextWrapped = true
-    WelcomeText.Parent = ContentArea
-    
     local InputContainer = Instance.new("Frame")
     InputContainer.Size = UDim2.new(1, 0, 0, 70)
     InputContainer.Position = UDim2.new(0, 0, 0, 90)
     InputContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-    InputContainer.BackgroundTransparency = 0.3
     InputContainer.BorderSizePixel = 0
     InputContainer.Parent = ContentArea
     
@@ -264,84 +185,32 @@ local function CreateKeySystem()
     InputCorner.CornerRadius = UDim.new(0, 15)
     InputCorner.Parent = InputContainer
     
-    local InputStroke = Instance.new("UIStroke")
-    InputStroke.Color = Color3.fromRGB(255, 0, 127)
-    InputStroke.Thickness = 2
-    InputStroke.Transparency = 0.5
-    InputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    InputStroke.Parent = InputContainer
-    
-    local KeyIcon = Instance.new("TextLabel")
-    KeyIcon.Size = UDim2.new(0, 60, 0, 60)
-    KeyIcon.Position = UDim2.new(0, 5, 0, 5)
-    KeyIcon.BackgroundTransparency = 1
-    KeyIcon.Text = "🔑"
-    KeyIcon.TextSize = 35
-    KeyIcon.Parent = InputContainer
-    
     local KeyBox = Instance.new("TextBox")
-    KeyBox.Size = UDim2.new(1, -80, 1, -20)
-    KeyBox.Position = UDim2.new(0, 70, 0, 10)
+    KeyBox.Size = UDim2.new(1, -20, 1, -20)
+    KeyBox.Position = UDim2.new(0, 10, 0, 10)
     KeyBox.BackgroundTransparency = 1
-    KeyBox.PlaceholderText = "Enter Premium Key..."
+    KeyBox.PlaceholderText = "Enter Key..."
     KeyBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
     KeyBox.Text = ""
     KeyBox.TextSize = 22
     KeyBox.Font = Enum.Font.GothamBold
     KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    KeyBox.TextXAlignment = Enum.TextXAlignment.Left
-    KeyBox.ClearTextOnFocus = false
     KeyBox.Parent = InputContainer
-    
-    KeyBox.Focused:Connect(function()
-        CreateTween(InputStroke, {Transparency = 0, Thickness = 3}, 0.2)
-        CreateTween(InputContainer, {BackgroundTransparency = 0.1}, 0.2)
-    end)
-    
-    KeyBox.FocusLost:Connect(function()
-        CreateTween(InputStroke, {Transparency = 0.5, Thickness = 2}, 0.2)
-        CreateTween(InputContainer, {BackgroundTransparency = 0.3}, 0.2)
-    end)
     
     local SubmitButton = Instance.new("TextButton")
     SubmitButton.Size = UDim2.new(0, 250, 0, 65)
     SubmitButton.Position = UDim2.new(0.5, -125, 0, 180)
     SubmitButton.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
     SubmitButton.BorderSizePixel = 0
-    SubmitButton.AutoButtonColor = false
-    SubmitButton.Text = ""
+    SubmitButton.Text = "VERIFY"
+    SubmitButton.TextSize = 22
+    SubmitButton.Font = Enum.Font.GothamBold
+    SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     SubmitButton.Parent = ContentArea
     
     local SubmitCorner = Instance.new("UICorner")
     SubmitCorner.CornerRadius = UDim.new(0, 15)
     SubmitCorner.Parent = SubmitButton
-    
-    local SubmitGradient = Instance.new("UIGradient")
-    SubmitGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
-    }
-    SubmitGradient.Rotation = 45
-    SubmitGradient.Parent = SubmitButton
-    
-    local SubmitText = Instance.new("TextLabel")
-    SubmitText.Size = UDim2.new(1, 0, 1, 0)
-    SubmitText.BackgroundTransparency = 1
-    SubmitText.Text = "✨ VERIFY KEY ✨"
-    SubmitText.TextSize = 22
-    SubmitText.Font = Enum.Font.GothamBold
-    SubmitText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SubmitText.Parent = SubmitButton
-    
-    SubmitButton.MouseEnter:Connect(function()
-        CreateTween(SubmitButton, {Size = UDim2.new(0, 260, 0, 70)}, 0.2, Enum.EasingStyle.Back)
-        CreateTween(SubmitText, {TextSize = 24}, 0.2)
-    end)
-    
-    SubmitButton.MouseLeave:Connect(function()
-        CreateTween(SubmitButton, {Size = UDim2.new(0, 250, 0, 65)}, 0.2, Enum.EasingStyle.Back)
-        CreateTween(SubmitText, {TextSize = 22}, 0.2)
-    end)
     
     local StatusLabel = Instance.new("TextLabel")
     StatusLabel.Size = UDim2.new(1, 0, 0, 40)
@@ -355,98 +224,67 @@ local function CreateKeySystem()
     
     MainContainer.Size = UDim2.new(0, 0, 0, 0)
     MainContainer.Position = UDim2.new(0.5, 0, 0.5, 0)
-    
-    CreateTween(MainContainer, {
-        Size = UDim2.new(0, 600, 0, 500),
-        Position = UDim2.new(0.5, -300, 0.5, -250)
-    }, 1, Enum.EasingStyle.Elastic)
+    CreateTween(MainContainer, {Size = UDim2.new(0, 600, 0, 500), Position = UDim2.new(0.5, -300, 0.5, -250)}, 1, Enum.EasingStyle.Elastic)
     
     MakeDraggable(MainContainer, TopBar)
     
     local function VerifyKey()
-        local enteredKey = KeyBox.Text
-        
-        if enteredKey == "" then
-            StatusLabel.Text = "⚠️ Please enter a key!"
-            StatusLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
-            
-            for i = 1, 3 do
-                CreateTween(InputContainer, {Position = UDim2.new(0, -10, 0, 90)}, 0.05)
-                task.wait(0.05)
-                CreateTween(InputContainer, {Position = UDim2.new(0, 10, 0, 90)}, 0.05)
-                task.wait(0.05)
-            end
-            CreateTween(InputContainer, {Position = UDim2.new(0, 0, 0, 90)}, 0.05)
-            return
-        end
-        
-        if enteredKey == PREMIUM_KEY then
-            StatusLabel.Text = "✅ KEY VERIFIED! Loading Premium Features..."
+        if KeyBox.Text == PREMIUM_KEY then
+            StatusLabel.Text = "✅ VERIFIED!"
             StatusLabel.TextColor3 = Color3.fromRGB(0, 255, 127)
-            
-            SubmitButton.Active = false
-            
-            task.wait(1.5)
-            
-            CreateTween(MainContainer, {
-                Size = UDim2.new(0, 0, 0, 0),
-                Position = UDim2.new(0.5, 0, 0.5, 0)
-            }, 0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In)
-            
+            task.wait(1)
+            CreateTween(MainContainer, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In)
             CreateTween(Overlay, {BackgroundTransparency = 1}, 0.5)
             CreateTween(Blur, {Size = 0}, 0.5)
-            
             task.wait(0.6)
-            
             KeySystemUI:Destroy()
             Blur:Destroy()
-            
             KEY_VERIFIED = true
             loadMainScript()
         else
-            StatusLabel.Text = "❌ INVALID KEY! Access Denied."
+            StatusLabel.Text = "❌ INVALID KEY!"
             StatusLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
-            
-            for i = 1, 5 do
-                CreateTween(MainContainer, {Position = UDim2.new(0.5, -310, 0.5, -250)}, 0.05)
-                task.wait(0.05)
-                CreateTween(MainContainer, {Position = UDim2.new(0.5, -290, 0.5, -250)}, 0.05)
-                task.wait(0.05)
-            end
-            CreateTween(MainContainer, {Position = UDim2.new(0.5, -300, 0.5, -250)}, 0.1)
-            
-            KeyBox.Text = ""
         end
     end
     
     SubmitButton.MouseButton1Click:Connect(VerifyKey)
     KeyBox.FocusLost:Connect(function(enterPressed)
-        if enterPressed then
-            VerifyKey()
-        end
+        if enterPressed then VerifyKey() end
     end)
 end
 
 CreateKeySystem()
 
---[[ ═══════════════════════════════════════════════════════════
-                    MAIN SCRIPT
-═══════════════════════════════════════════════════════════ ]]
+--[[ MAIN SCRIPT ]]
 
 function loadMainScript()
     
-    task.wait(0.5)
-    
-    print([[
-╔═══════════════════════════════════════════════════════════════╗
-║          LOADING ULTIMATE CUSTOM MENU...                      ║
-╚═══════════════════════════════════════════════════════════════╝
-]])
-    
-    -- Get character
     local character = lplayer.Character or lplayer.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local hrp = character:WaitForChild("HumanoidRootPart")
+    
+    -- Store player's base on spawn
+    local MyBase = nil
+    task.spawn(function()
+        task.wait(2)
+        local bases = Workspace:FindFirstChild("Bases")
+        if bases then
+            local closestBase = nil
+            local closestDist = math.huge
+            for _, base in pairs(bases:GetChildren()) do
+                local spawn = base:FindFirstChild("Spawn")
+                if spawn then
+                    local dist = (spawn.Position - hrp.Position).Magnitude
+                    if dist < closestDist then
+                        closestDist = dist
+                        closestBase = base
+                    end
+                end
+            end
+            MyBase = closestBase
+            print("Found my base:", MyBase and MyBase.Name or "nil")
+        end
+    end)
     
     -- Remotes
     local RemoteFunctions = ReplicatedStorage:WaitForChild("RemoteFunctions")
@@ -461,15 +299,11 @@ function loadMainScript()
     
     local CollectMoney_RE = RemoteEvents:WaitForChild("CollectMoney")
     
-    -- Global Settings
-    _G.Ysl = _G.Ysl or {
+    -- Settings
+    _G.Ysl = {
         Enabled = true,
-        Stats = {
-            Brainrots = 0,
-            LuckyBlocks = 0,
-            MoneyCollected = 0,
-            SessionStart = os.time()
-        },
+        WalkSpeed = 16,
+        WalkSpeedEnabled = false,
         RebirthAt = 500,
         AutoFarm = {
             Brainrot = false,
@@ -482,28 +316,21 @@ function loadMainScript()
             Brainrots = false,
             Carry = false
         },
-        AutoRebirth = {
-            Enabled = false,
-            LastRebirth = 0
-        },
+        AutoRebirth = false,
         Movement = {
             Fly = false,
             FlySpeed = 50,
             NoClip = false,
             InfJump = false
         },
-        VIPBypass = {
-            Enabled = false
-        }
+        VIPBypass = false
     }
     
-    -- Notification
-    local function Notify(title, text, duration)
-        duration = duration or 4
+    local function Notify(text)
         game.StarterGui:SetCore("SendNotification", {
-            Title = "yslscripts | " .. title,
+            Title = "yslscripts",
             Text = text,
-            Duration = duration
+            Duration = 3
         })
     end
     
@@ -512,72 +339,84 @@ function loadMainScript()
         v:Disable()
     end
     
-    -- Character Respawn
+    -- Respawn handler
     lplayer.CharacterAdded:Connect(function(char)
         task.wait(0.5)
         character = char
         humanoid = char:WaitForChild("Humanoid")
         hrp = char:WaitForChild("HumanoidRootPart")
-        Notify("Respawn", "Features reactivated!", 2)
-    end)
-    
-    -- Find Player's Base
-    local function GetMyBase()
+        
+        -- Find base again
+        task.wait(2)
         local bases = Workspace:FindFirstChild("Bases")
-        if not bases then return nil end
-        
-        local closestBase = nil
-        local closestDistance = math.huge
-        
-        for _, base in pairs(bases:GetChildren()) do
-            local spawn = base:FindFirstChild("Spawn")
-            if spawn and spawn:IsA("BasePart") then
-                local distance = (spawn.Position - hrp.Position).Magnitude
-                if distance < closestDistance then
-                    closestDistance = distance
-                    closestBase = base
+        if bases then
+            local closestBase = nil
+            local closestDist = math.huge
+            for _, base in pairs(bases:GetChildren()) do
+                local spawn = base:FindFirstChild("Spawn")
+                if spawn then
+                    local dist = (spawn.Position - hrp.Position).Magnitude
+                    if dist < closestDist then
+                        closestDist = dist
+                        closestBase = base
+                    end
                 end
             end
+            MyBase = closestBase
         end
         
-        return closestBase
+        Notify("Respawned - Features Active")
+    end)
+    
+    --[[ WALKSPEED CONTROL ]]
+    
+    local speedConnection = nil
+    local function EnableWalkSpeed()
+        if speedConnection then speedConnection:Disconnect() end
+        
+        speedConnection = RunService.Heartbeat:Connect(function()
+            if _G.Ysl.WalkSpeedEnabled and humanoid and humanoid.Parent then
+                humanoid.WalkSpeed = _G.Ysl.WalkSpeed
+            end
+        end)
     end
     
-    --[[ AUTO FARM FUNCTIONS ]]
+    local function DisableWalkSpeed()
+        if speedConnection then
+            speedConnection:Disconnect()
+            speedConnection = nil
+        end
+        if humanoid then
+            humanoid.WalkSpeed = 16
+        end
+    end
     
-    -- Auto Farm Brainrots (FIXED)
+    --[[ AUTO FARM - FIXED ]]
+    
+    -- Auto Farm Brainrots
     task.spawn(function()
-        while task.wait(0.2) do
+        while task.wait(0.15) do
             if _G.Ysl.AutoFarm.Brainrot and _G.Ysl.Enabled then
                 pcall(function()
                     local activeBrainrots = Workspace:FindFirstChild("ActiveBrainrots")
                     if not activeBrainrots then return end
                     
-                    local nearestBrainrot = nil
-                    local nearestDistance = 300
+                    local nearest = nil
+                    local nearestDist = 500
                     
-                    for _, rarityFolder in pairs(activeBrainrots:GetChildren()) do
-                        if not rarityFolder:IsA("Folder") then continue end
-                        
-                        for _, renderedModel in pairs(rarityFolder:GetChildren()) do
-                            if renderedModel.Name ~= "RenderedBrainrot" then continue end
-                            
-                            for _, brainrotModel in pairs(renderedModel:GetChildren()) do
-                                if not brainrotModel:IsA("Model") then continue end
-                                
-                                for _, desc in pairs(brainrotModel:GetDescendants()) do
-                                    if desc.Name == "TakePrompt" and desc:IsA("ProximityPrompt") then
-                                        local modelPivot = brainrotModel:GetPivot()
-                                        if modelPivot then
-                                            local distance = (modelPivot.Position - hrp.Position).Magnitude
-                                            
-                                            if distance < nearestDistance then
-                                                nearestDistance = distance
-                                                nearestBrainrot = {
-                                                    model = brainrotModel,
-                                                    prompt = desc,
-                                                    position = modelPivot.Position
-                                                }
+                    for _, folder in pairs(activeBrainrots:GetChildren()) do
+                        for _, rendered in pairs(folder:GetChildren()) do
+                            if rendered.Name == "RenderedBrainrot" then
+                                for _, model in pairs(rendered:GetChildren()) do
+                                    if model:IsA("Model") then
+                                        for _, desc in pairs(model:GetDescendants()) do
+                                            if desc.Name == "TakePrompt" and desc:IsA("ProximityPrompt") then
+                                                local pos = model:GetPivot().Position
+                                                local dist = (pos - hrp.Position).Magnitude
+                                                if dist < nearestDist then
+                                                    nearestDist = dist
+                                                    nearest = {pos = pos, prompt = desc}
+                                                end
                                             end
                                         end
                                     end
@@ -586,50 +425,44 @@ function loadMainScript()
                         end
                     end
                     
-                    if nearestBrainrot then
-                        hrp.CFrame = CFrame.new(nearestBrainrot.position + Vector3.new(0, 3, 0))
+                    if nearest then
+                        hrp.CFrame = CFrame.new(nearest.pos + Vector3.new(0, 2, 0))
                         task.wait(0.1)
-                        for i = 1, 3 do
-                            fireproximityprompt(nearestBrainrot.prompt)
-                            task.wait(0.05)
-                        end
-                        _G.Ysl.Stats.Brainrots = _G.Ysl.Stats.Brainrots + 1
-                        task.wait(0.2)
+                        fireproximityprompt(nearest.prompt)
+                        task.wait(0.15)
                     end
                 end)
             end
         end
     end)
     
-    -- FIXED Auto Collect Money - Only from player's base
+    -- Auto Collect Money - ACTUALLY FIXED
     task.spawn(function()
-        while task.wait(0.3) do
-            if _G.Ysl.AutoFarm.Money and _G.Ysl.Enabled then
+        while task.wait(0.2) do
+            if _G.Ysl.AutoFarm.Money and _G.Ysl.Enabled and MyBase then
                 pcall(function()
-                    local myBase = GetMyBase()
-                    if not myBase then return end
-                    
-                    local slots = myBase:FindFirstChild("Slots")
+                    local slots = MyBase:FindFirstChild("Slots")
                     if not slots then return end
                     
                     for _, slot in pairs(slots:GetChildren()) do
+                        if not _G.Ysl.AutoFarm.Money then break end
+                        
                         local collect = slot:FindFirstChild("Collect")
                         if collect and collect:IsA("BasePart") then
-                            -- Teleport to collect point
-                            hrp.CFrame = CFrame.new(collect.Position + Vector3.new(0, 3, 0))
-                            task.wait(0.15)
+                            -- Teleport directly on top
+                            hrp.CFrame = collect.CFrame * CFrame.new(0, 3, 0)
+                            task.wait(0.1)
                             
-                            -- Fire remote event
+                            -- Fire event
                             CollectMoney_RE:FireServer()
                             
-                            -- Also try click detector
+                            -- Click detector
                             local detector = collect:FindFirstChildOfClass("ClickDetector")
                             if detector then
                                 fireclickdetector(detector)
                             end
                             
-                            _G.Ysl.Stats.MoneyCollected = _G.Ysl.Stats.MoneyCollected + 1
-                            task.wait(0.2)
+                            task.wait(0.15)
                         end
                     end
                 end)
@@ -637,47 +470,39 @@ function loadMainScript()
         end
     end)
     
-    -- IMPROVED Auto Farm Lucky Blocks
+    -- Auto Lucky Blocks
     task.spawn(function()
-        while task.wait(0.25) do
+        while task.wait(0.2) do
             if _G.Ysl.AutoFarm.LuckyBlocks and _G.Ysl.Enabled then
                 pcall(function()
                     local luckyBlocks = Workspace:FindFirstChild("ActiveLuckyBlocks")
                     if not luckyBlocks then return end
                     
-                    local nearestBlock = nil
-                    local nearestDistance = 300
+                    local nearest = nil
+                    local nearestDist = 500
                     
                     for _, block in pairs(luckyBlocks:GetChildren()) do
-                        if not block:IsA("Model") then continue end
-                        
-                        local prompt = block:FindFirstChildWhichIsA("ProximityPrompt", true)
-                        if prompt then
-                            local blockPivot = block:GetPivot()
-                            if blockPivot then
-                                local distance = (blockPivot.Position - hrp.Position).Magnitude
-                                
-                                if distance < nearestDistance then
-                                    nearestDistance = distance
-                                    nearestBlock = {
-                                        model = block,
-                                        prompt = prompt,
-                                        position = blockPivot.Position
-                                    }
+                        if block:IsA("Model") then
+                            local prompt = block:FindFirstChildWhichIsA("ProximityPrompt", true)
+                            if prompt then
+                                local pos = block:GetPivot().Position
+                                local dist = (pos - hrp.Position).Magnitude
+                                if dist < nearestDist then
+                                    nearestDist = dist
+                                    nearest = {pos = pos, prompt = prompt}
                                 end
                             end
                         end
                     end
                     
-                    if nearestBlock then
-                        hrp.CFrame = CFrame.new(nearestBlock.position + Vector3.new(0, 3, 0))
+                    if nearest then
+                        hrp.CFrame = CFrame.new(nearest.pos + Vector3.new(0, 2, 0))
                         task.wait(0.1)
                         for i = 1, 5 do
-                            fireproximityprompt(nearestBlock.prompt)
-                            task.wait(0.03)
+                            fireproximityprompt(nearest.prompt)
+                            task.wait(0.02)
                         end
-                        _G.Ysl.Stats.LuckyBlocks = _G.Ysl.Stats.LuckyBlocks + 1
-                        task.wait(0.2)
+                        task.wait(0.15)
                     end
                 end)
             end
@@ -690,67 +515,48 @@ function loadMainScript()
             if _G.Ysl.AutoFarm.SellAll and _G.Ysl.Enabled then
                 pcall(function()
                     SellAll_RF:InvokeServer()
-                    Notify("Auto Sell", "Sold all brainrots!", 2)
+                    Notify("Auto Sold All!")
                 end)
             end
         end
     end)
     
-    -- WORKING Speed Upgrade Function
-    local function UpgradeSpeedManual(times)
+    -- Speed Upgrades
+    local function BuySpeed(times)
         task.spawn(function()
-            local successCount = 0
             for i = 1, times do
-                local success, result = pcall(function()
-                    return UpgradeSpeed_RF:InvokeServer()
-                end)
-                
-                if success and result then
-                    successCount = successCount + 1
-                    task.wait(0.1)
-                else
-                    Notify("Speed Upgrade", "Can't afford more! Upgraded " .. successCount .. " times", 3)
-                    break
-                end
+                pcall(function() UpgradeSpeed_RF:InvokeServer() end)
+                task.wait(0.1)
             end
-            
-            if successCount > 0 then
-                local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
-                Notify("Speed Upgrade", string.format("✅ Upgraded %d times! Speed: %d", successCount, currentSpeed), 3)
-            end
+            Notify("Upgraded Speed " .. times .. " times!")
         end)
     end
     
     -- Auto Upgrades
     task.spawn(function()
-        while task.wait(12) do
-            if _G.Ysl.AutoUpgrade.Base and _G.Ysl.Enabled then
+        while task.wait(15) do
+            if _G.Ysl.AutoUpgrade.Base then
                 pcall(function() UpgradeBase_RF:InvokeServer() end)
             end
         end
     end)
     
     task.spawn(function()
-        while task.wait(12) do
-            if _G.Ysl.AutoUpgrade.Carry and _G.Ysl.Enabled then
+        while task.wait(15) do
+            if _G.Ysl.AutoUpgrade.Carry then
                 pcall(function() UpgradeCarry_RF:InvokeServer() end)
             end
         end
     end)
     
     task.spawn(function()
-        while task.wait(10) do
-            if _G.Ysl.AutoUpgrade.Brainrots and _G.Ysl.Enabled then
+        while task.wait(12) do
+            if _G.Ysl.AutoUpgrade.Brainrots and MyBase then
                 pcall(function()
-                    local myBase = GetMyBase()
-                    if not myBase then return end
-                    
-                    for _, desc in pairs(myBase:GetDescendants()) do
-                        if desc.Name:match("^slot %d+ brainrot") and desc:IsA("Model") then
-                            if desc:FindFirstChild("Root") then
-                                pcall(function() UpgradeBrainrot_RF:InvokeServer(desc) end)
-                                task.wait(0.15)
-                            end
+                    for _, desc in pairs(MyBase:GetDescendants()) do
+                        if desc.Name:match("slot %d+ brainrot") and desc:FindFirstChild("Root") then
+                            pcall(function() UpgradeBrainrot_RF:InvokeServer(desc) end)
+                            task.wait(0.1)
                         end
                     end
                 end)
@@ -761,33 +567,87 @@ function loadMainScript()
     -- Auto Rebirth
     task.spawn(function()
         while task.wait(5) do
-            if _G.Ysl.AutoRebirth.Enabled and _G.Ysl.Enabled then
+            if _G.Ysl.AutoRebirth and _G.Ysl.Enabled then
                 pcall(function()
-                    local currentTime = os.time()
-                    if currentTime - _G.Ysl.AutoRebirth.LastRebirth >= 10 then
-                        local currentSpeed = lplayer:GetAttribute("CurrentSpeed") or 16
-                        if currentSpeed >= _G.Ysl.RebirthAt then
-                            local success = Rebirth_RF:InvokeServer()
-                            if success then
-                                _G.Ysl.AutoRebirth.LastRebirth = currentTime
-                                Notify("Auto Rebirth", "✅ Rebirthed at Speed: " .. currentSpeed, 3)
-                            end
-                        end
+                    local speed = lplayer:GetAttribute("CurrentSpeed") or 16
+                    if speed >= _G.Ysl.RebirthAt then
+                        Rebirth_RF:InvokeServer()
+                        Notify("Auto Rebirthed!")
                     end
                 end)
             end
         end
     end)
     
+    -- Fly
+    local flying = false
+    local flyBV, flyBG
+    
+    local function StartFly()
+        flying = true
+        
+        flyBV = Instance.new("BodyVelocity")
+        flyBV.Velocity = Vector3.zero
+        flyBV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        flyBV.Parent = hrp
+        
+        flyBG = Instance.new("BodyGyro")
+        flyBG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        flyBG.P = 9e4
+        flyBG.Parent = hrp
+        
+        RunService.Heartbeat:Connect(function()
+            if not _G.Ysl.Movement.Fly or not flying then
+                if flyBV then flyBV:Destroy() end
+                if flyBG then flyBG:Destroy() end
+                flying = false
+                return
+            end
+            
+            if not hrp.Parent then return end
+            
+            local camera = workspace.CurrentCamera
+            local dir = Vector3.zero
+            
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir = dir + camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir = dir - camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir = dir - camera.CFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir = dir + camera.CFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then dir = dir + Vector3.new(0, 1, 0) end
+            if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then dir = dir - Vector3.new(0, 1, 0) end
+            
+            flyBV.Velocity = dir.Magnitude > 0 and dir.Unit * _G.Ysl.Movement.FlySpeed or Vector3.zero
+            flyBG.CFrame = camera.CFrame
+        end)
+    end
+    
+    -- NoClip
+    RunService.Stepped:Connect(function()
+        if _G.Ysl.Movement.NoClip and character then
+            for _, part in pairs(character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+    end)
+    
+    -- Inf Jump
+    UserInputService.JumpRequest:Connect(function()
+        if _G.Ysl.Movement.InfJump and humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end)
+    
     -- VIP Bypass
     task.spawn(function()
         while task.wait(1) do
-            if _G.Ysl.VIPBypass.Enabled and _G.Ysl.Enabled then
+            if _G.Ysl.VIPBypass then
                 pcall(function()
                     local vipWalls = Workspace:FindFirstChild("VIPWalls")
                     if vipWalls then
                         for _, wall in pairs(vipWalls:GetChildren()) do
-                            if wall:IsA("BasePart") and (wall.Name == "VIP" or wall.Name == "VIP_PLUS") then
+                            if wall:IsA("BasePart") then
                                 wall.CanCollide = false
                                 wall.Transparency = 0.8
                             end
@@ -798,726 +658,330 @@ function loadMainScript()
         end
     end)
     
-    -- Fly
-    local flying = false
-    local flyBodyVelocity, flyBodyGyro
-    
-    local function StartFly()
-        if flying then return end
-        flying = true
-        
-        if flyBodyVelocity then flyBodyVelocity:Destroy() end
-        if flyBodyGyro then flyBodyGyro:Destroy() end
-        
-        flyBodyVelocity = Instance.new("BodyVelocity")
-        flyBodyVelocity.Velocity = Vector3.zero
-        flyBodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-        flyBodyVelocity.Parent = hrp
-        
-        flyBodyGyro = Instance.new("BodyGyro")
-        flyBodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-        flyBodyGyro.P = 9e4
-        flyBodyGyro.Parent = hrp
-        
-        RunService.Heartbeat:Connect(function()
-            if not _G.Ysl.Movement.Fly or not flying then
-                StopFly()
-                return
-            end
-            
-            if not hrp or not hrp.Parent then return end
-            
-            pcall(function()
-                local camera = workspace.CurrentCamera
-                local moveDirection = Vector3.zero
-                
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDirection = moveDirection + camera.CFrame.LookVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDirection = moveDirection - camera.CFrame.LookVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDirection = moveDirection - camera.CFrame.RightVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDirection = moveDirection + camera.CFrame.RightVector
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
-                    moveDirection = moveDirection + Vector3.new(0, 1, 0)
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-                    moveDirection = moveDirection - Vector3.new(0, 1, 0)
-                end
-                
-                if moveDirection.Magnitude > 0 then
-                    flyBodyVelocity.Velocity = moveDirection.Unit * _G.Ysl.Movement.FlySpeed
-                else
-                    flyBodyVelocity.Velocity = Vector3.zero
-                end
-                
-                flyBodyGyro.CFrame = camera.CFrame
-            end)
-        end)
-    end
-    
-    function StopFly()
-        flying = false
-        if flyBodyVelocity then flyBodyVelocity:Destroy() flyBodyVelocity = nil end
-        if flyBodyGyro then flyBodyGyro:Destroy() flyBodyGyro = nil end
-    end
-    
-    -- NoClip
-    RunService.Stepped:Connect(function()
-        if character and _G.Ysl.Movement.NoClip and _G.Ysl.Enabled then
-            pcall(function()
-                for _, part in pairs(character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
-            end)
-        end
-    end)
-    
-    -- Infinite Jump
-    UserInputService.JumpRequest:Connect(function()
-        if _G.Ysl.Movement.InfJump and _G.Ysl.Enabled and humanoid then
-            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-        end
-    end)
-    
-    -- Misc Functions
-    local function TeleportTo(location)
-        local locations = {
-            Spawn = function()
-                local myBase = GetMyBase()
-                if myBase then
-                    local spawn = myBase:FindFirstChild("Spawn")
-                    if spawn and spawn:IsA("BasePart") then
-                        return spawn.CFrame + Vector3.new(0, 5, 0)
-                    end
-                end
-            end,
-            SellPoint = function()
-                local sellPoint = Workspace:FindFirstChild("SellPoint")
-                if sellPoint and sellPoint:FindFirstChild("Seller") then
-                    return sellPoint.Seller:GetPivot() + Vector3.new(0, 5, 0)
-                end
-            end
-        }
-        
-        pcall(function()
-            local func = locations[location]
-            if func then
-                local cframe = func()
-                if cframe then
-                    hrp.CFrame = cframe
-                    Notify("Teleport", "✅ Teleported to " .. location, 2)
-                end
-            end
-        end)
-    end
-    
-    --[[ IMPROVED CUSTOM UI ]]
+    --[[ UI ]]
     
     local YslUI = Instance.new("ScreenGui")
-    YslUI.Name = "YslMenuV3"
+    YslUI.Name = "YslUI"
     YslUI.Parent = CoreGui
-    YslUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     YslUI.ResetOnSpawn = false
     
-    -- Main Window
-    local MainWindow = Instance.new("Frame")
-    MainWindow.Name = "MainWindow"
-    MainWindow.Size = UDim2.new(0, 750, 0, 580)
-    MainWindow.Position = UDim2.new(0.5, -375, 0.5, -290)
-    MainWindow.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
-    MainWindow.BackgroundTransparency = 0.05
-    MainWindow.BorderSizePixel = 0
-    MainWindow.ClipsDescendants = true
-    MainWindow.Visible = true
-    MainWindow.Parent = YslUI
+    local Main = Instance.new("Frame")
+    Main.Size = UDim2.new(0, 550, 0, 650)
+    Main.Position = UDim2.new(0.5, -275, 0.5, -325)
+    Main.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    Main.BorderSizePixel = 0
+    Main.Parent = YslUI
     
-    local WindowCorner = Instance.new("UICorner")
-    WindowCorner.CornerRadius = UDim.new(0, 20)
-    WindowCorner.Parent = MainWindow
+    local MainCorner = Instance.new("UICorner")
+    MainCorner.CornerRadius = UDim.new(0, 15)
+    MainCorner.Parent = Main
     
-    local WindowStroke = Instance.new("UIStroke")
-    WindowStroke.Color = Color3.fromRGB(255, 0, 127)
-    WindowStroke.Thickness = 3
-    WindowStroke.Transparency = 0.3
-    WindowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    WindowStroke.Parent = MainWindow
+    local MainStroke = Instance.new("UIStroke")
+    MainStroke.Color = Color3.fromRGB(255, 0, 127)
+    MainStroke.Thickness = 2
+    MainStroke.Parent = Main
     
-    -- Rainbow stroke
     task.spawn(function()
-        local hue = 0
+        local h = 0
         while YslUI.Parent do
-            hue = (hue + 1) % 360
-            WindowStroke.Color = Color3.fromHSV(hue / 360, 1, 1)
+            h = (h + 1) % 360
+            MainStroke.Color = Color3.fromHSV(h / 360, 1, 1)
             task.wait(0.03)
         end
     end)
     
-    -- Animated Background
-    local BGFrame = Instance.new("Frame")
-    BGFrame.Size = UDim2.new(1, 0, 1, 0)
-    BGFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    BGFrame.BackgroundTransparency = 0.96
-    BGFrame.BorderSizePixel = 0
-    BGFrame.Parent = MainWindow
+    -- Top
+    local Top = Instance.new("Frame")
+    Top.Size = UDim2.new(1, 0, 0, 60)
+    Top.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    Top.BorderSizePixel = 0
+    Top.Parent = Main
     
-    local BGGradient = Instance.new("UIGradient")
-    BGGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(138, 43, 226)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 191, 255))
-    }
-    BGGradient.Rotation = 0
-    BGGradient.Parent = BGFrame
+    local TopCorner = Instance.new("UICorner")
+    TopCorner.CornerRadius = UDim.new(0, 15)
+    TopCorner.Parent = Top
     
-    local BGCorner = Instance.new("UICorner")
-    BGCorner.CornerRadius = UDim.new(0, 20)
-    BGCorner.Parent = BGFrame
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 1, 0)
+    Title.BackgroundTransparency = 1
+    Title.Text = "yslscripts"
+    Title.TextSize = 28
+    Title.Font = Enum.Font.GothamBold
+    Title.TextColor3 = Color3.fromRGB(255, 0, 127)
+    Title.Parent = Top
     
     task.spawn(function()
+        local h = 0
         while YslUI.Parent do
-            CreateTween(BGGradient, {Rotation = BGGradient.Rotation + 360}, 15, Enum.EasingStyle.Linear)
-            task.wait(15)
-        end
-    end)
-    
-    -- Top Bar
-    local TopBar = Instance.new("Frame")
-    TopBar.Name = "TopBar"
-    TopBar.Size = UDim2.new(1, 0, 0, 70)
-    TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-    TopBar.BackgroundTransparency = 0.3
-    TopBar.BorderSizePixel = 0
-    TopBar.Parent = MainWindow
-    
-    local TopBarCorner = Instance.new("UICorner")
-    TopBarCorner.CornerRadius = UDim.new(0, 20)
-    TopBarCorner.Parent = TopBar
-    
-    -- Profile Picture
-    local ProfilePic = Instance.new("ImageLabel")
-    ProfilePic.Name = "ProfilePic"
-    ProfilePic.Size = UDim2.new(0, 50, 0, 50)
-    ProfilePic.Position = UDim2.new(0, 10, 0, 10)
-    ProfilePic.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-    ProfilePic.BorderSizePixel = 0
-    ProfilePic.Image = "rbxthumb://type=AvatarHeadShot&id=" .. lplayer.UserId .. "&w=150&h=150"
-    ProfilePic.Parent = TopBar
-    
-    local PicCorner = Instance.new("UICorner")
-    PicCorner.CornerRadius = UDim.new(1, 0)
-    PicCorner.Parent = ProfilePic
-    
-    local PicStroke = Instance.new("UIStroke")
-    PicStroke.Color = Color3.fromRGB(255, 0, 127)
-    PicStroke.Thickness = 3
-    PicStroke.Parent = ProfilePic
-    
-    -- Rainbow border for profile pic
-    task.spawn(function()
-        local hue = 0
-        while YslUI.Parent do
-            hue = (hue + 2) % 360
-            PicStroke.Color = Color3.fromHSV(hue / 360, 1, 1)
+            h = (h + 2) % 360
+            Title.TextColor3 = Color3.fromHSV(h / 360, 1, 1)
             task.wait(0.03)
         end
     end)
     
-    -- Greeting Text
-    local GreetingText = Instance.new("TextLabel")
-    GreetingText.Size = UDim2.new(0, 250, 0, 50)
-    GreetingText.Position = UDim2.new(0, 70, 0, 10)
-    GreetingText.BackgroundTransparency = 1
-    GreetingText.Text = "Hi, " .. lplayer.Name .. "! 👋"
-    GreetingText.TextSize = 22
-    GreetingText.Font = Enum.Font.GothamBold
-    GreetingText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    GreetingText.TextXAlignment = Enum.TextXAlignment.Left
-    GreetingText.Parent = TopBar
+    MakeDraggable(Main, Top)
     
-    -- YSL Logo with RAINBOW in center
-    local YSLLogo = Instance.new("TextLabel")
-    YSLLogo.Size = UDim2.new(0, 220, 0, 50)
-    YSLLogo.Position = UDim2.new(0.5, -110, 0, 10)
-    YSLLogo.BackgroundTransparency = 1
-    YSLLogo.Text = "yslscripts V3"
-    YSLLogo.TextSize = 28
-    YSLLogo.Font = Enum.Font.GothamBold
-    YSLLogo.TextColor3 = Color3.fromRGB(255, 0, 127)
-    YSLLogo.TextXAlignment = Enum.TextXAlignment.Center
-    YSLLogo.Parent = TopBar
+    -- Content
+    local Content = Instance.new("ScrollingFrame")
+    Content.Size = UDim2.new(1, -20, 1, -80)
+    Content.Position = UDim2.new(0, 10, 0, 70)
+    Content.BackgroundTransparency = 1
+    Content.BorderSizePixel = 0
+    Content.ScrollBarThickness = 6
+    Content.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 127)
+    Content.CanvasSize = UDim2.new(0, 0, 0, 0)
+    Content.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    Content.Parent = Main
     
-    local YSLStroke = Instance.new("UIStroke")
-    YSLStroke.Color = Color3.fromRGB(138, 43, 226)
-    YSLStroke.Thickness = 2
-    YSLStroke.Parent = YSLLogo
+    local Layout = Instance.new("UIListLayout")
+    Layout.Padding = UDim.new(0, 8)
+    Layout.SortOrder = Enum.SortOrder.LayoutOrder
+    Layout.Parent = Content
     
-    -- Rainbow YSL animation
-    task.spawn(function()
-        local hue = 0
-        while YslUI.Parent do
-            hue = (hue + 2) % 360
-            YSLLogo.TextColor3 = Color3.fromHSV(hue / 360, 1, 1)
-            YSLStroke.Color = Color3.fromHSV((hue + 60) / 360, 1, 1)
-            task.wait(0.03)
-        end
-    end)
-    
-    -- Speed Display (Top Right)
-    local SpeedDisplay = Instance.new("TextLabel")
-    SpeedDisplay.Size = UDim2.new(0, 120, 0, 50)
-    SpeedDisplay.Position = UDim2.new(1, -130, 0, 10)
-    SpeedDisplay.BackgroundTransparency = 1
-    SpeedDisplay.Text = "👟 Speed: 0"
-    SpeedDisplay.TextSize = 18
-    SpeedDisplay.Font = Enum.Font.GothamBold
-    SpeedDisplay.TextColor3 = Color3.fromRGB(0, 255, 127)
-    SpeedDisplay.TextXAlignment = Enum.TextXAlignment.Right
-    SpeedDisplay.Parent = TopBar
-    
-    -- Update speed display
-    task.spawn(function()
-        while YslUI.Parent do
-            local speed = lplayer:GetAttribute("CurrentSpeed") or 16
-            SpeedDisplay.Text = "👟 Speed: " .. speed
-            task.wait(0.5)
-        end
-    end)
-    
-    MakeDraggable(MainWindow, TopBar)
-    
-    -- Tabs Container
-    local TabsContainer = Instance.new("Frame")
-    TabsContainer.Name = "TabsContainer"
-    TabsContainer.Size = UDim2.new(0, 170, 1, -90)
-    TabsContainer.Position = UDim2.new(0, 10, 0, 80)
-    TabsContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-    TabsContainer.BackgroundTransparency = 0.5
-    TabsContainer.BorderSizePixel = 0
-    TabsContainer.Parent = MainWindow
-    
-    local TabsCorner = Instance.new("UICorner")
-    TabsCorner.CornerRadius = UDim.new(0, 12)
-    TabsCorner.Parent = TabsContainer
-    
-    local TabsLayout = Instance.new("UIListLayout")
-    TabsLayout.Padding = UDim.new(0, 5)
-    TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    TabsLayout.Parent = TabsContainer
-    
-    -- Content Container
-    local ContentContainer = Instance.new("Frame")
-    ContentContainer.Name = "ContentContainer"
-    ContentContainer.Size = UDim2.new(1, -200, 1, -90)
-    ContentContainer.Position = UDim2.new(0, 190, 0, 80)
-    ContentContainer.BackgroundTransparency = 1
-    ContentContainer.Parent = MainWindow
-    
-    -- Tab System & UI Elements
-    local CurrentTab = nil
-    local Tabs = {}
-    
-    local function CreateTab(name, icon)
-        local TabButton = Instance.new("TextButton")
-        TabButton.Size = UDim2.new(1, -10, 0, 45)
-        TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-        TabButton.BackgroundTransparency = 0.5
-        TabButton.BorderSizePixel = 0
-        TabButton.AutoButtonColor = false
-        TabButton.Text = ""
-        TabButton.Parent = TabsContainer
-        
-        local TabCorner = Instance.new("UICorner")
-        TabCorner.CornerRadius = UDim.new(0, 10)
-        TabCorner.Parent = TabButton
-        
-        local TabLabel = Instance.new("TextLabel")
-        TabLabel.Size = UDim2.new(1, -10, 1, 0)
-        TabLabel.Position = UDim2.new(0, 10, 0, 0)
-        TabLabel.BackgroundTransparency = 1
-        TabLabel.Text = icon .. " " .. name
-        TabLabel.TextSize = 15
-        TabLabel.Font = Enum.Font.GothamBold
-        TabLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-        TabLabel.TextXAlignment = Enum.TextXAlignment.Left
-        TabLabel.Parent = TabButton
-        
-        local TabContent = Instance.new("ScrollingFrame")
-        TabContent.Name = name .. "Content"
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
-        TabContent.BackgroundTransparency = 1
-        TabContent.BorderSizePixel = 0
-        TabContent.ScrollBarThickness = 8
-        TabContent.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 127)
-        TabContent.Visible = false
-        TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-        TabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        TabContent.Parent = ContentContainer
-        
-        local ContentLayout = Instance.new("UIListLayout")
-        ContentLayout.Padding = UDim.new(0, 10)
-        ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        ContentLayout.Parent = TabContent
-        
-        local ContentPadding = Instance.new("UIPadding")
-        ContentPadding.PaddingTop = UDim.new(0, 10)
-        ContentPadding.PaddingBottom = UDim.new(0, 10)
-        ContentPadding.PaddingLeft = UDim.new(0, 10)
-        ContentPadding.PaddingRight = UDim.new(0, 10)
-        ContentPadding.Parent = TabContent
-        
-        TabButton.MouseButton1Click:Connect(function()
-            for _, tab in pairs(Tabs) do
-                CreateTween(tab.Button, {BackgroundTransparency = 0.5}, 0.2)
-                CreateTween(tab.Label, {TextColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
-                tab.Content.Visible = false
-            end
-            
-            CreateTween(TabButton, {BackgroundTransparency = 0}, 0.2)
-            CreateTween(TabLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
-            TabContent.Visible = true
-            CurrentTab = TabContent
-        end)
-        
-        TabButton.MouseEnter:Connect(function()
-            if CurrentTab ~= TabContent then
-                CreateTween(TabButton, {BackgroundTransparency = 0.3}, 0.2)
-            end
-        end)
-        
-        TabButton.MouseLeave:Connect(function()
-            if CurrentTab ~= TabContent then
-                CreateTween(TabButton, {BackgroundTransparency = 0.5}, 0.2)
-            end
-        end)
-        
-        local tab = {
-            Button = TabButton,
-            Label = TabLabel,
-            Content = TabContent
-        }
-        
-        table.insert(Tabs, tab)
-        return TabContent
+    local function Section(name)
+        local sec = Instance.new("TextLabel")
+        sec.Size = UDim2.new(1, 0, 0, 30)
+        sec.BackgroundTransparency = 1
+        sec.Text = name
+        sec.TextSize = 18
+        sec.Font = Enum.Font.GothamBold
+        sec.TextColor3 = Color3.fromRGB(255, 0, 127)
+        sec.TextXAlignment = Enum.TextXAlignment.Left
+        sec.Parent = Content
+        return sec
     end
     
-    local function CreateSection(parent, name)
-        local Section = Instance.new("Frame")
-        Section.Size = UDim2.new(1, 0, 0, 35)
-        Section.BackgroundTransparency = 1
-        Section.Parent = parent
+    local function Toggle(name, callback)
+        local frame = Instance.new("Frame")
+        frame.Size = UDim2.new(1, 0, 0, 40)
+        frame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        frame.BorderSizePixel = 0
+        frame.Parent = Content
         
-        local SectionLabel = Instance.new("TextLabel")
-        SectionLabel.Size = UDim2.new(1, 0, 1, 0)
-        SectionLabel.BackgroundTransparency = 1
-        SectionLabel.Text = name
-        SectionLabel.TextSize = 18
-        SectionLabel.Font = Enum.Font.GothamBold
-        SectionLabel.TextColor3 = Color3.fromRGB(255, 0, 127)
-        SectionLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SectionLabel.Parent = Section
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 8)
+        corner.Parent = frame
         
-        local SectionLine = Instance.new("Frame")
-        SectionLine.Size = UDim2.new(1, 0, 0, 2)
-        SectionLine.Position = UDim2.new(0, 0, 1, -2)
-        SectionLine.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
-        SectionLine.BackgroundTransparency = 0.5
-        SectionLine.BorderSizePixel = 0
-        SectionLine.Parent = Section
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -60, 1, 0)
+        label.Position = UDim2.new(0, 10, 0, 0)
+        label.BackgroundTransparency = 1
+        label.Text = name
+        label.TextSize = 14
+        label.Font = Enum.Font.Gotham
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = frame
         
-        local LineCorner = Instance.new("UICorner")
-        LineCorner.CornerRadius = UDim.new(1, 0)
-        LineCorner.Parent = SectionLine
+        local button = Instance.new("TextButton")
+        button.Size = UDim2.new(0, 45, 0, 25)
+        button.Position = UDim2.new(1, -50, 0.5, -12.5)
+        button.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
+        button.Text = ""
+        button.Parent = frame
         
-        return Section
+        local btnCorner = Instance.new("UICorner")
+        btnCorner.CornerRadius = UDim.new(1, 0)
+        btnCorner.Parent = button
+        
+        local circle = Instance.new("Frame")
+        circle.Size = UDim2.new(0, 21, 0, 21)
+        circle.Position = UDim2.new(0, 2, 0, 2)
+        circle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        circle.BorderSizePixel = 0
+        circle.Parent = button
+        
+        local circleCorner = Instance.new("UICorner")
+        circleCorner.CornerRadius = UDim.new(1, 0)
+        circleCorner.Parent = circle
+        
+        local on = false
+        
+        button.MouseButton1Click:Connect(function()
+            on = not on
+            CreateTween(button, {BackgroundColor3 = on and Color3.fromRGB(255, 0, 127) or Color3.fromRGB(50, 50, 55)}, 0.2)
+            CreateTween(circle, {Position = on and UDim2.new(1, -23, 0, 2) or UDim2.new(0, 2, 0, 2)}, 0.2)
+            callback(on)
+        end)
+        
+        return frame
     end
     
-    local function CreateToggle(parent, name, callback)
-        local Toggle = Instance.new("Frame")
-        Toggle.Size = UDim2.new(1, 0, 0, 45)
-        Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-        Toggle.BackgroundTransparency = 0.5
-        Toggle.BorderSizePixel = 0
-        Toggle.Parent = parent
+    local function Button(name, callback)
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1, 0, 0, 40)
+        btn.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+        btn.BorderSizePixel = 0
+        btn.Text = name
+        btn.TextSize = 15
+        btn.Font = Enum.Font.GothamBold
+        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btn.Parent = Content
         
-        local ToggleCorner = Instance.new("UICorner")
-        ToggleCorner.CornerRadius = UDim.new(0, 10)
-        ToggleCorner.Parent = Toggle
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 8)
+        corner.Parent = btn
         
-        local ToggleLabel = Instance.new("TextLabel")
-        ToggleLabel.Size = UDim2.new(1, -70, 1, 0)
-        ToggleLabel.Position = UDim2.new(0, 15, 0, 0)
-        ToggleLabel.BackgroundTransparency = 1
-        ToggleLabel.Text = name
-        ToggleLabel.TextSize = 15
-        ToggleLabel.Font = Enum.Font.Gotham
-        ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
-        ToggleLabel.Parent = Toggle
-        
-        local ToggleButton = Instance.new("TextButton")
-        ToggleButton.Size = UDim2.new(0, 50, 0, 28)
-        ToggleButton.Position = UDim2.new(1, -60, 0.5, -14)
-        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 55)
-        ToggleButton.BorderSizePixel = 0
-        ToggleButton.AutoButtonColor = false
-        ToggleButton.Text = ""
-        ToggleButton.Parent = Toggle
-        
-        local ToggleButtonCorner = Instance.new("UICorner")
-        ToggleButtonCorner.CornerRadius = UDim.new(1, 0)
-        ToggleButtonCorner.Parent = ToggleButton
-        
-        local ToggleCircle = Instance.new("Frame")
-        ToggleCircle.Size = UDim2.new(0, 24, 0, 24)
-        ToggleCircle.Position = UDim2.new(0, 2, 0, 2)
-        ToggleCircle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-        ToggleCircle.BorderSizePixel = 0
-        ToggleCircle.Parent = ToggleButton
-        
-        local CircleCorner = Instance.new("UICorner")
-        CircleCorner.CornerRadius = UDim.new(1, 0)
-        CircleCorner.Parent = ToggleCircle
-        
-        local enabled = false
-        
-        ToggleButton.MouseButton1Click:Connect(function()
-            enabled = not enabled
-            
-            if enabled then
-                CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(255, 0, 127)}, 0.2)
-                CreateTween(ToggleCircle, {Position = UDim2.new(1, -26, 0, 2), BackgroundColor3 = Color3.fromRGB(255, 255, 255)}, 0.2)
-            else
-                CreateTween(ToggleButton, {BackgroundColor3 = Color3.fromRGB(50, 50, 55)}, 0.2)
-                CreateTween(ToggleCircle, {Position = UDim2.new(0, 2, 0, 2), BackgroundColor3 = Color3.fromRGB(200, 200, 200)}, 0.2)
-            end
-            
-            callback(enabled)
-        end)
-        
-        Toggle.MouseEnter:Connect(function()
-            CreateTween(Toggle, {BackgroundTransparency = 0.3}, 0.2)
-        end)
-        
-        Toggle.MouseLeave:Connect(function()
-            CreateTween(Toggle, {BackgroundTransparency = 0.5}, 0.2)
-        end)
-        
-        return Toggle
+        btn.MouseButton1Click:Connect(callback)
+        return btn
     end
     
-    local function CreateButton(parent, name, callback)
-        local Button = Instance.new("TextButton")
-        Button.Size = UDim2.new(1, 0, 0, 45)
-        Button.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
-        Button.BackgroundTransparency = 0.3
-        Button.BorderSizePixel = 0
-        Button.AutoButtonColor = false
-        Button.Text = name
-        Button.TextSize = 16
-        Button.Font = Enum.Font.GothamBold
-        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Button.Parent = parent
+    local function Slider(name, min, max, default, callback)
+        local frame = Instance.new("Frame")
+        frame.Size = UDim2.new(1, 0, 0, 60)
+        frame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+        frame.BorderSizePixel = 0
+        frame.Parent = Content
         
-        local ButtonCorner = Instance.new("UICorner")
-        ButtonCorner.CornerRadius = UDim.new(0, 10)
-        ButtonCorner.Parent = Button
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 8)
+        corner.Parent = frame
         
-        local ButtonGradient = Instance.new("UIGradient")
-        ButtonGradient.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
-        }
-        ButtonGradient.Rotation = 45
-        ButtonGradient.Parent = Button
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -60, 0, 25)
+        label.Position = UDim2.new(0, 10, 0, 5)
+        label.BackgroundTransparency = 1
+        label.Text = name
+        label.TextSize = 14
+        label.Font = Enum.Font.Gotham
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = frame
         
-        Button.MouseButton1Click:Connect(function()
-            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 40)}, 0.1)
-            task.wait(0.1)
-            CreateTween(Button, {Size = UDim2.new(1, 0, 0, 45)}, 0.1)
-            callback()
-        end)
+        local value = Instance.new("TextLabel")
+        value.Size = UDim2.new(0, 50, 0, 25)
+        value.Position = UDim2.new(1, -55, 0, 5)
+        value.BackgroundTransparency = 1
+        value.Text = tostring(default)
+        value.TextSize = 14
+        value.Font = Enum.Font.GothamBold
+        value.TextColor3 = Color3.fromRGB(255, 0, 127)
+        value.TextXAlignment = Enum.TextXAlignment.Right
+        value.Parent = frame
         
-        Button.MouseEnter:Connect(function()
-            CreateTween(Button, {BackgroundTransparency = 0}, 0.2)
-        end)
+        local bar = Instance.new("Frame")
+        bar.Size = UDim2.new(1, -20, 0, 8)
+        bar.Position = UDim2.new(0, 10, 0, 40)
+        bar.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+        bar.BorderSizePixel = 0
+        bar.Parent = frame
         
-        Button.MouseLeave:Connect(function()
-            CreateTween(Button, {BackgroundTransparency = 0.3}, 0.2)
-        end)
+        local barCorner = Instance.new("UICorner")
+        barCorner.CornerRadius = UDim.new(1, 0)
+        barCorner.Parent = bar
         
-        return Button
-    end
-    
-    local function CreateSlider(parent, name, min, max, default, callback)
-        local Slider = Instance.new("Frame")
-        Slider.Size = UDim2.new(1, 0, 0, 70)
-        Slider.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-        Slider.BackgroundTransparency = 0.5
-        Slider.BorderSizePixel = 0
-        Slider.Parent = parent
+        local fill = Instance.new("Frame")
+        fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+        fill.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
+        fill.BorderSizePixel = 0
+        fill.Parent = bar
         
-        local SliderCorner = Instance.new("UICorner")
-        SliderCorner.CornerRadius = UDim.new(0, 10)
-        SliderCorner.Parent = Slider
+        local fillCorner = Instance.new("UICorner")
+        fillCorner.CornerRadius = UDim.new(1, 0)
+        fillCorner.Parent = fill
         
-        local SliderLabel = Instance.new("TextLabel")
-        SliderLabel.Size = UDim2.new(1, -20, 0, 25)
-        SliderLabel.Position = UDim2.new(0, 15, 0, 8)
-        SliderLabel.BackgroundTransparency = 1
-        SliderLabel.Text = name
-        SliderLabel.TextSize = 15
-        SliderLabel.Font = Enum.Font.Gotham
-        SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
-        SliderLabel.Parent = Slider
+        local dot = Instance.new("Frame")
+        dot.Size = UDim2.new(0, 16, 0, 16)
+        dot.Position = UDim2.new((default - min) / (max - min), -8, 0.5, -8)
+        dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        dot.BorderSizePixel = 0
+        dot.Parent = bar
         
-        local SliderValue = Instance.new("TextLabel")
-        SliderValue.Size = UDim2.new(0, 60, 0, 25)
-        SliderValue.Position = UDim2.new(1, -75, 0, 8)
-        SliderValue.BackgroundTransparency = 1
-        SliderValue.Text = tostring(default)
-        SliderValue.TextSize = 15
-        SliderValue.Font = Enum.Font.GothamBold
-        SliderValue.TextColor3 = Color3.fromRGB(255, 0, 127)
-        SliderValue.TextXAlignment = Enum.TextXAlignment.Right
-        SliderValue.Parent = Slider
-        
-        local SliderBar = Instance.new("Frame")
-        SliderBar.Size = UDim2.new(1, -30, 0, 10)
-        SliderBar.Position = UDim2.new(0, 15, 0, 45)
-        SliderBar.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
-        SliderBar.BorderSizePixel = 0
-        SliderBar.Parent = Slider
-        
-        local BarCorner = Instance.new("UICorner")
-        BarCorner.CornerRadius = UDim.new(1, 0)
-        BarCorner.Parent = SliderBar
-        
-        local SliderFill = Instance.new("Frame")
-        SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-        SliderFill.BackgroundColor3 = Color3.fromRGB(255, 0, 127)
-        SliderFill.BorderSizePixel = 0
-        SliderFill.Parent = SliderBar
-        
-        local FillCorner = Instance.new("UICorner")
-        FillCorner.CornerRadius = UDim.new(1, 0)
-        FillCorner.Parent = SliderFill
-        
-        local FillGradient = Instance.new("UIGradient")
-        FillGradient.Color = ColorSequence.new{
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 127)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(138, 43, 226))
-        }
-        FillGradient.Parent = SliderFill
-        
-        local SliderDot = Instance.new("Frame")
-        SliderDot.Size = UDim2.new(0, 20, 0, 20)
-        SliderDot.Position = UDim2.new((default - min) / (max - min), -10, 0.5, -10)
-        SliderDot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SliderDot.BorderSizePixel = 0
-        SliderDot.Parent = SliderBar
-        
-        local DotCorner = Instance.new("UICorner")
-        DotCorner.CornerRadius = UDim.new(1, 0)
-        DotCorner.Parent = SliderDot
+        local dotCorner = Instance.new("UICorner")
+        dotCorner.CornerRadius = UDim.new(1, 0)
+        dotCorner.Parent = dot
         
         local dragging = false
         
-        SliderBar.InputBegan:Connect(function(input)
+        bar.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 dragging = true
+                
                 local function update()
-                    local mousePos = UserInputService:GetMouseLocation()
-                    local barPos = SliderBar.AbsolutePosition
-                    local barSize = SliderBar.AbsoluteSize
+                    local mouse = UserInputService:GetMouseLocation()
+                    local barPos = bar.AbsolutePosition
+                    local barSize = bar.AbsoluteSize
+                    local rel = math.clamp((mouse.X - barPos.X) / barSize.X, 0, 1)
+                    local val = math.floor(min + (max - min) * rel)
                     
-                    local relative = math.clamp((mousePos.X - barPos.X) / barSize.X, 0, 1)
-                    local value = math.floor(min + (max - min) * relative)
-                    
-                    SliderValue.Text = tostring(value)
-                    CreateTween(SliderFill, {Size = UDim2.new(relative, 0, 1, 0)}, 0.1)
-                    CreateTween(SliderDot, {Position = UDim2.new(relative, -10, 0.5, -10)}, 0.1)
-                    
-                    callback(value)
+                    value.Text = tostring(val)
+                    fill.Size = UDim2.new(rel, 0, 1, 0)
+                    dot.Position = UDim2.new(rel, -8, 0.5, -8)
+                    callback(val)
                 end
                 
                 update()
                 
-                local connection
-                connection = UserInputService.InputChanged:Connect(function(input)
+                local conn1 = UserInputService.InputChanged:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
                         update()
                     end
                 end)
                 
-                local releaseConnection
-                releaseConnection = UserInputService.InputEnded:Connect(function(input)
+                local conn2 = UserInputService.InputEnded:Connect(function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         dragging = false
-                        connection:Disconnect()
-                        releaseConnection:Disconnect()
+                        conn1:Disconnect()
+                        conn2:Disconnect()
                     end
                 end)
             end
         end)
         
-        Slider.MouseEnter:Connect(function()
-            CreateTween(Slider, {BackgroundTransparency = 0.3}, 0.2)
-            CreateTween(SliderDot, {Size = UDim2.new(0, 24, 0, 24), Position = UDim2.new(SliderDot.Position.X.Scale, -12, 0.5, -12)}, 0.2)
-        end)
-        
-        Slider.MouseLeave:Connect(function()
-            if not dragging then
-                CreateTween(Slider, {BackgroundTransparency = 0.5}, 0.2)
-                CreateTween(SliderDot, {Size = UDim2.new(0, 20, 0, 20), Position = UDim2.new(SliderDot.Position.X.Scale, -10, 0.5, -10)}, 0.2)
-            end
-        end)
-        
-        return Slider
+        return frame
     end
     
-    -- CREATE ALL TABS
+    -- BUILD UI
     
-    -- TAB 1: AUTO FARM
-    local FarmTab = CreateTab("Auto Farm", "🚜")
+    Section("🚀 WALKSPEED CONTROL")
     
-    CreateSection(FarmTab, "Farming Features")
-    CreateToggle(FarmTab, "Auto Farm Brainrots", function(v)
+    Slider("WalkSpeed", 16, 500, 16, function(v)
+        _G.Ysl.WalkSpeed = v
+        if _G.Ysl.WalkSpeedEnabled then
+            humanoid.WalkSpeed = v
+        end
+    end)
+    
+    Toggle("Enable WalkSpeed", function(v)
+        _G.Ysl.WalkSpeedEnabled = v
+        if v then
+            EnableWalkSpeed()
+            Notify("WalkSpeed Enabled: " .. _G.Ysl.WalkSpeed)
+        else
+            DisableWalkSpeed()
+            Notify("WalkSpeed Disabled")
+        end
+    end)
+    
+    Section("🌾 AUTO FARM")
+    
+    Toggle("Auto Farm Brainrots", function(v)
         _G.Ysl.AutoFarm.Brainrot = v
-        Notify("Auto Farm", v and "Brainrot farming enabled!" or "Disabled", 2)
+        Notify(v and "Auto Farm Brainrots: ON" or "Auto Farm Brainrots: OFF")
     end)
     
-    CreateToggle(FarmTab, "Auto Collect Money (Your Base)", function(v)
+    Toggle("Auto Collect Money (Your Base)", function(v)
         _G.Ysl.AutoFarm.Money = v
-        Notify("Auto Farm", v and "Money collection enabled!" or "Disabled", 2)
+        Notify(v and "Auto Money: ON" or "Auto Money: OFF")
     end)
     
-    CreateToggle(FarmTab, "Auto Farm Lucky Blocks", function(v)
+    Toggle("Auto Farm Lucky Blocks", function(v)
         _G.Ysl.AutoFarm.LuckyBlocks = v
-        Notify("Auto Farm", v and "Lucky block farming enabled!" or "Disabled", 2)
+        Notify(v and "Auto Lucky Blocks: ON" or "Auto Lucky Blocks: OFF")
     end)
     
-    CreateToggle(FarmTab, "Auto Sell All (Every 60s)", function(v)
+    Toggle("Auto Sell (Every 60s)", function(v)
         _G.Ysl.AutoFarm.SellAll = v
     end)
     
-    CreateButton(FarmTab, "Sell All Now", function()
+    Button("Sell All Now", function()
         pcall(function()
             SellAll_RF:InvokeServer()
-            Notify("Sell", "Sold all!", 2)
+            Notify("Sold All!")
         end)
     end)
     
-    CreateSection(FarmTab, "Ultimate Farm")
-    CreateButton(FarmTab, "🔥 ULTIMATE FARM (Enable Everything)", function()
+    Button("🔥 ENABLE ALL FARM", function()
         _G.Ysl.AutoFarm.Brainrot = true
         _G.Ysl.AutoFarm.Money = true
         _G.Ysl.AutoFarm.LuckyBlocks = true
@@ -1525,115 +989,101 @@ function loadMainScript()
         _G.Ysl.AutoUpgrade.Base = true
         _G.Ysl.AutoUpgrade.Brainrots = true
         _G.Ysl.AutoUpgrade.Carry = true
-        Notify("ULTIMATE FARM", "ALL FEATURES ACTIVATED! 🔥", 5)
+        Notify("ALL FARM ENABLED!")
     end)
     
-    -- TAB 2: UPGRADES
-    local UpgradeTab = CreateTab("Upgrades", "⬆️")
+    Section("⬆️ UPGRADES")
     
-    CreateSection(UpgradeTab, "Speed Upgrades (Working!)")
-    CreateButton(UpgradeTab, "👟 Upgrade Speed +1", function() UpgradeSpeedManual(1) end)
-    CreateButton(UpgradeTab, "👟 Upgrade Speed +5", function() UpgradeSpeedManual(5) end)
-    CreateButton(UpgradeTab, "👟 Upgrade Speed +10", function() UpgradeSpeedManual(10) end)
+    Button("Buy Speed +1", function() BuySpeed(1) end)
+    Button("Buy Speed +5", function() BuySpeed(5) end)
+    Button("Buy Speed +10", function() BuySpeed(10) end)
     
-    CreateSection(UpgradeTab, "Auto Upgrades")
-    CreateToggle(UpgradeTab, "Auto Upgrade Base", function(v) _G.Ysl.AutoUpgrade.Base = v end)
-    CreateToggle(UpgradeTab, "Auto Upgrade All Brainrots", function(v) _G.Ysl.AutoUpgrade.Brainrots = v end)
-    CreateToggle(UpgradeTab, "Auto Upgrade Carry Capacity", function(v) _G.Ysl.AutoUpgrade.Carry = v end)
+    Toggle("Auto Upgrade Base", function(v) _G.Ysl.AutoUpgrade.Base = v end)
+    Toggle("Auto Upgrade Brainrots", function(v) _G.Ysl.AutoUpgrade.Brainrots = v end)
+    Toggle("Auto Upgrade Carry", function(v) _G.Ysl.AutoUpgrade.Carry = v end)
     
-    -- TAB 3: REBIRTH
-    local RebirthTab = CreateTab("Rebirth", "🔄")
+    Section("🔄 REBIRTH")
     
-    CreateSection(RebirthTab, "Auto Rebirth Settings")
-    CreateToggle(RebirthTab, "Auto Rebirth", function(v)
-        _G.Ysl.AutoRebirth.Enabled = v
-        Notify("Auto Rebirth", v and "Enabled at speed " .. _G.Ysl.RebirthAt or "Disabled", 2)
-    end)
-    
-    CreateSlider(RebirthTab, "Rebirth at Speed", 100, 10000, 500, function(v)
+    Slider("Rebirth At Speed", 100, 5000, 500, function(v)
         _G.Ysl.RebirthAt = v
     end)
     
-    CreateButton(RebirthTab, "Rebirth Now (Manual)", function()
+    Toggle("Auto Rebirth", function(v)
+        _G.Ysl.AutoRebirth = v
+        Notify(v and "Auto Rebirth: ON" or "Auto Rebirth: OFF")
+    end)
+    
+    Button("Rebirth Now", function()
         pcall(function()
             Rebirth_RF:InvokeServer()
-            Notify("Rebirth", "Rebirthed!", 2)
+            Notify("Rebirthed!")
         end)
     end)
     
-    -- TAB 4: MOVEMENT
-    local MovementTab = CreateTab("Movement", "🏃")
+    Section("✈️ MOVEMENT")
     
-    CreateSection(MovementTab, "Fly")
-    CreateToggle(MovementTab, "Fly", function(v)
+    Slider("Fly Speed", 20, 200, 50, function(v)
+        _G.Ysl.Movement.FlySpeed = v
+    end)
+    
+    Toggle("Fly", function(v)
         _G.Ysl.Movement.Fly = v
-        if v then StartFly() else StopFly() end
-    end)
-    CreateSlider(MovementTab, "Fly Speed", 10, 200, 50, function(v) _G.Ysl.Movement.FlySpeed = v end)
-    
-    CreateSection(MovementTab, "Other Movement")
-    CreateToggle(MovementTab, "NoClip", function(v) _G.Ysl.Movement.NoClip = v end)
-    CreateToggle(MovementTab, "Infinite Jump", function(v) _G.Ysl.Movement.InfJump = v end)
-    
-    -- TAB 5: MISC
-    local MiscTab = CreateTab("Misc", "⚙️")
-    
-    CreateSection(MiscTab, "VIP Bypass")
-    CreateToggle(MiscTab, "VIP & VIP+ Bypass (Walk Through)", function(v)
-        _G.Ysl.VIPBypass.Enabled = v
-        Notify("VIP Bypass", v and "VIP walls disabled!" or "Disabled", 2)
+        if v then StartFly() end
     end)
     
-    CreateSection(MiscTab, "Teleports")
-    CreateButton(MiscTab, "TP to My Spawn", function() TeleportTo("Spawn") end)
-    CreateButton(MiscTab, "TP to Sell Point", function() TeleportTo("SellPoint") end)
+    Toggle("NoClip", function(v) _G.Ysl.Movement.NoClip = v end)
+    Toggle("Infinite Jump", function(v) _G.Ysl.Movement.InfJump = v end)
     
-    CreateSection(MiscTab, "Quick Actions")
-    CreateButton(MiscTab, "Rejoin Server", function()
-        game:GetService("TeleportService"):Teleport(game.PlaceId, lplayer)
+    Section("🚫 VIP BYPASS")
+    
+    Toggle("VIP & VIP+ Bypass", function(v)
+        _G.Ysl.VIPBypass = v
+        Notify(v and "VIP Bypass: ON" or "VIP Bypass: OFF")
     end)
     
-    -- Select first tab
-    if #Tabs > 0 then
-        Tabs[1].Button.MouseButton1Click:Fire()
-    end
+    Section("📍 TELEPORTS")
     
-    -- Toggle Menu with RightShift
-    UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if not gameProcessed and input.KeyCode == Enum.KeyCode.RightShift then
-            MainWindow.Visible = not MainWindow.Visible
+    Button("TP to My Base", function()
+        if MyBase then
+            local spawn = MyBase:FindFirstChild("Spawn")
+            if spawn then
+                hrp.CFrame = spawn.CFrame + Vector3.new(0, 5, 0)
+                Notify("Teleported to Base")
+            end
         end
     end)
     
-    -- Entrance Animation
-    MainWindow.Size = UDim2.new(0, 0, 0, 0)
-    MainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Button("TP to Sell Point", function()
+        local sellPoint = Workspace:FindFirstChild("SellPoint")
+        if sellPoint and sellPoint:FindFirstChild("Seller") then
+            hrp.CFrame = sellPoint.Seller:GetPivot() + Vector3.new(0, 5, 0)
+            Notify("Teleported to Sell")
+        end
+    end)
     
-    CreateTween(MainWindow, {
-        Size = UDim2.new(0, 750, 0, 580),
-        Position = UDim2.new(0.5, -375, 0.5, -290)
-    }, 1, Enum.EasingStyle.Elastic)
+    -- Toggle with RightShift
+    UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.RightShift then
+            Main.Visible = not Main.Visible
+        end
+    end)
     
-    Notify("yslscripts V3", "Welcome " .. lplayer.Name .. "! 👋", 5)
-    Notify("Premium Loaded", "Press RightShift to toggle! 💎", 4)
+    -- Entrance
+    Main.Size = UDim2.new(0, 0, 0, 0)
+    Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+    CreateTween(Main, {Size = UDim2.new(0, 550, 0, 650), Position = UDim2.new(0.5, -275, 0.5, -325)}, 1, Enum.EasingStyle.Elastic)
+    
+    Notify("yslscripts Loaded! Press RightShift to toggle")
     
     print([[
 ╔═══════════════════════════════════════════════════════════════╗
-║        yslscripts V3 ULTIMATE FIXED EDITION                   ║
-║           LOADED SUCCESSFULLY! 🔥                             ║
+║        yslscripts ULTIMATE - LOADED                           ║
 ║                                                               ║
-║  Status: ✅ PREMIUM ACCESS VERIFIED                          ║
-║  User: ]] .. lplayer.Name .. string.rep(" ", 53 - #lplayer.Name) .. [[║
+║  ⚡ WALKSPEED CONTROL - WORKING                              ║
+║  💰 AUTO MONEY - ACTUALLY FIXED                              ║
+║  🎯 EVERYTHING WORKING                                        ║
 ║                                                               ║
-║  ⚡ WORKING SPEED UPGRADES                                    ║
-║  💰 FIXED AUTO MONEY (YOUR BASE ONLY)                        ║
-║  🎯 SMART BRAINROT FARMING                                    ║
-║  🎁 ADVANCED LUCKY BLOCK FARM                                ║
-║  🚫 VIP & VIP+ BYPASS                                        ║
-║  🎨 PREMIUM CUSTOM UI                                        ║
-║  🔑 Toggle: RightShift                                        ║
-║                                                               ║
-║  Made by yslscripts - The Ultimate Quality                    ║
+║  Press RightShift to Toggle Menu                              ║
 ╚═══════════════════════════════════════════════════════════════╝
 ]])
     
